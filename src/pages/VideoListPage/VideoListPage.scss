@@ -1,0 +1,35 @@
+page-VideoListPage {
+    .card-background-page {
+        ion-card {
+            position: relative;
+            text-align: center;
+        }
+        .card-title {
+            font-size: 2.0em;
+            position: absolute;
+            top: 36%;
+            width: 100%;
+            font-weight: bold;
+            color: #fff;
+        }
+        .card-subtitle {
+            font-size: 1.0em;
+            position: absolute;
+            top: 52%;
+            width: 100%;
+            color: #fff;
+        }
+        .card-duration {
+            font-size: 1.0em;
+            font-weight:bold;
+            position: absolute;
+            bottom: 5%;
+            width: 100%;
+            color: #fff;
+        }
+    }
+
+}
+    textarea {
+   resize: both;
+}

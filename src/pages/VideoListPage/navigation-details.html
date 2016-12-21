@@ -1,0 +1,79 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            {{person.datePrise | date:'fullDate'}}
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <form id="formVideo" (ngSubmit)="logForm()">
+        <ion-card>
+            <img src="{{person.uriThumb}}">
+        </ion-card>
+        <ion-card>
+            <ion-list>
+                <ion-list-header>
+                    <ion-icon color="subtle" large item-left name='contact'></ion-icon>
+                    Interviewé
+                </ion-list-header>
+                <ion-item>
+                    <ion-label floating>Nom</ion-label>
+                    <ion-input type="text" [(ngModel)]="person.guestname" name="guestname" clearInput></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>Prénon</ion-label>
+                    <ion-input type="text" [(ngModel)]="person.guestfirstname" name="guestfirstname" clearInput></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>Titre</ion-label>
+                    <ion-input type="text" [(ngModel)]="person.guestoccupation" name="guestoccupation" clearInput></ion-input>
+                </ion-item>
+            </ion-list>
+        </ion-card>
+        <ion-card>
+            <ion-item>
+                <ion-icon color="subtle" large item-left name='pin'></ion-icon>
+                <ion-label floating>Lieu</ion-label>
+                <ion-input type="text" [(ngModel)]="person.guestplace" name="guestplace"></ion-input>
+            </ion-item>
+        </ion-card>
+        <ion-card>
+            <ion-item>
+                <ion-icon color="subtle" large item-left name='pin'></ion-icon>
+                <ion-label floating>Texte</ion-label>
+                <ion-textarea type="text" [(ngModel)]="person.guesttext" name="guesttext"></ion-textarea>
+            </ion-item>
+        </ion-card>
+        <ion-card>
+            <ion-item>
+                <ion-toggle [(ngModel)]="person.distributionsave_rush" name="distributionsave_rush" ></ion-toggle>
+                <ion-label>
+                    Rush
+                </ion-label>
+                <ion-icon name='alert' item-left></ion-icon>
+            </ion-item>
+        </ion-card>
+        <ion-card>
+            <ion-item>
+                <ion-label>Medias Destination</ion-label>
+                <ion-icon color="subtle" large item-left name='cloud'></ion-icon>
+                <!-- <ion-select [(ngModel)]="toppings" multiple="true"> -->
+                <ion-select [(ngModel)]="person.distributionArr" multiple="true" name="distributionArr">
+                    <ion-option value="facebook">Facebook</ion-option>
+                    <ion-option value="instagram">Instagram</ion-option>
+                    <ion-option value="youtube">Youtube</ion-option>
+                    <ion-option value="twitter">Twitter</ion-option>
+                    <ion-option value="webTv">WebTv</ion-option>
+                </ion-select>
+            </ion-item>
+        </ion-card>
+    </form>
+</ion-content>
+<ion-footer>
+    <button ion-button type="submit" form="formVideo" block>Sauvegarde</button>
+</ion-footer>
+<!--         <ion-item>
+            <ion-label>distributionembargo_date</ion-label>
+            <ion-datetime displayFormat="MM/DD/YYYY"></ion-datetime>
+            <ion-input type="date" [(ngModel)]="person.distributionembargo_date" name="distributionembargo_date"></ion-input>
+        </ion-item>-->

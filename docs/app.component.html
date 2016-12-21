@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>app.component.ts</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="app.component.html">
+                  app.component.ts
+                </a>
+              
+                
+                <a class="source" href="app.module.html">
+                  app.module.ts
+                </a>
+              
+                
+                <a class="source" href="app.service.html">
+                  app.service.ts
+                </a>
+              
+                
+                <a class="source" href="data.provider.html">
+                  data.provider.ts
+                </a>
+              
+                
+                <a class="source" href="main.dev.html">
+                  main.dev.ts
+                </a>
+              
+                
+                <a class="source" href="main.prod.html">
+                  main.prod.ts
+                </a>
+              
+                
+                <a class="source" href="main.html">
+                  main.ts
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>app.component.ts</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">import</span> { Component, ViewChild } from <span class="hljs-string">"@angular/core"</span>
+<span class="hljs-keyword">import</span> { Events, MenuController, Nav, Platform } from <span class="hljs-string">"ionic-angular"</span>
+<span class="hljs-keyword">import</span> { StatusBar, Splashscreen, SQLite } from <span class="hljs-string">"ionic-native"</span>
+<span class="hljs-keyword">import</span> { Page1 } from <span class="hljs-string">"../pages/page1/page1"</span>
+<span class="hljs-keyword">import</span> { VideoListPage } from <span class="hljs-string">"../pages/VideoListPage/VideoListPage"</span>
+<span class="hljs-keyword">import</span> { LoginPage } from <span class="hljs-string">"../pages/login/login"</span>
+<span class="hljs-keyword">import</span> { UserData } from <span class="hljs-string">"../providers/user-data"</span>
+<span class="hljs-keyword">import</span> { ProfilePage } from <span class="hljs-string">"../pages/profile/profile"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>import { VideoformPage } from “../pages/Videoform/Videoform”;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> PageObj {
+  title: <span class="hljs-built_in">string</span>;
+  component: <span class="hljs-built_in">any</span>;
+  icon: <span class="hljs-built_in">string</span>;
+  logsOut?: <span class="hljs-built_in">boolean</span>;
+  index?: <span class="hljs-built_in">number</span>;
+}
+
+
+@Component({
+  templateUrl: <span class="hljs-string">"app.html"</span>
+})
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> MyApp {
+  @ViewChild(Nav) nav: Nav
+
+  rootPage: <span class="hljs-built_in">any</span> = LoginPage
+
+  appPages: PageObj[] = [
+
+    { title: <span class="hljs-string">"A Propos"</span>, component: Page1, icon: <span class="hljs-string">"information-circle"</span> },
+  ]
+  loggedInPages: PageObj[] = [
+    { title: <span class="hljs-string">"Videos"</span>, component: VideoListPage, icon: <span class="hljs-string">"videocam"</span> },
+    { title: <span class="hljs-string">"Compte"</span>, component: ProfilePage, icon: <span class="hljs-string">"contact"</span> },
+    { title: <span class="hljs-string">"Déconnecter"</span>, component: LoginPage, icon: <span class="hljs-string">"log-out"</span>, logsOut: <span class="hljs-literal">true</span> }
+  ]
+  loggedOutPages: PageObj[] = [
+    { title: <span class="hljs-string">"Connecter"</span>, component: LoginPage, icon: <span class="hljs-string">"log-in"</span> }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>{ title: “Signup”, component: SignupPage, icon: “person-add” }</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  ]
+
+  <span class="hljs-keyword">constructor</span>(public userData: UserData, public platform: Platform, public events: Events, public menu: MenuController) {
+    <span class="hljs-keyword">this</span>.initializeApp()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>used for an example of ngFor and navigation
+this.pages = [
+    { title: “Page One”, component: Page1, icon: “calendar” },
+    { title: “Page Two”, component: Page2, icon: “calendar” },
+    { title: “Login”, component: LoginPage, icon: “calendar” }
+]</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>decide which menu items should be hidden by current login status stored in local storage</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.userData.hasLoggedIn().then((hasLoggedIn) =&gt; {
+      <span class="hljs-keyword">this</span>.enableMenu(hasLoggedIn === <span class="hljs-literal">true</span>)
+      <span class="hljs-keyword">this</span>.rootPage = LoginPage
+    })
+    <span class="hljs-keyword">this</span>.listenToLoginEvents()
+  }
+
+  initializeApp() {
+    <span class="hljs-keyword">this</span>.platform.ready().then(() =&gt; {
+      <span class="hljs-keyword">const</span> sqlRow = [
+        <span class="hljs-string">"uri TEXT"</span>,
+        <span class="hljs-string">"uriThumb TEXT"</span>,
+        <span class="hljs-string">"bitrate INT"</span>,
+        <span class="hljs-string">"duration TEXT"</span>,
+        <span class="hljs-string">"height TEXT"</span>,
+        <span class="hljs-string">"orientation TEXT"</span>,
+        <span class="hljs-string">"size TEXT"</span>,
+        <span class="hljs-string">"width TEXT"</span>,
+        <span class="hljs-string">"guestname TEXT"</span>,
+        <span class="hljs-string">"guestfirstname TEXT"</span>,
+        <span class="hljs-string">"guestoccupation TEXT"</span>,
+        <span class="hljs-string">"guestplace TEXT"</span>,
+        <span class="hljs-string">"guestS1 TEXT"</span>,
+        <span class="hljs-string">"guesttext TEXT"</span>,
+        <span class="hljs-string">"journalistname TEXT"</span>,
+        <span class="hljs-string">"journalistfirstname TEXT"</span>,
+        <span class="hljs-string">"journalistoccupation TEXT"</span>,
+        <span class="hljs-string">"journalistsociety TEXT"</span>,
+        <span class="hljs-string">"journalistservice TEXT"</span>,
+        <span class="hljs-string">"distributionembargo_date TEXT"</span>,
+        <span class="hljs-string">"distributionsave_rush TEXT"</span>,
+        <span class="hljs-string">"distributionArr TEXT"</span>,
+        <span class="hljs-string">"dateImport INT"</span>,
+        <span class="hljs-string">"datePrise INT"</span>,
+        <span class="hljs-string">"dateExport INT"</span>
+      ]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Okay, so the platform is ready and our plugins are available.
+Here you can do any higher level native things you might need.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      StatusBar.styleDefault()
+      Splashscreen.hide()
+      <span class="hljs-keyword">let</span> db = <span class="hljs-keyword">new</span> SQLite()
+      db.openDatabase({
+        name: <span class="hljs-string">"data.db"</span>,
+        location: <span class="hljs-string">"default"</span>
+      }).then(() =&gt; {
+        db.executeSql(<span class="hljs-string">"CREATE TABLE IF NOT EXISTS people (id INTEGER PRIMARY KEY AUTOINCREMENT,"</span> + sqlRow.toString() + <span class="hljs-string">")"</span>, {}).then(
+          data =&gt; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"TABLE CREATED: "</span>, data),
+          err =&gt; <span class="hljs-built_in">console</span>.error(<span class="hljs-string">"Unable to execute sql"</span>, err)
+        )
+      }, err =&gt; <span class="hljs-built_in">console</span>.error(<span class="hljs-string">"Unable to open database"</span>, err))
+    })
+
+  }
+
+  openPage(page: PageObj) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Reset the content nav to have just this page
+we wouldn”t want the back button to show in this scenario</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-keyword">this</span>.nav.setRoot(page.component)
+    <span class="hljs-keyword">if</span> (page.logsOut === <span class="hljs-literal">true</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Give the menu time to close before changing to logged out</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      setTimeout(() =&gt; {
+        <span class="hljs-keyword">this</span>.userData.logout()
+      }, <span class="hljs-number">1000</span>)
+    }
+
+  }
+
+  listenToLoginEvents() {
+    <span class="hljs-keyword">this</span>.events.subscribe(<span class="hljs-string">"user:login"</span>, () =&gt; {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"event login"</span>)
+      <span class="hljs-keyword">this</span>.enableMenu(<span class="hljs-literal">true</span>)
+    })
+
+    <span class="hljs-keyword">this</span>.events.subscribe(<span class="hljs-string">"user:signup"</span>, () =&gt; {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"event signup"</span>)
+      <span class="hljs-keyword">this</span>.enableMenu(<span class="hljs-literal">true</span>)
+    })
+
+    <span class="hljs-keyword">this</span>.events.subscribe(<span class="hljs-string">"user:logout"</span>, () =&gt; {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"event logout"</span>)
+      <span class="hljs-keyword">this</span>.enableMenu(<span class="hljs-literal">false</span>)
+    })
+  }
+
+  enableMenu(loggedIn) {
+    <span class="hljs-built_in">console</span>.log(loggedIn)
+    <span class="hljs-keyword">this</span>.menu.enable(loggedIn, <span class="hljs-string">"loggedInMenu"</span>)
+    <span class="hljs-keyword">this</span>.menu.enable(!loggedIn, <span class="hljs-string">"loggedOutMenu"</span>)
+  }
+}</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

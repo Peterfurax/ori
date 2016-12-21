@@ -1,0 +1,46 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Login</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <div padding [@flyInBottomFast]="cloudState" id="cloud-layer">
+        <form #loginForm="ngForm" novalidate>
+            <ion-row>
+                <ion-col>
+                    <img [@flyInBottomSlow]="logoState" src="assets/user.png" />
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <ion-list inset [@bounceInBottom]="formState">
+                        <ion-item>
+                            <ion-label>Username</ion-label>
+                            <ion-input [(ngModel)]="login.username" name="username" type="text" #username="ngModel" spellcheck="false" autocapitalize="off" >
+                            </ion-input>
+                        </ion-item>
+                        <p [hidden]="username.valid || submitted == false" danger padding-left>
+                            Username is required
+                        </p>
+                        <ion-item>
+                            <ion-label>Password</ion-label>
+                            <ion-input [(ngModel)]="login.password" name="password" type="password" #password="ngModel" >
+                            </ion-input>
+                        </ion-item>
+                        <p [hidden]="password.valid || submitted == false" danger padding-left>
+                            Password is required
+                        </p>
+                    </ion-list>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <button ion-button (click)="onLogin(loginForm)" type="submit" class="login-button" [@fadeIn]="loginState">Login</button>
+                </ion-col>
+            </ion-row>
+        </form>
+    </div>
+</ion-content>

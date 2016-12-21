@@ -1,0 +1,100 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Vos Videos</ion-title>
+        <ion-buttons end>
+            <!--             <button ion-button icon-only (click)="add()">
+                <ion-icon name="search"></ion-icon>
+            </button> -->
+            <button ion-button icon-only *ngIf="show" (click)="clicked()">
+                <ion-icon name="contract"></ion-icon>
+            </button>
+            <button ion-button icon-only *ngIf="!show" (click)="clicked()">
+                <ion-icon name="expand"></ion-icon>
+            </button>
+            <button ion-button icon-only (click)="add()">
+                <ion-icon name="add-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+<ion-content>
+    <!-- <ion-searchbar animated='true ' placeholder='Recherche' autocomplete='on'  ></ion-searchbar> -->
+    <div class="cards-bg card-background-page">
+        <ion-card class="adv-map" *ngFor="let person of storageSql.people">
+            <div style="position: relative">
+                <img src="{{person.uriThumb}}" (click)="playVideo(person.uri)">
+                <div class="card-title">{{person.guestfirstname}} {{person.guestname}}</div>
+                <div class="card-subtitle">{{person.guestoccupation}}</div>
+                <div class="card-duration">Durée: {{person.duration}} sec Qualité: {{person.height}}p</div>
+                <ion-fab right middle>
+                    <button ion-fab mini color="light">
+                        <ion-icon name="md-share"></ion-icon>
+                    </button>
+                    <ion-fab-list side="top">
+                        <button ion-fab mini color="primary" (click)="openNavDetailsPage(person)">
+                            <ion-icon name="create"></ion-icon>
+                        </button>
+                    </ion-fab-list>
+                    <ion-fab-list side="bottom">
+                        <button ion-fab mini color="secondary" (click)="upload(person)">
+                            <ion-icon name="cloud-upload"></ion-icon>
+                        </button>
+                    </ion-fab-list>
+                    <ion-fab-list side="left">
+                        <button ion-fab mini color="danger" (click)="delete(person.uri)">
+                            <ion-icon name="trash"></ion-icon>
+                        </button>
+                    </ion-fab-list>
+                </ion-fab>
+            </div>
+            <ion-item>
+                <ion-icon item-left name='calendar'></ion-icon>
+                <!-- <progress max="100" value="25" form="form-id">25%</progress> -->
+                <p>Prise : {{person.datePrise | date:'fullDate'}}</p>
+                <p>Import : {{person.dateImport | date:'fullDate'}}</p>
+            </ion-item>
+            <ion-item *ngIf="show">
+                <ion-icon item-left name='person'></ion-icon>
+                <p>{{person.guestfirstname}} {{person.guestname}}</p>
+                <p>{{person.guestoccupation}}</p>
+            </ion-item>
+            <ion-item *ngIf="show">
+                <ion-icon item-left name='paper'></ion-icon>
+                <p>{{person.guesttext}}</p>
+            </ion-item>
+            <ion-item *ngIf="show">
+                <ion-icon large item-left name='pin'></ion-icon>
+                <p>{{person.guestplace}}</p>
+            </ion-item>
+            <ion-item *ngIf="show">
+                <ion-icon large item-left color="secondary" name='cloud-upload'></ion-icon>
+                <p>envoyé le </p>
+                <ion-icon *ngFor="let dest of person.distributionArr" item-right color="secondary" name='logo-{{dest}}'></ion-icon>
+            </ion-item>
+            <ion-item actions *ngIf="show">
+                <span item-left secondary>{{person.duration}} sec</span>
+                <span item-left subtle>{{person.height}}p</span>
+                <button ion-button color="primary" clear item-right icon-left>
+                    <ion-icon name='navigate'></ion-icon>
+                    ready to send
+                </button>
+            </ion-item>
+        </ion-card>
+    </div>
+</ion-content>
+<!--     <ion-navbar >
+        <ion-buttons end>
+            <button ion-button icon-only (click)="add()">
+                <ion-icon name="add-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar> -->
+<ion-footer *ngIf="showUploadBar">
+  <ion-toolbar>
+    <ion-title><progress max="100" value="{{progress}}" form="form-id">{{progress}}%</progress></ion-title>
+  </ion-toolbar>
+</ion-footer>
