@@ -14,13 +14,13 @@ export class SqlLiteData {
     occupation?: string,
     service?: string
   }
-  //  = {
-  // name: null,
-  // firstname: null,
-  // society: null,
-  // occupation: null,
-  // service: null
-  // };
+  = {
+    name: null,
+    firstname: null,
+    society: null,
+    occupation: null,
+    service: null
+  };
 
   constructor(public userData: UserData) {
     this.database = new SQLite()

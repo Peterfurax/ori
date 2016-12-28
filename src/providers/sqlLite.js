@@ -14,6 +14,13 @@ var SqlLiteData = (function () {
     function SqlLiteData(userData) {
         var _this = this;
         this.userData = userData;
+        this.profile = {
+            name: null,
+            firstname: null,
+            society: null,
+            occupation: null,
+            service: null
+        };
         this.database = new SQLite();
         this.database.openDatabase({
             name: "data.db",
