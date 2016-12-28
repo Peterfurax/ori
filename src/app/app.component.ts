@@ -8,9 +8,9 @@ import { UserData } from "../providers/user-data"
 import { ProfilePage } from "../pages/profile/profile"
 
 export interface PageObj {
-  title: string;
-  component: any;
-  icon: string;
+  title?: string;
+  component?: any;
+  icon?: string;
   logsOut?: boolean;
   index?: number;
 }

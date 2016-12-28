@@ -37,7 +37,7 @@ export class AppService {
     PackageName: "",
     VersionNumber: ""
   };
-
+  // FIXME pass direct #1
   /**
    * @name appVersionAll
    * @desc Retrieve app info from AppVersion ionic-native
@@ -49,10 +49,10 @@ export class AppService {
     this.appPackageName = AppVersion.getPackageName()
     this.appVersionNumber = AppVersion.getVersionNumber()
     Promise.all([this.appName, this.appPackageName, this.appVersionNumber]).then(
-      values => {
-        this.appAllInfo.Names = values[0]
-        this.appAllInfo.PackageName = values[1]
-        this.appAllInfo.VersionNumber = values[2]
+      data => {
+        this.appAllInfo.Names = data[0]
+        this.appAllInfo.PackageName = data[1]
+        this.appAllInfo.VersionNumber = data[2]
       },
       err => { })
   }
@@ -103,17 +103,17 @@ export class VideoService {
   public people: Array<Object>;
   public videoArr: any;
   public videoAllInfo: {
-    dateImport: number,
-    datePrise: string,
-    uri: string,
-    uriThumb: string,
-    infoVideo: {
-      bitrate: number,
-      duration: number,
-      height: number,
-      orientation: string,
-      size: number,
-      width: number
+    dateImport?: number,
+    datePrise?: string,
+    uri?: string,
+    uriThumb?: string,
+    infoVideo?: {
+      bitrate?: number,
+      duration?: number,
+      height?: number,
+      orientation?: string,
+      size?: number,
+      width?: number
     }
   } = {
     dateImport: 0,
@@ -184,9 +184,9 @@ export class VideoService {
     // NOT COOL MUST FIX URI :/
     uri = "file:/" + uri
     VideoPlayer.play(uri).then(
-      () => console.log("video completed")).catch(
+      () => console.log("video completed"),
       err => console.log(err)
-      )
+    )
   }
 
   /**
@@ -216,7 +216,8 @@ export class VideoService {
 
   /**
    * [captureImage description]
-   * @desc
+   * @method captureImage
+   * @return {[type]}     [description]
    */
   captureImage() {
     MediaCapture.captureImage().then(
@@ -291,7 +292,7 @@ export class VideoService {
     return new Promise((resolve, reject) => {
       Promise.all([this.getVideoMeta(uri), this.getVideoThumb(uri), this.convertUriToDate(uri)]).then(
         data => {
-          this.videoAllInfo.infoVideo = <any>data[0]
+          this.videoAllInfo.infoVideo = data[0]
           this.videoAllInfo.uriThumb = data[1]
           this.videoAllInfo.datePrise = data[2]
           this.videoAllInfo.dateImport = Date.now()
@@ -370,7 +371,18 @@ export class VideoService {
     })
   }
 
-
+  /**
+   * [progress description]
+   * @type {any}
+   */
+  progress: any
+  upload(item) {
+    this.uploadInitService()
+    Promise.all([this.witreJsonMetaToUpload(), this.uploadVideo(item.uri)]).then(
+      data => this.uploadEndService(data),
+      err => this.uploadEndService(err))
+  }
+  // TODO 11
   /**
    * [uploadInitService description]
    * @method uploadInitService
@@ -380,49 +392,44 @@ export class VideoService {
     SpinnerDialog.show(this.progress)
     BackgroundMode.enable()
   }
-
+  /* FIXME */
   /**
    * [uploadEndService description]
    * @method uploadEndService
    * @param  {string}         message [description]
    * @return {[type]}                 [description]
    */
-  uploadEndService(message: string) {
+  uploadEndService(message?: any) {
+    message = JSON.stringify(message)
     SpinnerDialog.hide()
     BackgroundMode.disable()
     this.notificationMaker(message)
     this.toast(message)
   }
 
-  /**
-   * [progress description]
-   * @type {any}
-   */
-  progress: any
-  upload(item) {
-    this.witreJsonMetaToUpload()
-    this.uploadInitService()
+  uploadVideo(uri: string): Promise<any> {
     const fileTransfer = new Transfer()
-    let optionsVideo = {
-      mimeType: "video/mp4",
-      timeout: 3000,
-      fileName: Date.now() + ".mp4"
-    }
-
-    fileTransfer.onProgress(
-      progressEvent => {
-        if (progressEvent.lengthComputable) {
-          let perc = Math.floor(progressEvent.loaded / progressEvent.total * 100)
-          this.progress = perc
-          console.log(this.progress)
-        }
+    let perc = 0
+    return new Promise((resolve, reject) => {
+      let optionsVideo = {
+        mimeType: "video/mp4",
+        timeout: 3000,
+        fileName: Date.now() + ".mp4"
       }
-    )
-
-    fileTransfer.upload(item.uri, "http://192.168.0.12:8000", optionsVideo).then(
-      data => this.uploadEndService(JSON.stringify(data)),
-      err => this.uploadEndService(JSON.stringify(err))
-    )
+      fileTransfer.onProgress(
+        progressEvent => {
+          if (progressEvent.lengthComputable) {
+            perc = Math.floor(progressEvent.loaded / progressEvent.total * 100)
+            this.progress = perc
+            console.log(this.progress)
+          }
+        }
+      )
+      fileTransfer.upload(uri, "http://192.168.0.12:8000", optionsVideo).then(
+        data => resolve(data),
+        err => reject(err)
+      )
+    })
   }
 
   witreJsonMetaToUpload() {
@@ -441,9 +448,5 @@ export class VideoService {
   BgEnable() {
     BackgroundMode.enable()
   }
-
-
-
-
 
 }

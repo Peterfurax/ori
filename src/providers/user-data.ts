@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core"
 import { Events } from "ionic-angular"
 import { Storage } from "@ionic/storage"
 
-
+// TODO COMMENT ALL !! #comment
 @Injectable()
 export class UserData {
   _favorites = []
@@ -60,7 +60,6 @@ export class UserData {
     })
   }
 
-  // return a promise
   hasLoggedIn() {
     return this.storage.get(this.HAS_LOGGED_IN).then(data => {
       return data === true
@@ -74,13 +73,10 @@ export class UserData {
     })
   }
 
-
   setProfile(profile) {
     console.log(profile)
     this.storage.set("profile", profile)
   }
-
-
 
   getProfile() {
     return this.storage.get("profile").then(data => {
@@ -92,22 +88,11 @@ export class UserData {
     this.storage.clear()
   }
 
-
   // return a promise
   hasProfile() {
     return this.storage.get("username").then(data => {
       return data === true
     })
   }
-
-
-
-
-
-
-
-
-
-
 
 }
