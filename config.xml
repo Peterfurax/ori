@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ionicframework.tuber560001" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.lesechos.vidup" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>VidUp</name>
     <description>Video Application Les Echos</description>
     <author email="pmontoya@lesechos.fr" href="http://lesechos.fr/">Pierre Montoya</author>
