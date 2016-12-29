@@ -21,21 +21,43 @@ export interface PageObj {
 export class MyApp {
   @ViewChild(Nav) nav: Nav
 
+  /**
+   * [rootPage define rootPage on init]
+   * @type {any}
+   */
   rootPage: any = LoginPage
 
+  /**
+   * [appPages links in menu  alway see]
+   * @type {PageObj[]}
+   */
   appPages: PageObj[] = [
     { title: "A Propos", component: Page1, icon: "information-circle" },
   ]
+
+  /**
+   * [loggedInPages links in menu when logIn ]
+   * @type {PageObj[]}
+   */
   loggedInPages: PageObj[] = [
     { title: "Videos", component: VideoListPage, icon: "videocam" },
     { title: "Compte", component: ProfilePage, icon: "contact" },
     { title: "Déconnecter", component: LoginPage, icon: "log-out", logsOut: true }
   ]
+
+  /**
+   * [loggedOutPages links in menu when logOut ]
+   * @type {PageObj[]}
+   */
   loggedOutPages: PageObj[] = [
     { title: "Connecter", component: LoginPage, icon: "log-in" }
   ]
 
-  constructor(public userData: UserData, public platform: Platform, public events: Events, public menu: MenuController) {
+  constructor(
+    public userData: UserData,
+    public platform: Platform,
+    public events: Events,
+    public menu: MenuController) {
     this.initializeApp()
     this.userData.hasLoggedIn().then(
       hasLoggedIn => {

@@ -10,7 +10,7 @@ import { UserData } from "../../providers/user-data"
 export class VideoDetailsPage {
   person
 
-  constructor(params: NavParams, public storageSql: SqlLiteData, private navController: NavController) {
+  constructor(public params: NavParams, public storageSql: SqlLiteData, private navController: NavController) {
     this.person = params.data.person
   }
 

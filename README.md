@@ -1,24 +1,22 @@
 Welcome to VidUp!
 ===================
 
-video uploader application
+video uploader app
 
 Test release
 -------------
-**android** 
+**android**
 
-| Release     | Version | test   |
-| :------- | ----: | :---: |
-| KitKat | 4.4 – 4.4.4 |  o    |
-| Lollipop    | 5.0 – 5.1.1   |  o   |
-| Marshmallow     | 6.0 – 6.0.1    |  o  |
-| Nougat     | 7.0 – 7.1.1    |  x  |
-----------
-
-
-**ios** (not tested).
+| Release     | Version     | Test |
+| :-------    | ----:       | :--: |
+| KitKat      | 4.4 – 4.4.4 |   o  |
+| Lollipop    | 5.0 – 5.1.1 |   o  |
+| Marshmallow | 6.0 – 6.0.1 |   o  |
+| Nougat      | 7.0 – 7.1.1 |   x  |
 
 
+**ios**
+- (not tested)
 
 Instal mandatory
 -------------
