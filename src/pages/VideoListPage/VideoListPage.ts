@@ -4,6 +4,7 @@ import { NavController, Platform, NavParams } from "ionic-angular"
 import { SqlLiteData } from "../../providers/sqlLite"
 import { UserData } from "../../providers/user-data"
 import { LogService} from "../../app/app.log"
+
 @Component({
   templateUrl: "navigation-details.html",
 })
