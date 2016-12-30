@@ -25,5 +25,9 @@ export class LogService {
    * @param  {any}    message [any]
    * @return {string}         [message stringify]
    */
-  log(message: any) { console.error(this.stringifyLog(message)) }
+  log(message: any, type: string) {
+    message = this.stringifyLog(message)
+    if (type === "err") console.error(message)
+    console.info(this.stringifyLog(message))
+  }
 }
