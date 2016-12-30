@@ -15,7 +15,7 @@ export class LogService {
     if (message === null) return "null message"
     // if object
     if (typeof message === "object") return JSON.stringify(message)
-    // if boolean or everything else... 
+    // if boolean or everything else...
     return message.toString()
   }
 
@@ -25,9 +25,5 @@ export class LogService {
    * @param  {any}    message [any]
    * @return {string}         [message stringify]
    */
-  log(message: any, type: string) {
-    message = this.stringifyLog(message)
-    if (type === "err") console.error(message)
-    console.info(message)
-  }
+  log(message: any) { console.log(this.stringifyLog(message)) }
 }
