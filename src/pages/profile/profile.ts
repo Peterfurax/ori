@@ -56,6 +56,7 @@ export class ProfilePage {
   ) {
     this.userData.getProfile().then(
       ProfileResult => {
+        console.log(ProfileResult)
         if (ProfileResult === null) {
           this.navController.push(ProfileDetailsPage, { profile: this.profile })
         } else { this.profile = ProfileResult }

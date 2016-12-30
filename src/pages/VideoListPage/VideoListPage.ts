@@ -3,14 +3,17 @@ import { VideoService, AppService } from "../../app/app.service"
 import { NavController, Platform, NavParams } from "ionic-angular"
 import { SqlLiteData } from "../../providers/sqlLite"
 import { UserData } from "../../providers/user-data"
-
+import { LogService} from "../../app/app.log"
 @Component({
   templateUrl: "navigation-details.html",
 })
 export class VideoDetailsPage {
   person
 
-  constructor(public params: NavParams, public storageSql: SqlLiteData, private navController: NavController) {
+  constructor(
+    public params: NavParams,
+    public storageSql: SqlLiteData,
+    private navController: NavController) {
     this.person = params.data.person
   }
 
@@ -37,6 +40,7 @@ export class VideoListPage {
     private platform: Platform,
     public serviceVideo: VideoService,
     public serviceApp: AppService,
+    public logApp: LogService,
     public storage: UserData,
     public storageSql: SqlLiteData
   ) { }
@@ -49,8 +53,8 @@ export class VideoListPage {
    */
   delete(uri) {
     this.storageSql.delete(uri).then(
-      result => console.info("delete" + result),
-      err => console.error("delete" + err)
+      result => this.logApp.log(result),
+      err => this.logApp.log(err)
     )
   }
 
