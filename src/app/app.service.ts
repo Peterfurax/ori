@@ -11,7 +11,6 @@ import {
   MediaCapture,
   Camera,
   VideoEditor,
-  File,
   SQLite
 } from "ionic-native"
 import * as moment from "moment"
