@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "ionic:build": "ionic-app-scripts build",
+    "ionic:dev": "ionic-app-scripts build --dev",
     "ionic:serve": "ionic-app-scripts serve",
     "ionic:emulate": "ionic emulate android"
   },
