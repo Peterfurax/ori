@@ -5,10 +5,10 @@ import { UserData } from "../../providers/user-data";
 import { SqlLiteData } from "../../providers/sqlLite";
 
 @Component({
-  selector: "page-page1",
-  templateUrl: "page1.html"
+  selector: "page-About",
+  templateUrl: "About.html"
 })
-export class Page1 {
+export class About {
 
   constructor(
     public navCtrl: NavController,

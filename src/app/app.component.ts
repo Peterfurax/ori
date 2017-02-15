@@ -1,7 +1,7 @@
 import { Component, ViewChild } from "@angular/core"
 import { Events, MenuController, Nav, Platform } from "ionic-angular"
 import { StatusBar, Splashscreen, SQLite } from "ionic-native"
-import { Page1 } from "../pages/page1/page1"
+import { About } from "../pages/About/About"
 import { VideoListPage } from "../pages/VideoListPage/VideoListPage"
 import { LoginPage } from "../pages/login/login"
 import { UserData } from "../providers/user-data"
@@ -32,7 +32,7 @@ export class MyApp {
    * @type {PageObj[]}
    */
   appPages: PageObj[] = [
-    { title: "A Propos", component: Page1, icon: "information-circle" },
+    { title: "A Propos", component: About, icon: "information-circle" },
   ]
 
   /**

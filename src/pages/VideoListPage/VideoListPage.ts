@@ -1,33 +1,10 @@
 import { Component } from "@angular/core"
 import { VideoService, AppService } from "../../app/app.service"
-import { NavController, Platform, NavParams } from "ionic-angular"
+import { NavController, Platform } from "ionic-angular"
 import { SqlLiteData } from "../../providers/sqlLite"
 import { UserData } from "../../providers/user-data"
 import { LogService} from "../../app/app.log"
-
-@Component({
-  templateUrl: "navigation-details.html",
-})
-export class VideoDetailsPage {
-  person
-
-  constructor(
-    public params: NavParams,
-    public storageSql: SqlLiteData,
-    private navController: NavController) {
-    this.person = params.data.person
-  }
-
-  /**
-   * [logForm description]
-   * @method logForm
-   * @return {[type]} [description]
-   */
-  logForm() {
-    this.storageSql.update(this.person)
-    this.navController.pop()
-  }
-}
+import { VideoMeta } from "../VideoMeta/VideoMeta"
 
 @Component({
   selector: "page-VideoListPage",
@@ -123,7 +100,7 @@ export class VideoListPage {
    * @return {[type]}                  [description]
    */
   openNavDetailsPage(person) {
-    this.navController.push(VideoDetailsPage, { person: person })
+    this.navController.push(VideoMeta, { person: person })
   }
 
 

@@ -96,12 +96,12 @@ export class LoginPage {
       this.userData.getProfile().then(
         result => {
           if (result === null) {
-            this.navCtrl.pop()
+            // this.navCtrl.pop()
             this.navCtrl.push(ProfilePage)
             this.navCtrl.setRoot(VideoListPage)
-          }
-          this.navCtrl.pop()
-          this.navCtrl.setRoot(VideoListPage)
+          } else
+            // this.navCtrl.pop()
+            this.navCtrl.setRoot(VideoListPage)
         },
         err => {
           console.error(err)

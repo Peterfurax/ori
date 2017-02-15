@@ -3,19 +3,21 @@ import { IonicApp, IonicModule } from "ionic-angular"
 import { MyApp } from "./app.component"
 import { VideoService, AppService } from "./app.service"
 import { LogService } from "./app.log"
-import { Page1 } from "../pages/page1/page1"
-import { VideoListPage, VideoDetailsPage } from "../pages/videoListPage/videoListPage"
 import { LoginPage } from "../pages/login/login"
-import { ProfilePage, ProfileDetailsPage } from "../pages/profile/profile"
+import { About } from "../pages/About/About"
+import { VideoListPage } from "../pages/VideoListPage/VideoListPage"
+import { VideoMeta } from "../pages/VideoMeta/VideoMeta"
+import { ProfilePage } from "../pages/profile/profile"
+import { ProfileDetailsPage } from "../pages/profile/profile-details"
 import { UserData } from "../providers/user-data"
 import { Storage } from "@ionic/storage"
 import { SqlLiteData } from "../providers/sqlLite"
 @NgModule({
   declarations: [
     MyApp,
-    Page1,
+    About,
     VideoListPage,
-    VideoDetailsPage,
+    VideoMeta,
     LoginPage,
     ProfilePage,
     ProfileDetailsPage
@@ -26,9 +28,9 @@ import { SqlLiteData } from "../providers/sqlLite"
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    Page1,
+    About,
     VideoListPage,
-    VideoDetailsPage,
+    VideoMeta,
     LoginPage,
     ProfilePage,
     ProfileDetailsPage
