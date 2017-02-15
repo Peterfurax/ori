@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/Peterfurax/ori.svg?branch=master)](https://travis-ci.org/Peterfurax/ori)
+
+
 Welcome to VidUp!
 ===================
 
