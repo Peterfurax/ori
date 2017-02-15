@@ -1,11 +1,11 @@
 import { Component } from "@angular/core"
 import { NavController } from "ionic-angular"
 import { UserData } from "../../providers/user-data"
-import {ProfileDetailsPage } from "./profile-details"
+import {ProfileMeta } from "../ProfileMeta/ProfileMeta"
 
 @Component({
   selector: "page-profile",
-  templateUrl: "profile.html"
+  templateUrl: "ProfilePage.html"
 })
 export class ProfilePage {
   profile: {
@@ -30,7 +30,7 @@ export class ProfilePage {
       ProfileResult => {
         console.log(ProfileResult)
         if (ProfileResult === null) {
-          this.navController.push(ProfileDetailsPage, { profile: this.profile })
+          this.navController.push(ProfileMeta, { profile: this.profile })
         } else { this.profile = ProfileResult }
       },
       err => console.error(err)
@@ -48,7 +48,7 @@ export class ProfilePage {
    * [editProfile description]
    */
   editProfile() {
-    this.navController.push(ProfileDetailsPage, { profile: this.profile })
+    this.navController.push(ProfileMeta, { profile: this.profile })
   }
 
 }

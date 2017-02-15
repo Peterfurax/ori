@@ -7,8 +7,8 @@ import { LoginPage } from "../pages/login/login"
 import { About } from "../pages/About/About"
 import { VideoListPage } from "../pages/VideoListPage/VideoListPage"
 import { VideoMeta } from "../pages/VideoMeta/VideoMeta"
-import { ProfilePage } from "../pages/profile/profile"
-import { ProfileDetailsPage } from "../pages/profile/profile-details"
+import { ProfilePage } from "../pages/ProfilePage/ProfilePage"
+import { ProfileMeta } from "../pages/ProfileMeta/ProfileMeta"
 import { UserData } from "../providers/user-data"
 import { Storage } from "@ionic/storage"
 import { SqlLiteData } from "../providers/sqlLite"
@@ -20,7 +20,7 @@ import { SqlLiteData } from "../providers/sqlLite"
     VideoMeta,
     LoginPage,
     ProfilePage,
-    ProfileDetailsPage
+    ProfileMeta
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -33,7 +33,7 @@ import { SqlLiteData } from "../providers/sqlLite"
     VideoMeta,
     LoginPage,
     ProfilePage,
-    ProfileDetailsPage
+    ProfileMeta
   ],
   providers: [VideoService, AppService, LogService, UserData, Storage, SqlLiteData]
 })

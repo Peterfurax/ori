@@ -5,7 +5,7 @@ import { About } from "../pages/About/About"
 import { VideoListPage } from "../pages/VideoListPage/VideoListPage"
 import { LoginPage } from "../pages/login/login"
 import { UserData } from "../providers/user-data"
-import { ProfilePage } from "../pages/profile/profile"
+import { ProfilePage } from "../pages/ProfilePage/ProfilePage"
 
 export interface PageObj {
   title?: string;

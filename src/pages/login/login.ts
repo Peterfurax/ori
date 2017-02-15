@@ -1,4 +1,4 @@
-import { ProfilePage } from "../profile/profile"
+import { ProfilePage } from "../ProfilePage/ProfilePage"
 import { UserData } from "../../providers/user-data"
 import { Component, trigger, state, style, transition, animate, keyframes } from "@angular/core"
 import { NavController } from "ionic-angular"
