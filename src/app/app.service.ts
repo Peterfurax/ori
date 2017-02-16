@@ -11,7 +11,8 @@ import {
   MediaCapture,
   Camera,
   VideoEditor,
-  SQLite
+  SQLite,
+  File
 } from "ionic-native"
 import * as moment from "moment"
 
@@ -180,6 +181,7 @@ export class VideoService {
    * @param {[type]} uri [description]
    */
   playVideo(uri) {
+    console.log(uri)
     // NOT COOL MUST FIX URI :/
     uri = "file:/" + uri
     VideoPlayer.play(uri).then(
@@ -407,6 +409,7 @@ export class VideoService {
   }
 
   uploadVideo(uri: string): Promise<any> {
+    console.log(uri)
     const fileTransfer = new Transfer()
     let perc = 0
     return new Promise((resolve, reject) => {
@@ -432,10 +435,12 @@ export class VideoService {
   }
 
   witreJsonMetaToUpload() {
+
     // let cordova: any;
-    // console.log(cordova.file)
-    // const fs:string = cordova.file.dataDirectory;
-    // File.checkDir(this.fs, 'assets').then(_ => console.log('yay')).catch(err => console.log('boooh'));
+  File.getFreeDiskSpace().then(freeSpace =>console.log(freeSpace));
+    // console.log(tata)
+    // let fs:string = cordova.file.dataDirectory;
+    // File.checkDir(cordova.file.dataDirectory, 'assets').then(()=> console.log('yay')).catch(err => console.log('boooh'));
     // File.createFile(path, fileName, replace)
   }
 
