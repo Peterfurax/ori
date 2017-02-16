@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/Peterfurax/ori.svg?branch=master)](https://travis-ci.org/Peterfurax/ori)
-
-
+[![Build Status](https://david-dm.org/username/ori.svg?branch=master)](https://david-dm.org/username/ori.svg)
+[![Known Vulnerabilities](https://snyk.io/test/github/peterfurax/ori/badge.svg)](https://snyk.io/test/github/peterfurax/ori)
 Welcome to VidUp!
 ===================
 
