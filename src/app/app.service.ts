@@ -1,10 +1,12 @@
+declare const cordova
+import * as moment from "moment"
+import "moment/src/locale/fr"
 import { Injectable } from "@angular/core"
 import {
   SpinnerDialog,
   BackgroundMode,
   Vibration,
   Transfer,
-  VideoPlayer,
   LocalNotifications,
   Toast,
   AppVersion,
@@ -13,10 +15,9 @@ import {
   VideoEditor,
   SQLite,
   File
+  // VideoPlayer
 } from "ionic-native"
-import * as moment from "moment"
 
-import "moment/src/locale/fr"
 @Injectable()
 
 /**
@@ -37,7 +38,6 @@ export class AppService {
     PackageName: "",
     VersionNumber: ""
   };
-  // FIXME pass direct #1
   /**
    * @name appVersionAll
    * @desc Retrieve app info from AppVersion ionic-native
@@ -138,7 +138,7 @@ export class VideoService {
    */
   notificationMaker(message) {
     this.notification(message)
-    this.vibrate([500, 500, 500])
+    this.vibrate([500, 200, 500])
   }
 
   /**
@@ -182,12 +182,13 @@ export class VideoService {
    */
   playVideo(uri) {
     console.log(uri)
+    // FIXME seem dont work
     // NOT COOL MUST FIX URI :/
-    uri = "file:/" + uri
-    VideoPlayer.play(uri).then(
-      () => console.log("video completed"),
-      err => console.log(err)
-    )
+    // uri = "file:/" + uri
+    // VideoPlayer.play(uri).then(
+    //   () => console.log("video completed"),
+    //   err => console.log(err)
+    // )
   }
 
   /**
@@ -257,15 +258,33 @@ export class VideoService {
   }
 
   /**
+   * [uriExtractFile description]
+   * @method uriExtractFile
+   * @param  {string}   uri [description]
+   * @return {[type]}       [description]
+   */
+  uriExtractFile(uri: string) {
+    return (/[^/]*$/g).exec(uri)[0]
+  }
+
+  /**
+   * [uriExtractFileWithoutExt description]
+   * @method uriExtractFileWithoutExt
+   * @param  {Object}                 arr [description]
+   * @return {[type]}                     [description]
+   */
+  uriExtractFileWithoutExt(uriExtractFile: string) {
+    return (/[^.]*/g).exec(uriExtractFile)[0]
+  }
+
+  /**
    * [parseUri description]
    * @method parseUri
    * @param  {string} uri [description]
    * @return {[type]}     [description]
    */
   parseUri(uri: string) {
-    let uriFile = (/[^/]*$/g).exec(uri)
-    let dateExtract = (/[^.]*/g).exec(uriFile[0])
-    return dateExtract[0]
+    return this.uriExtractFileWithoutExt(this.uriExtractFile(uri))
   }
 
   /**
@@ -336,8 +355,8 @@ export class VideoService {
       VideoEditor.getVideoInfo({ fileUri: uri }).then(
         data => {
           if (data.orientation === "portrait") {
-            this.toast("Rejet : Format portrait détecté")
-            reject("portrait")
+            this.toast("Attention : Format portrait détecté")
+            // reject("portrait")
           }
           resolve(data)
         },
@@ -372,6 +391,17 @@ export class VideoService {
     })
   }
 
+
+  finishTxt(item) {
+    this.WriteTxtMeta(item).then(
+      result => {
+        this.uploadFile(item.uri, "txt").then(
+          () => { this.uploadEndService() },
+          err => { this.uploadEndService(err) })
+      },
+      err => { this.uploadEndService(err) })
+  }
+
   /**
    * [progress description]
    * @type {any}
@@ -379,9 +409,20 @@ export class VideoService {
   progress: any
   upload(item) {
     this.uploadInitService()
-    Promise.all([this.witreJsonMetaToUpload(), this.uploadVideo(item.uri)]).then(
-      data => this.uploadEndService(data),
-      err => this.uploadEndService(err))
+    return new Promise((resolve, reject) => {
+      this.WriteJsonMeta(item).then((result) => {
+        console.log("retour uri json", result)
+        Promise.all([this.uploadFile(result, "json"), this.uploadFile(item.uri, "mp4")]).then(
+          data => this.uploadFile(item.uri, "txt").then(
+            () => { this.uploadEndService(data) },
+            err => { this.uploadEndService(err) }),
+          err => this.uploadEndService(err))
+      }, err => { this.uploadEndService(err) })
+        .then(
+        () => resolve(),
+        err => this.uploadEndService(err)
+        )
+    })
   }
   // TODO 11
   /**
@@ -390,7 +431,7 @@ export class VideoService {
    * @return {[type]}          [description]
    */
   uploadInitService() {
-    SpinnerDialog.show(this.progress)
+    SpinnerDialog.show()
     BackgroundMode.enable()
   }
   /* FIXME */
@@ -402,22 +443,44 @@ export class VideoService {
    */
   uploadEndService(message?: any) {
     message = JSON.stringify(message)
+    console.dir(message)
     SpinnerDialog.hide()
-    BackgroundMode.disable()
     this.notificationMaker(message)
     this.toast(message)
+    BackgroundMode.disable()
   }
 
-  uploadVideo(uri: string): Promise<any> {
+  uploadFile(uri: string, type: string): Promise<any> {
     console.log(uri)
     const fileTransfer = new Transfer()
     let perc = 0
     return new Promise((resolve, reject) => {
-      let optionsVideo = {
-        mimeType: "video/mp4",
-        timeout: 3000,
-        fileName: Date.now() + ".mp4"
+      let optionFileTransfer
+      if (type === "mp4") {
+        console.log("mp4")
+        optionFileTransfer = {
+          mimeType: "video/mp4",
+          timeout: 3000,
+          fileName: Date.now() + ".mp4"
+        }
       }
+      if (type === "json") {
+        console.log("json")
+        optionFileTransfer = {
+          mimeType: "video/mp4",
+          timeout: 3000,
+          fileName: Date.now() + ".mp4"
+        }
+      }
+      if (type === "txt") {
+        console.log("txt")
+        optionFileTransfer = {
+          mimeType: "video/mp4",
+          timeout: 3000,
+          fileName: Date.now() + ".mp4"
+        }
+      }
+
       fileTransfer.onProgress(
         progressEvent => {
           if (progressEvent.lengthComputable) {
@@ -427,21 +490,114 @@ export class VideoService {
           }
         }
       )
-      fileTransfer.upload(uri, "http://192.168.0.12:8000", optionsVideo).then(
+      fileTransfer.upload(uri, "http://192.168.0.12:8000", optionFileTransfer).then(
         data => resolve(data),
         err => reject(err)
       )
     })
   }
 
-  witreJsonMetaToUpload() {
+  /**
+   * [deleteDataJson description]
+   * @method deleteDataJson
+   * @return {[type]}       [description]
+   */
+  // deleteDataJson() {
+  //   File.removeFile(cordova.file.dataDirectory, this.fileName).then(
+  //     result => { console.log("delete OK ", result) },
+  //     err => { console.log("delete ERR", err) })
+  // }
 
-    // let cordova: any;
-  File.getFreeDiskSpace().then(freeSpace =>console.log(freeSpace));
-    // console.log(tata)
-    // let fs:string = cordova.file.dataDirectory;
-    // File.checkDir(cordova.file.dataDirectory, 'assets').then(()=> console.log('yay')).catch(err => console.log('boooh'));
-    // File.createFile(path, fileName, replace)
+  /**
+   * [createJsonDir description]
+   * @method createJsonDir
+   * @return {[type]}      [description]
+   */
+  // createJsonDir() {
+  //   File.createDir(cordova.file.dataDirectory, "json/", true).then(
+  //     result => { console.log("createJsonDir OK", result) },
+  //     err => { console.log("createJsonDir", err) })
+  // }
+
+  // read() {
+  //   File.readAsText(cordova.file.dataDirectory, this.fileName).then(result => { console.log("readAsText OK ", result) }, err => { console.log("readAsText ERR", err) })
+  // }
+  //
+  /**
+   * [checkFileJsonMeta description]
+   * @method checkFileJsonMeta
+   * @param  {string}          uriExtractFile [description]
+   * @return {[type]}                         [description]
+   */
+  checkFileJsonMeta(uriExtractFile: string) {
+    return new Promise((resolve, reject) => {
+      File.checkFile(cordova.file.dataDirectory, uriExtractFile).then(
+        result => {
+          File.removeFile(cordova.file.dataDirectory, uriExtractFile).then(
+            result => { resolve(result) },
+            err => { reject(err) })
+        },
+        err => {
+          resolve()
+        })
+    })
+  }
+
+  checkFileTxtMeta(uriExtractFile: string) {
+    return new Promise((resolve, reject) => {
+      File.checkFile(cordova.file.dataDirectory, uriExtractFile).then(
+        result => {
+          File.removeFile(cordova.file.dataDirectory, uriExtractFile).then(
+            result => { resolve(result) },
+            err => { reject(err) })
+        },
+        err => {
+          resolve()
+        })
+    })
+  }
+
+  // File.listDir(cordova.file.dataDirectory, "").then(
+  //   result => { console.log("listDir OK", result) },
+  //   err => {
+  //     console.log("listDir", err)
+  //   })
+
+  /**
+   * [WriteJsonMeta description]
+   * @method WriteJsonMeta
+   * @param  {any}          item [description]
+   * @return {Promise<any>}      [description]
+   */
+  WriteJsonMeta(item: any): Promise<any> {
+    // let uriExtractFile = this.uriExtractFile(item.uri)
+    let uriExtractFileWithoutExt = this.parseUri(item.uri)
+    return new Promise((resolve, reject) => {
+      this.checkFileJsonMeta(uriExtractFileWithoutExt + ".json").then(
+        value => {
+          File.writeFile(cordova.file.dataDirectory, uriExtractFileWithoutExt + ".json", JSON.stringify(item), true).then(
+            () => { resolve(cordova.file.dataDirectory + uriExtractFileWithoutExt + ".json") },
+            err => { reject(err) })
+        },
+        err => {
+          reject(err)
+        })
+    })
+  }
+  WriteTxtMeta(item: any): Promise<any> {
+    // let uriExtractFile = this.uriExtractFile(item.uri)
+    let uriExtractFileWithoutExt = this.parseUri(item.uri)
+    return new Promise((resolve, reject) => {
+      this.checkFileTxtMeta(uriExtractFileWithoutExt + ".txt").then(
+        value => {
+          File.createFile(cordova.file.dataDirectory, uriExtractFileWithoutExt + ".txt", true).then(
+            () => { resolve(cordova.file.dataDirectory + uriExtractFileWithoutExt + ".txt") },
+            err => { reject(err) })
+        },
+        err => {
+          reject(err)
+        })
+    })
   }
 
   /**

@@ -68,8 +68,8 @@ export class VideoListPage {
    * @return {[type]}      [description]
    */
   upload(item) {
-    this.serviceVideo.upload(item)
     this.showUploadBar = !this.showUploadBar
+    this.serviceVideo.upload(item).then(() => { this.showUploadBar = !this.showUploadBar }, err => { this.showUploadBar = !this.showUploadBar })
   }
 
   /**
