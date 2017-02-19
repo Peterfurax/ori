@@ -467,17 +467,17 @@ export class VideoService {
       if (type === "json") {
         console.log("json")
         optionFileTransfer = {
-          mimeType: "video/mp4",
+          mimeType: "application/json",
           timeout: 3000,
-          fileName: Date.now() + ".mp4"
+          fileName: Date.now() + ".json"
         }
       }
       if (type === "txt") {
         console.log("txt")
         optionFileTransfer = {
-          mimeType: "video/mp4",
+          mimeType: "text/plain",
           timeout: 3000,
-          fileName: Date.now() + ".mp4"
+          fileName: Date.now() + ".txt"
         }
       }
 
@@ -585,9 +585,8 @@ export class VideoService {
     })
   }
   WriteTxtMeta(item: any): Promise<any> {
-    // let uriExtractFile = this.uriExtractFile(item.uri)
-    let uriExtractFileWithoutExt = this.parseUri(item.uri)
     return new Promise((resolve, reject) => {
+      let uriExtractFileWithoutExt = this.parseUri(item.uri)
       this.checkFileTxtMeta(uriExtractFileWithoutExt + ".txt").then(
         value => {
           File.createFile(cordova.file.dataDirectory, uriExtractFileWithoutExt + ".txt", true).then(
