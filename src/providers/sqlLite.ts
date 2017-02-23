@@ -32,12 +32,28 @@ export class SqlLiteData {
       err => console.error("ERROR openDatabase: ", err)
       )
   }
-
+  /**
+   * [update description]
+   * @param {[type]} data [description]
+   */
+  updateUpload(data) {
+    console.log(data)
+    let request = "UPDATE people"
+    request += "SET dateSend = '" + data.dateSend + "'"
+    request += ", resultSend = '" + data.resultSend + "'"
+    request += " WHERE bitrate = '" + data.bitrate + "' "
+    this.database.executeSql(request, []).then(
+      data => console.log("UPDATED: ", data),
+      err => console.error("ERROR UPDATED: ", err)
+    )
+    // this.refresh()
+  }
   /**
    * [update description]
    * @param {[type]} data [description]
    */
   update(data) {
+    console.log("update", data)
     let destArr = data.distributionArr.toString()
     let request = "UPDATE people"
     request += " SET guestfirstname = '" + data.guestfirstname + "'"
@@ -48,6 +64,8 @@ export class SqlLiteData {
     request += ", guesttext = '" + data.guesttext + "'"
     request += ", distributionsave_rush = '" + data.distributionsave_rush + "'"
     request += ", distributionArr = '" + destArr + "'"
+    request += ", dateSend = '" + data.dateSend + "'"
+    request += ", resultSend = '" + data.resultSend + "'"
     request += " WHERE bitrate = '" + data.bitrate + "' "
     this.database.executeSql(request, []).then(
       data => console.log("UPDATED: ", data),
@@ -107,7 +125,9 @@ export class SqlLiteData {
                 distributionsave_rush: data.rows.item(i).distributionsave_rush,
                 distributionArr: destarray,
                 dateImport: data.rows.item(i).dateImport,
-                datePrise: data.rows.item(i).datePrise
+                datePrise: data.rows.item(i).datePrise,
+                dateSend: data.rows.item(i).dateSend,
+                resultSend: data.rows.item(i).resultSend
               });
             }
             resolve()
@@ -163,9 +183,11 @@ export class SqlLiteData {
           requestSql += "journalistoccupation,"
           requestSql += "journalistservice,"
           requestSql += "datePrise,"
-          requestSql += "dateImport"
+          requestSql += "dateImport,"
+          requestSql += "dateSend,"
+          requestSql += "resultSend"
           requestSql += ") "
-          requestSql += "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+          requestSql += "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
           this.database.executeSql(requestSql, [
             data.uri,
             data.uriThumb,
@@ -181,7 +203,9 @@ export class SqlLiteData {
             this.profile.occupation,
             this.profile.service,
             data.datePrise,
-            data.dateImport
+            data.dateImport,
+            data.dateSend,
+            data.resultSend
           ]).then(
             result => {
               console.log("INSERTED: ", result)
@@ -224,7 +248,9 @@ export class SqlLiteData {
       "distributionArr TEXT",
       "dateImport INT",
       "datePrise INT",
-      "dateExport INT"
+      "dateExport INT",
+      "dateSend INT",
+      "resultSend INT"
     ]
     this.database.executeSql("DROP TABLE people", []).then(
       data => console.log("DROP: ", data),

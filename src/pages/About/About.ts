@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
-import { VideoService, AppService } from "../../app/app.service";
+import { AppService } from "../../app/app.service";
+import { VideoService } from "../../app/video.service"
 import { NavController } from "ionic-angular";
 import { UserData } from "../../providers/user-data";
 import { SqlLiteData } from "../../providers/sqlLite";

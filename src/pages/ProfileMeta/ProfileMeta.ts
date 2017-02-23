@@ -1,7 +1,8 @@
 import { Component } from "@angular/core"
 import { NavController, NavParams } from "ionic-angular"
 import { UserData } from "../../providers/user-data"
-import { VideoService } from "../../app/app.service"
+import { VideoService } from "../../app/video.service"
+
 @Component({
   templateUrl: "ProfileMeta.html",
   selector: "page-ProfileMeta",

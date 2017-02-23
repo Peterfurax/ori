@@ -1,5 +1,7 @@
 import { Component } from "@angular/core"
-import { VideoService, AppService } from "../../app/app.service"
+import { AppService } from "../../app/app.service"
+import { VideoService } from "../../app/video.service"
+import { TransfertService } from "../../app/tranfert.service"
 import { NavController, Platform } from "ionic-angular"
 import { SqlLiteData } from "../../providers/sqlLite"
 import { UserData } from "../../providers/user-data"
@@ -18,10 +20,11 @@ export class VideoListPage {
     private platform: Platform,
     public serviceVideo: VideoService,
     public serviceApp: AppService,
+    public transfertService: TransfertService,
     public logApp: LogService,
     public storage: UserData,
     public storageSql: SqlLiteData
-  ) { }
+  ) { console.log(this) }
 
   /**
    * [delete item in SqlLiteData with this.item.uri]
@@ -68,8 +71,7 @@ export class VideoListPage {
    * @return {[type]}      [description]
    */
   upload(item) {
-    this.showUploadBar = !this.showUploadBar
-    this.serviceVideo.upload(item).then(() => { this.showUploadBar = !this.showUploadBar }, err => { this.showUploadBar = !this.showUploadBar })
+    this.transfertService.upload(item).then(() => { }, err => { })
   }
 
   /**

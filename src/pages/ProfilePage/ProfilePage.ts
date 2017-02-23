@@ -1,7 +1,7 @@
 import { Component } from "@angular/core"
 import { NavController } from "ionic-angular"
 import { UserData } from "../../providers/user-data"
-import {ProfileMeta } from "../ProfileMeta/ProfileMeta"
+import { ProfileMeta } from "../ProfileMeta/ProfileMeta"
 
 @Component({
   selector: "page-profile",

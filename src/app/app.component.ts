@@ -77,8 +77,10 @@ export class MyApp {
   initializeApp() {
     this.platform.ready().then(
       () => {
-        StatusBar.styleDefault()
+        // StatusBar.styleDefault()
+        // StatusBar.styleBlackTranslucent()
         Splashscreen.hide()
+        StatusBar.hide()
         let db = new SQLite()
         const sqlRow = [
           "uri TEXT",

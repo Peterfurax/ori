@@ -27,7 +27,7 @@
         <ion-card class="adv-map" *ngFor="let person of storageSql.people">
             <div style="position: relative">
                 <img src="{{person.uriThumb}}" (click)="playVideo(person.uri)">
-                <div class="card-title">{{person.guestfirstname}} {{person.guestname}}</div>
+                <div class="card-title"> {{person.guestfirstname}} {{person.guestname}}</div>
                 <div class="card-subtitle">{{person.guestoccupation}}</div>
                 <div class="card-duration">Durée: {{person.duration}} sec Qualité: {{person.height}}p</div>
                 <ion-fab right middle>
@@ -51,11 +51,12 @@
                     </ion-fab-list>
                 </ion-fab>
             </div>
-            <ion-item>
-                <ion-icon item-left name='calendar'></ion-icon>
-                <!-- <progress max="100" value="25" form="form-id">25%</progress> -->
+            <ion-item *ngIf="person.progress > 0"><progress max="100" value="{{person.progress}}"></progress>{{person.progress}}%</ion-item>
+            <ion-item *ngIf="show">
+                <ion-icon  item-left name='calendar'></ion-icon>
                 <p>Prise : {{person.datePrise | date:'fullDate'}}</p>
                 <p>Import : {{person.dateImport | date:'fullDate'}}</p>
+                <p>Export : {{person.dateSend | date:'fullDate'}}</p>
             </ion-item>
             <ion-item *ngIf="show">
                 <ion-icon item-left name='person'></ion-icon>
@@ -93,8 +94,7 @@
             </button>
         </ion-buttons>
     </ion-navbar> -->
-<ion-footer *ngIf="showUploadBar">
-  <ion-toolbar>
-    <ion-title><progress max="100" value="{{progress}}" form="form-id">{{progress}}%</progress></ion-title>
-  </ion-toolbar>
-</ion-footer>
+<!-- <ion-footer *ngIf="showUploadBar">
+    <ion-title>{{TransfertService.progress}}</ion-title>
+    <ion-item *ngIf="showUploadBar"><progress max="100" value="{{TransfertService.progress}}">{{TransfertService.progress}}%</progress></ion-item>
+</ion-footer> -->

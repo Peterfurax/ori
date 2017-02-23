@@ -1,35 +1,56 @@
 page-VideoListPage {
-    .card-background-page {
-        ion-card {
-            position: relative;
-            text-align: center;
-        }
-        .card-title {
-            font-size: 2.0em;
-            position: absolute;
-            top: 36%;
-            width: 100%;
-            font-weight: bold;
-            color: #fff;
-        }
-        .card-subtitle {
-            font-size: 1.0em;
-            position: absolute;
-            top: 52%;
-            width: 100%;
-            color: #fff;
-        }
-        .card-duration {
-            font-size: 1.0em;
-            font-weight:bold;
-            position: absolute;
-            bottom: 5%;
-            width: 100%;
-            color: #fff;
-        }
+  .card-background-page {
+    ion-card {
+      position: relative;
+      text-align: center;
     }
 
-}
-    textarea {
-   resize: both;
+    .card-title {
+      font-size: 2.0em;
+      position: absolute;
+      top: 36%;
+      width: 100%;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .card-subtitle {
+      font-size: 1.0em;
+      position: absolute;
+      top: 52%;
+      width: 100%;
+      color: #fff;
+    }
+
+    .card-duration {
+      font-size: 1.0em;
+      font-weight: bold;
+      position: absolute;
+      bottom: 5%;
+      width: 100%;
+      color: #fff;
+    }
+  }
+
+  progress {
+    display: block;
+    /* default: inline-block */
+    width: 300px;
+    margin: 1em auto;
+    padding: 4px;
+    border: 0 none;
+    background: #444;
+    border-radius: 14px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.2);
+  }
+
+  progress::-moz-progress-bar {
+    background: #FFF;
+    border-radius: 12px;
+    box-shadow: inset 0 -2px 4px rgba(0,0,0,0.4), 0 2px 5px 0 rgba(0,0,0,0.3);
+  }
+
+  textarea {
+    resize: both;
+  }
 }
