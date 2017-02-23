@@ -40,6 +40,7 @@ before_script:
   - sh -e /etc/init.d/xvfb start
 
 script:
+
   #- ng test --watch=false  --code-coverage # unit tests
   - npm run ionic:build                    # ionic build
   # Serve with python as ionic serve needs interaction
@@ -67,6 +68,7 @@ before_deploy:
   - ionic state restore
   - ionic platform add android
   - ionic build android
+  - cordova plugin update
   # `ionic build android` wraps `cordova build android`, which gives a legit exit code if it fails. Ionic does not; test apk exists.
   - ls ./platforms/android/build/outputs/apk/android*.apk
 
