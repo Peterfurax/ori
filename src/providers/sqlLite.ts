@@ -15,11 +15,11 @@ export class SqlLiteData {
     service?: string
   }
   = {
-    name: null,
-    firstname: null,
-    society: null,
-    occupation: null,
-    service: null
+    name: "",
+    firstname: "",
+    society: "",
+    occupation: "",
+    service: ""
   };
 
   constructor(public userData: UserData) {
