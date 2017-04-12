@@ -16,12 +16,12 @@
           <ion-icon name="contact" (click)="test()"></ion-icon>
         </ion-item>
         <ion-item>
-          <ion-label floating>Prénon</ion-label>
-          <ion-input type="text" [(ngModel)]="profile.firstname" name="firstname" required clearInput></ion-input>
-        </ion-item>
-        <ion-item>
           <ion-label floating>Nom</ion-label>
           <ion-input type="text" [(ngModel)]="profile.name" name="name" required clearInput></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Prénom</ion-label>
+          <ion-input type="text" [(ngModel)]="profile.firstname" name="firstname" required clearInput></ion-input>
         </ion-item>
         <ion-item>
           <ion-label floating>Titre</ion-label>
@@ -33,7 +33,7 @@
         </ion-item>
         <ion-item>
           <ion-label>Société</ion-label>
-          <ion-icon color="subtle" large item-left name='home'></ion-icon>
+          <!-- <ion-icon color="subtle" large item-left name='home'></ion-icon> -->
           <ion-select [(ngModel)]="profile.society" name="society">
             <ion-option value="Les Echos">Les Echos</ion-option>
             <ion-option value="Le Parisien">Le Parisien</ion-option>
