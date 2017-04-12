@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core"
 import {
-  // SpinnerDialog,
+  SpinnerDialog,
   BackgroundMode,
   Vibration,
   LocalNotifications,
@@ -20,7 +20,7 @@ export class NotificationService {
    * @return {[type]}          [description]
    */
   uploadInitService() {
-    // SpinnerDialog.show()
+    SpinnerDialog.show()
     BackgroundMode.enable()
   }
   /* FIXME */
@@ -33,7 +33,7 @@ export class NotificationService {
   uploadEndService(message?: any) {
     message = JSON.stringify(message)
     console.dir(message)
-    // SpinnerDialog.hide()
+    SpinnerDialog.hide()
     this.notificationMaker(message)
 
   }
@@ -45,9 +45,9 @@ export class NotificationService {
    * @return {[type]}                  [description]
    */
   notificationMaker(message) {
-    // this.notification(message)
-    // this.vibrate([500, 200, 500])
-    // this.toast(message)
+    this.notification(message)
+    this.vibrate([500, 200, 500])
+    this.toast(message)
     BackgroundMode.disable()
   }
 
