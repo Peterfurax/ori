@@ -2,9 +2,7 @@ declare const cordova
 import { Injectable } from "@angular/core"
 import { FileService } from "./file.service"
 import { NotificationService } from "./notification.service"
-import {
-  Transfer
-} from "ionic-native"
+import { Transfer } from "ionic-native"
 import { SqlLiteData } from "../providers/sqlLite"
 @Injectable()
 
@@ -30,7 +28,37 @@ export class TransfertService {
   upload(item): Promise<any> {
     return new Promise((resolve, reject) => {
       this.notificationService.uploadInitService()
-      this.fileService.WriteJsonMeta(item).then((jsonUri) => {
+      console.log(item.toString())
+      let metaForZenon = {
+        "video_metadata": {
+          "distribution": {
+            "title": item.guesttext,
+            "description": item.guesttext,
+            "duration": item.duration,
+            "society": item.journalistsociety,
+            "service": item.journalistservice,
+            "embargo_date": "",
+            "save_rush": item.distributionsave_rush,
+            "destinations": item.distributionArr
+          },
+          "incrustation_tags": {
+            "journalist.firstname": item.journalistfirstname,
+            "journalist.name": item.journalistname,
+            "journalist.occupation": item.journalistoccupation,
+            "journalist.place": item.journalistplace,
+            "journalist.text": item.journalisttext,
+            // "journalist.s1": item.journalists1,
+            "guest.firstname": item.guestfirstname,
+            "guest.name": item.guestname,
+            "guest.occupation": item.guestoccupation,
+            "guest.place": item.guestplace,
+            "guest.text": item.guesttext
+            // "guest.s1": item.guests1
+          }
+        }
+      }
+      console.log(metaForZenon)
+      this.fileService.WriteJsonMeta(metaForZenon).then((jsonUri) => {
         let exportName = this.exportNameMaker()
         item.dateSend = Date.now()
         Promise.all([
