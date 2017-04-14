@@ -7,16 +7,16 @@
     </ion-navbar>
 </ion-header>
 <ion-content>
-    <div padding id="cloud-layer">
+    <div padding [@flyInBottomFast]="cloudState" id="cloud-layer">
         <form #loginForm="ngForm" novalidate>
             <ion-row>
                 <ion-col>
-                    <img src="assets/user.png" />
+                    <img [@flyInBottomSlow]="logoState" src="assets/user.png" />
                 </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col>
-                    <ion-list inset >
+                    <ion-list inset [@bounceInBottom]="formState">
                         <ion-item>
                             <ion-label>Username</ion-label>
                             <ion-input [(ngModel)]="login.username" name="username" type="text" #username="ngModel" spellcheck="false" autocapitalize="off" >
@@ -38,7 +38,7 @@
             </ion-row>
             <ion-row>
                 <ion-col>
-                    <button ion-button (click)="onLogin(loginForm)" type="submit" class="login-button">Login</button>
+                    <button ion-button (click)="onLogin(loginForm)" type="submit" class="login-button" [@fadeIn]="loginState">Login</button>
                 </ion-col>
             </ion-row>
         </form>

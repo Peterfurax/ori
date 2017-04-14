@@ -1,29 +1,31 @@
-import { Injectable } from "@angular/core"
+import {Injectable} from "@angular/core";
 import {
   SpinnerDialog,
   BackgroundMode,
   Vibration,
   LocalNotifications,
-  Toast
-} from "ionic-native"
+  Toast,
+} from "ionic-native";
 @Injectable()
-
-/**
+export /**
  *
  */
-export class NotificationService {
-  constructor() { }
-  // TODO
+class NotificationService {
+  constructor() {}
   /**
    * [uploadInitService description]
    * @method uploadInitService
    * @return {[type]}          [description]
    */
   uploadInitService() {
-    SpinnerDialog.show()
-    BackgroundMode.enable()
+    Promise.all([SpinnerDialog.show(), BackgroundMode.enable()])
+      .then(() => {
+        console.log("uploadInitService ok");
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
-  /* FIXME */
   /**
    * [uploadEndService description]
    * @method uploadEndService
@@ -31,11 +33,16 @@ export class NotificationService {
    * @return {[type]}                 [description]
    */
   uploadEndService(message?: any) {
-    message = JSON.stringify(message)
-    console.dir(message)
-    SpinnerDialog.hide()
-    this.notificationMaker(message)
-
+    Promise.all([
+      this.notificationMaker(JSON.stringify(message)),
+      SpinnerDialog.hide(),
+    ])
+      .then(() => {
+        console.log("uploadEndService ok");
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   /**
@@ -44,11 +51,18 @@ export class NotificationService {
    * @param  {[type]}          message [description]
    * @return {[type]}                  [description]
    */
-  notificationMaker(message) {
-    this.notification(message)
-    this.vibrate([500, 200, 500])
-    this.toast(message)
-    BackgroundMode.disable()
+  notificationMaker(message?: any) {
+    Promise.all([
+      this.notification(message),
+      this.vibrate([500, 200, 500]),
+      this.toast(message),
+    ])
+      .then(() => {
+        BackgroundMode.disable();
+      })
+      .catch(() => {
+        BackgroundMode.disable();
+      });
   }
 
   /**
@@ -61,8 +75,8 @@ export class NotificationService {
     LocalNotifications.schedule({
       title: "Application Video",
       text: message,
-      sound: "file://assets/sound/notification_ok.mp3"
-    })
+      sound: "file://assets/sound/notification_ok.mp3",
+    });
   }
 
   /**
@@ -71,7 +85,7 @@ export class NotificationService {
    * @param {any} param [description]
    */
   vibrate(param: any) {
-    Vibration.vibrate(param)
+    Vibration.vibrate(param);
   }
 
   /**
@@ -80,9 +94,7 @@ export class NotificationService {
    * @param {any} message [description]
    */
   toast(message: any) {
-    Toast.show(message, "5000", "center").subscribe(
-      toast => console.log(toast)
-    )
+    Toast.show(message, "5000", "center").subscribe(toast =>
+      console.log(toast));
   }
-
 }

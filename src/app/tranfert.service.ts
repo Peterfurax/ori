@@ -98,14 +98,12 @@ export class TransfertService {
 
 
   uploadFile(exportName: string, uri: string, type: string, item): Promise<any> {
-    console.log(uri)
     const fileTransfer = new Transfer()
     let perc = 0
     let fileNameExport = exportName
     return new Promise((resolve, reject) => {
       let optionFileTransfer
       if (type === "mp4") {
-        console.log("mp4")
         optionFileTransfer = {
           mimeType: "video/mp4",
           timeout: 3000,
@@ -113,7 +111,6 @@ export class TransfertService {
         }
       }
       if (type === "json") {
-        console.log("json")
         optionFileTransfer = {
           mimeType: "application/json",
           timeout: 3000,
@@ -121,9 +118,6 @@ export class TransfertService {
         }
       }
       if (type === "txt") {
-        console.log("txt")
-        // uri = cordova.file.dataDirectory + "fin.txt"
-        console.log("uri for txt", uri)
         optionFileTransfer = {
           mimeType: "text/plain",
           timeout: 3000,

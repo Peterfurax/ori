@@ -16,7 +16,9 @@ import { VideoMeta } from "../pages/VideoMeta/VideoMeta"
 import { ProfilePage } from "../pages/ProfilePage/ProfilePage"
 import { ProfileMeta } from "../pages/ProfileMeta/ProfileMeta"
 import { UserData } from "../providers/user-data"
-import { Storage } from "@ionic/storage"
+import { IonicStorageModule } from "@ionic/storage"
+import { BrowserModule } from "@angular/platform-browser"
+// import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 @NgModule({
   declarations: [
     MyApp,
@@ -28,7 +30,9 @@ import { Storage } from "@ionic/storage"
     ProfileMeta
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    BrowserModule,
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -40,6 +44,6 @@ import { Storage } from "@ionic/storage"
     ProfilePage,
     ProfileMeta
   ],
-  providers: [SqlLiteData, VideoService, AppService, ParseService, NotificationService, FileService, TransfertService, LogService, UserData, Storage]
+  providers: [SqlLiteData, VideoService, AppService, ParseService, NotificationService, FileService, TransfertService, LogService, UserData]
 })
 export class AppModule { }

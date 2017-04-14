@@ -61,10 +61,11 @@ export class VideoService {
     // FIXME seem dont work
     // NOT COOL MUST FIX URI :/
     // uri = "file:/" + uri
-    // VideoPlayer.play(uri).then(
-    //   () => console.log("video completed"),
-    //   err => console.log(err)
-    // )
+    // console.log(this.videoPlayer)
+    // // this.videoPlayer.play(uri).then(
+    // //   () => console.log("video completed"),
+    // //   err => console.log(err)
+    // // )
   }
 
   /**
