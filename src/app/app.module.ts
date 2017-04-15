@@ -18,6 +18,15 @@ import { ProfileMeta } from "../pages/ProfileMeta/ProfileMeta"
 import { UserData } from "../providers/user-data"
 import { IonicStorageModule } from "@ionic/storage"
 import { BrowserModule } from "@angular/platform-browser"
+import { Vibration } from '@ionic-native/vibration';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+import { AppVersion } from '@ionic-native/app-version';
+import { File } from "@ionic-native/file";
+import { SpinnerDialog } from '@ionic-native/spinner-dialog';
+import { BackgroundMode } from '@ionic-native/background-mode';
+import { Toast } from '@ionic-native/toast';
 // import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 @NgModule({
   declarations: [
@@ -44,6 +53,7 @@ import { BrowserModule } from "@angular/platform-browser"
     ProfilePage,
     ProfileMeta
   ],
-  providers: [SqlLiteData, VideoService, AppService, ParseService, NotificationService, FileService, TransfertService, LogService, UserData]
+  providers: [SqlLiteData, VideoService, AppService, ParseService, NotificationService, FileService, TransfertService, LogService, UserData, SplashScreen, StatusBar,Vibration,
+  LocalNotifications, AppVersion, File, SpinnerDialog, BackgroundMode, Toast]
 })
 export class AppModule { }

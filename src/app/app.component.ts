@@ -1,6 +1,8 @@
 import { Component, ViewChild } from "@angular/core"
 import { Events, MenuController, Nav, Platform } from "ionic-angular"
-import { StatusBar, Splashscreen, SQLite } from "ionic-native"
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SQLite } from "ionic-native"
 import { About } from "../pages/About/About"
 import { VideoListPage } from "../pages/VideoListPage/VideoListPage"
 import { LoginPage } from "../pages/login/login"
@@ -54,10 +56,13 @@ export class MyApp {
   ]
 
   constructor(
-    public userData: UserData,
-    public platform: Platform,
-    public events: Events,
-    public menu: MenuController) {
+
+    private statusBar: StatusBar,
+    private splashScreen: SplashScreen,
+    private userData: UserData,
+    private platform: Platform,
+    private events: Events,
+    private menu: MenuController) {
     this.initializeApp()
     this.userData.hasLoggedIn().then(
       hasLoggedIn => {
@@ -79,8 +84,8 @@ export class MyApp {
       () => {
         // StatusBar.styleDefault()
         // StatusBar.styleBlackTranslucent()
-        Splashscreen.hide()
-        StatusBar.hide()
+        this.splashScreen.hide()
+        this.statusBar.hide()
         let db = new SQLite()
         const sqlRow = [
           "uri TEXT",

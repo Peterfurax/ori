@@ -152,13 +152,13 @@ export class VideoService {
    * @param  {string}  uri [storage/emulated/0/DCIM/Camera/VID_20161119_075425.mp4]
    * @return {Promise}     [description]
    */
-  getVideoMeta(uri): Promise<any> {
+  getVideoMeta(uri: string): Promise<any> {
     return new Promise((resolve, reject) => {
       uri = "file:/" + uri; // NOT COOL MUST FIX URI :/
       VideoEditor.getVideoInfo({ fileUri: uri }).then(
         data => {
           if (data.orientation === "portrait") {
-            this.notificationService.toast("Attention : Format portrait détecté")
+            this.notificationService.toastIt("Attention : Format portrait détecté")
             reject("portrait")
           }
           resolve(data)

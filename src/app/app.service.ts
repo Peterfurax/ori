@@ -1,17 +1,19 @@
 declare const cordova
 import { Injectable } from "@angular/core"
-import {
-  Vibration,
-  LocalNotifications,
-  AppVersion,
-} from "ionic-native"
+import { Vibration } from '@ionic-native/vibration';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { AppVersion } from '@ionic-native/app-version';
 @Injectable()
 
 /**
  *  class AppService
  */
 export class AppService {
-  constructor() { }
+  constructor(
+    private vibration: Vibration,
+    private localNotifications: LocalNotifications,
+    private appVersion: AppVersion
+  ) { }
 
   private appName: Promise<string>;
   private appPackageName: Promise<string>;
@@ -32,9 +34,9 @@ export class AppService {
    * @return type:Array [TubeR, com.lesechos.tuber, "0.0.1"] == [AppName, PackageName, VersionNumber]
    */
   appVersionAll() {
-    this.appName = AppVersion.getAppName()
-    this.appPackageName = AppVersion.getPackageName()
-    this.appVersionNumber = AppVersion.getVersionNumber()
+    this.appName = this.appVersion.getAppName()
+    this.appPackageName = this.appVersion.getPackageName()
+    this.appVersionNumber = this.appVersion.getVersionNumber()
     Promise.all([this.appName, this.appPackageName, this.appVersionNumber]).then(
       data => {
         this.appAllInfo.Names = data[0]
@@ -61,7 +63,7 @@ export class AppService {
    * @return {[type]}       [description]
    */
   vibrate(param: any) {
-    Vibration.vibrate(param)
+    this.vibration.vibrate(param)
   }
 
   /**
@@ -70,7 +72,7 @@ export class AppService {
    * @return {[type]}     [description]
    */
   notification() {
-    LocalNotifications.schedule({
+    this.localNotifications.schedule({
       title: "Application Video",
       text: "message",
       sound: "file://assets/sound/notification_ok.mp3"

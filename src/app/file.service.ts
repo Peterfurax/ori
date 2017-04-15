@@ -1,9 +1,7 @@
 declare const cordova
 import { Injectable } from "@angular/core"
 import { ParseService} from "./parse.service"
-import {
-  File
-} from "ionic-native"
+import { File } from "@ionic-native/file";
 @Injectable()
 
 /**
@@ -11,7 +9,8 @@ import {
  */
 export class FileService {
   constructor(
-    public parseService: ParseService
+    public parseService: ParseService,
+    private file: File
   ) { }
 
   /**
@@ -20,7 +19,7 @@ export class FileService {
    * @return {[type]}       [description]
    */
   // deleteDataJson() {
-  //   File.removeFile(cordova.file.dataDirectory, this.fileName).then(
+  //   this.file.removeFile(cordova.file.dataDirectory, this.fileName).then(
   //     result => { console.log("delete OK ", result) },
   //     err => { console.log("delete ERR", err) })
   // }
@@ -31,13 +30,13 @@ export class FileService {
    * @return {[type]}      [description]
    */
   // createJsonDir() {
-  //   File.createDir(cordova.file.dataDirectory, "json/", true).then(
+  //   this.file.createDir(cordova.file.dataDirectory, "json/", true).then(
   //     result => { console.log("createJsonDir OK", result) },
   //     err => { console.log("createJsonDir", err) })
   // }
 
   // read() {
-  //   File.readAsText(cordova.file.dataDirectory, this.fileName).then(result => { console.log("readAsText OK ", result) }, err => { console.log("readAsText ERR", err) })
+  //   this.file.readAsText(cordova.file.dataDirectory, this.fileName).then(result => { console.log("readAsText OK ", result) }, err => { console.log("readAsText ERR", err) })
   // }
   //
   /**
@@ -48,9 +47,9 @@ export class FileService {
    */
   checkFileJsonMeta(uriExtractFile: string) {
     return new Promise((resolve, reject) => {
-      File.checkFile(cordova.file.dataDirectory, uriExtractFile).then(
+      this.file.checkFile(cordova.file.dataDirectory, uriExtractFile).then(
         result => {
-          File.removeFile(cordova.file.dataDirectory, uriExtractFile).then(
+          this.file.removeFile(cordova.file.dataDirectory, uriExtractFile).then(
             result => { resolve(result) },
             err => { reject(err) })
         },
@@ -61,25 +60,25 @@ export class FileService {
   }
 
   checkFileTxt() {
-    // File.listDir(cordova.file.dataDirectory, "").then(
+    // this.file.listDir(cordova.file.dataDirectory, "").then(
     //   result => { console.log("listDir OK", result) },
     //   err => {
     //     console.log("listDir", err)
     //   })
     return new Promise((resolve, reject) => {
       const txtPath = cordova.file.dataDirectory + "fin.txt"
-      File.checkFile(cordova.file.dataDirectory, "fin.txt").then(
+      this.file.checkFile(cordova.file.dataDirectory, "fin.txt").then(
         result => {
           resolve()
-          //         File.createFile(cordova.file.dataDirectory, "fin.txt", true).then(
+          //         this.file.createFile(cordova.file.dataDirectory, "fin.txt", true).then(
           //           () => { resolve(cordova.file.dataDirectory + "fin.txt") },
           //           err => { reject(err) })
-          // File.createFile(cordova.file.dataDirectory, "fin.txt", true).then(
+          // this.file.createFile(cordova.file.dataDirectory, "fin.txt", true).then(
           //   result => { resolve(txtPath) },
           //   err => { reject(err) })
         },
         err => {
-          File.createFile(cordova.file.dataDirectory, "fin.txt", true).then(
+          this.file.createFile(cordova.file.dataDirectory, "fin.txt", true).then(
             result => { resolve(txtPath) },
             err => { reject(err) })
         })
@@ -100,7 +99,7 @@ export class FileService {
     return new Promise((resolve, reject) => {
       this.checkFileJsonMeta(uriExtractFileWithoutExt + ".json").then(
         value => {
-          File.writeFile(cordova.file.dataDirectory, uriExtractFileWithoutExt + ".json", JSON.stringify(item), true).then(
+          this.file.writeFile(cordova.file.dataDirectory, uriExtractFileWithoutExt + ".json", JSON.stringify(item), true).then(
             () => { resolve(cordova.file.dataDirectory + uriExtractFileWithoutExt + ".json") },
             err => { reject(err) })
         },
@@ -121,7 +120,7 @@ export class FileService {
   //     // let uriExtractFileWithoutExt = this.parseUri(item.uri)
   //     this.checkFileTxtMeta(uriExtractFileWithoutExt + ".txt").then(
   //       value => {
-  //         File.createFile(cordova.file.dataDirectory, "fin.txt", true).then(
+  //         this.file.createFile(cordova.file.dataDirectory, "fin.txt", true).then(
   //           () => { resolve(cordova.file.dataDirectory + "fin.txt") },
   //           err => { reject(err) })
   //       },

@@ -1,24 +1,29 @@
 import {Injectable} from "@angular/core";
-import {
-  SpinnerDialog,
-  BackgroundMode,
-  Vibration,
-  LocalNotifications,
-  Toast,
-} from "ionic-native";
+import { SpinnerDialog } from '@ionic-native/spinner-dialog';
+import { BackgroundMode } from '@ionic-native/background-mode';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { Toast } from '@ionic-native/toast';
+import { Vibration } from '@ionic-native/vibration';
+
 @Injectable()
 export /**
  *
  */
 class NotificationService {
-  constructor() {}
+  constructor(
+  private spinnerDialog: SpinnerDialog,
+  private backgroundMode: BackgroundMode,
+  private vibration: Vibration,
+  private localNotifications: LocalNotifications,
+  private toast: Toast
+) {}
   /**
    * [uploadInitService description]
    * @method uploadInitService
    * @return {[type]}          [description]
    */
   uploadInitService() {
-    Promise.all([SpinnerDialog.show(), BackgroundMode.enable()])
+    Promise.all([this.spinnerDialog.show(), this.backgroundMode.enable()])
       .then(() => {
         console.log("uploadInitService ok");
       })
@@ -35,7 +40,7 @@ class NotificationService {
   uploadEndService(message?: any) {
     Promise.all([
       this.notificationMaker(JSON.stringify(message)),
-      SpinnerDialog.hide(),
+      this.spinnerDialog.hide(),
     ])
       .then(() => {
         console.log("uploadEndService ok");
@@ -55,13 +60,13 @@ class NotificationService {
     Promise.all([
       this.notification(message),
       this.vibrate([500, 200, 500]),
-      this.toast(message),
+      this.toastIt(message),
     ])
       .then(() => {
-        BackgroundMode.disable();
+        this.backgroundMode.disable();
       })
       .catch(() => {
-        BackgroundMode.disable();
+        this.backgroundMode.disable();
       });
   }
 
@@ -72,7 +77,7 @@ class NotificationService {
    * @return {[type]}             [description]
    */
   notification(message: any) {
-    LocalNotifications.schedule({
+    this.localNotifications.schedule({
       title: "Application Video",
       text: message,
       sound: "file://assets/sound/notification_ok.mp3",
@@ -85,7 +90,7 @@ class NotificationService {
    * @param {any} param [description]
    */
   vibrate(param: any) {
-    Vibration.vibrate(param);
+    this.vibration.vibrate(param);
   }
 
   /**
@@ -93,8 +98,8 @@ class NotificationService {
    * @desc
    * @param {any} message [description]
    */
-  toast(message: any) {
-    Toast.show(message, "5000", "center").subscribe(toast =>
+  toastIt(message: any) {
+    this.toast.show(message, "5000", "center").subscribe(toast =>
       console.log(toast));
   }
 }
