@@ -4,6 +4,8 @@ import { FileService } from "./file.service"
 import { NotificationService } from "./notification.service"
 import { Transfer } from "ionic-native"
 import { SqlLiteData } from "../providers/sqlLite"
+import * as moment from "moment"
+import "moment/src/locale/fr"
 @Injectable()
 
 /**
@@ -17,7 +19,8 @@ export class TransfertService {
   ) { }
 
   exportNameMaker() {
-    return Date.now().toString()
+    return moment().format('YYYYMMDDHHmmss')
+    // return  Date.now().toString()
   }
 
   /**
@@ -28,7 +31,6 @@ export class TransfertService {
   upload(item): Promise<any> {
     return new Promise((resolve, reject) => {
       this.notificationService.uploadInitService()
-      console.log(item.toString())
       let metaForZenon = {
         "video_metadata": {
           "distribution": {
@@ -57,7 +59,6 @@ export class TransfertService {
           }
         }
       }
-      console.log(metaForZenon)
       this.fileService.WriteJsonMeta(metaForZenon).then((jsonUri) => {
         let exportName = this.exportNameMaker()
         item.dateSend = Date.now()
@@ -96,44 +97,39 @@ export class TransfertService {
     reject()
   }
 
+  optionFileTransferMaker(exportName, type){
+    let optionFileTransfer = {
+      mimeType: "text/plain",
+      timeout: 3000,
+      fileName: exportName
+    }
+    switch (type) {
+      case "mp4":
+        optionFileTransfer.mimeType = "video/mp4"
+        optionFileTransfer.fileName += ".mp4"
+      case "json":
+        optionFileTransfer.mimeType = "application/json"
+        optionFileTransfer.fileName += ".json"
+      case "txt":
+        optionFileTransfer.fileName += ".txt"
+      default:
+        return optionFileTransfer
+  }
+}
 
   uploadFile(exportName: string, uri: string, type: string, item): Promise<any> {
     const fileTransfer = new Transfer()
     let perc = 0
-    let fileNameExport = exportName
     return new Promise((resolve, reject) => {
-      let optionFileTransfer
-      if (type === "mp4") {
-        optionFileTransfer = {
-          mimeType: "video/mp4",
-          timeout: 3000,
-          fileName: fileNameExport + ".mp4"
-        }
-      }
-      if (type === "json") {
-        optionFileTransfer = {
-          mimeType: "application/json",
-          timeout: 3000,
-          fileName: fileNameExport + ".json"
-        }
-      }
-      if (type === "txt") {
-        optionFileTransfer = {
-          mimeType: "text/plain",
-          timeout: 3000,
-          fileName: fileNameExport + ".txt"
-        }
-      }
-
       fileTransfer.onProgress(
-        progressEvent => {
-          if (progressEvent.lengthComputable) {
-            perc = Math.floor(progressEvent.loaded / progressEvent.total * 100)
+        progress => {
+          if (progress.lengthComputable) {
+            perc = Math.floor(progress.loaded / progress.total * 100)
             item.progress = perc
           }
         }
       )
-      fileTransfer.upload(uri, "http://192.168.0.12:8000", optionFileTransfer).then(
+      fileTransfer.upload(uri, "http://192.168.0.12:8000", this.optionFileTransferMaker(exportName, type)).then(
         data => resolve(data),
         err => reject(err)
       )

@@ -88,9 +88,8 @@ export class VideoService {
    */
   captureVideo() {
     MediaCapture.captureVideo().then(
-      data => this.stockCaptureVideo(data),
-      err => console.error(err)
-    )
+      data => this.stockCaptureVideo(data)
+    ).catch(err=> console.error(err))
   }
 
   /**
@@ -100,9 +99,8 @@ export class VideoService {
    */
   captureImage() {
     MediaCapture.captureImage().then(
-      data => console.log(data),
-      err => console.error(err)
-    )
+      data => console.log(data)
+    ).catch(err=> console.error(err))
   }
 
   /**
@@ -111,7 +109,7 @@ export class VideoService {
    * @param  {[type]}          uri [file:/storage/emulated/0/DCIM/Camera/VID_20161119_075425.mp4]
    * @return {Promise<any>}        [description]
    */
-  stockCaptureVideo(uri): Promise<any> {
+  stockCaptureVideo(uri: any): Promise<any> {
     return new Promise((resolve, reject) => {
       Promise.all([this.getVideoMeta(uri), this.getVideoThumb(uri), this.parseService.convertUriToDate(uri)]).then(
         data => {
@@ -121,9 +119,8 @@ export class VideoService {
           this.videoAllInfo.dateImport = Date.now()
           this.videoAllInfo.uri = uri
           resolve(this.videoAllInfo)
-        },
-        err => reject(err)
-      )
+        }
+      ).catch(err => reject(err))
     })
   }
 
@@ -140,9 +137,8 @@ export class VideoService {
         sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
         mediaType: 1
       }).then(
-        data => resolve(data),
-        err => reject(err)
-        )
+        data => resolve(data)
+        ).catch(err=> reject(err))
     })
   }
 
@@ -162,9 +158,8 @@ export class VideoService {
             reject("portrait")
           }
           resolve(data)
-        },
-        err => reject(err)
-      )
+        }
+      ).catch(err=> reject(err))
     })
   }
 
@@ -188,9 +183,8 @@ export class VideoService {
         quality: 75 // optional, quality of the thumbnail (between 1 and 100)
       })
         .then(
-        data => resolve(data),
-        err => reject(err)
-        )
+        data => resolve(data)
+        ).catch(err=> reject(err))
     })
   }
 

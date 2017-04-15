@@ -161,7 +161,6 @@ export class MyApp {
    * @return {[type]}            [description]
    */
   enableMenu(loggedIn) {
-    console.log(loggedIn)
     this.menu.enable(loggedIn, "loggedInMenu")
     this.menu.enable(!loggedIn, "loggedOutMenu")
   }

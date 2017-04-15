@@ -1,7 +1,7 @@
 declare const cordova
 import { Injectable } from "@angular/core"
 import { ParseService} from "./parse.service"
-import { File } from "@ionic-native/file";
+import { File } from "@ionic-native/file"
 @Injectable()
 
 /**

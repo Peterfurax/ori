@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
-import { SpinnerDialog } from '@ionic-native/spinner-dialog';
-import { BackgroundMode } from '@ionic-native/background-mode';
-import { LocalNotifications } from '@ionic-native/local-notifications';
-import { Toast } from '@ionic-native/toast';
-import { Vibration } from '@ionic-native/vibration';
+import { SpinnerDialog } from "@ionic-native/spinner-dialog";
+import { BackgroundMode } from "@ionic-native/background-mode";
+import { LocalNotifications } from "@ionic-native/local-notifications";
+import { Toast } from "@ionic-native/toast";
+import { Vibration } from "@ionic-native/vibration";
 
 @Injectable()
 export /**
