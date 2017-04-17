@@ -11,10 +11,10 @@
     "ionic:emulate": "ionic emulate android"
   },
   "dependencies": {
+    "@angular/animations": "4.0.0",
     "@angular/common": "4.0.0",
     "@angular/compiler": "4.0.0",
     "@angular/compiler-cli": "4.0.0",
-    "@angular/animations":"4.0.0",
     "@angular/core": "4.0.0",
     "@angular/forms": "4.0.0",
     "@angular/http": "4.0.0",
@@ -31,6 +31,7 @@
     "@ionic-native/toast": "^3.4.4",
     "@ionic-native/transfer": "^3.4.4",
     "@ionic-native/vibration": "^3.4.4",
+    "@ionic-native/video-player": "^3.4.4",
     "@ionic/storage": "2.0.1",
     "ionic-angular": "3.0.1",
     "ionic-native": "2.9.0",

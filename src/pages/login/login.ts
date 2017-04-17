@@ -45,19 +45,15 @@ export class LoginPage {
     this.submitted = true
     if (form.valid) {
       this.userData.login(this.login.username)
-      this.userData.getProfile().then(
-        result => {
+      this.userData.getProfile()
+      .then(result => {
           if (result === null) {
-            // this.navCtrl.pop()
             this.navCtrl.push(ProfilePage)
             this.navCtrl.setRoot(VideoListPage)
           } else
-            // this.navCtrl.pop()
             this.navCtrl.setRoot(VideoListPage)
-        },
-        err => {
-          console.error(err)
         })
+        .catch(err => console.error(err))
     }
   }
 }
