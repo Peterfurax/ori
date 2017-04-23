@@ -94,11 +94,14 @@ export class TransfertService {
             case "mp4":
                 optionFileTransfer.mimeType = "video/mp4"
                 optionFileTransfer.fileName += ".mp4"
+                return optionFileTransfer
             case "json":
-                optionFileTransfer.mimeType = "application/json"
+                optionFileTransfer.mimeType = "application/json;charset=utf-8"
                 optionFileTransfer.fileName += ".json"
+                return optionFileTransfer
             case "txt":
                 optionFileTransfer.fileName += ".txt"
+                return optionFileTransfer
             default:
                 return optionFileTransfer
         }
@@ -115,7 +118,7 @@ export class TransfertService {
                 }
             }
             )
-            fileTransfer.upload(uri, "http://192.168.0.12:8000", this.optionFileTransferMaker(exportName, type))
+            fileTransfer.upload(uri, "http://10.70.71.37:80", this.optionFileTransferMaker(exportName, type))
                 .then(data => resolve(data))
                 .catch(err => reject(err))
         })
