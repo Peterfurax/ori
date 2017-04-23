@@ -51,7 +51,7 @@ export class NotificationService {
     notificationMaker(message?: any) {
         Promise.all([
             this.notification(message),
-            this.vibrate([500, 200, 500]),
+            // this.vibrate([500, 200, 500]),
             this.toastIt(message)
         ])
             .then(() => this.backgroundMode.disable())
