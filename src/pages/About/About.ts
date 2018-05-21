@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { AppService } from "../../app/app.service";
-import { VideoService } from "../../app/video.service"
+import { VideoService } from "../../app/video.service";
 import { NavController } from "ionic-angular";
 import { UserData } from "../../providers/user-data";
 import { SqlLiteData } from "../../providers/sqlLite";
@@ -10,7 +10,6 @@ import { SqlLiteData } from "../../providers/sqlLite";
   templateUrl: "About.html"
 })
 export class About {
-
   constructor(
     public navCtrl: NavController,
     public serviceVideo: VideoService,
@@ -18,27 +17,26 @@ export class About {
     public userData: UserData,
     public storageSql: SqlLiteData
   ) {
-    this.serviceApp.appVersionAll()
+    this.serviceApp.appVersionAll();
   }
 
   ca() {
-    this.serviceVideo.captureVideo()
-
+    this.serviceVideo.captureVideo();
   }
 
   storageSqlClear() {
-    this.storageSql.recreate()
+    this.storageSql.recreate();
   }
 
   sessionStorageClear() {
-    this.userData.clearProfile()
+    this.userData.clearProfile();
   }
 
   pro() {
-    this.serviceApp.notificationMaker()
+    this.serviceApp.notificationMaker();
   }
 
   VideoUri() {
-    this.serviceVideo.getVideoUri()
+    this.serviceVideo.getVideoUri();
   }
 }

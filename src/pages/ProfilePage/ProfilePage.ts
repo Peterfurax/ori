@@ -1,7 +1,7 @@
-import { Component } from "@angular/core"
-import { NavController } from "ionic-angular"
-import { UserData } from "../../providers/user-data"
-import { ProfileMeta } from "../ProfileMeta/ProfileMeta"
+import { Component } from "@angular/core";
+import { NavController } from "ionic-angular";
+import { UserData } from "../../providers/user-data";
+import { ProfileMeta } from "../ProfileMeta/ProfileMeta";
 
 @Component({
   selector: "page-profile",
@@ -9,18 +9,18 @@ import { ProfileMeta } from "../ProfileMeta/ProfileMeta"
 })
 export class ProfilePage {
   profile: {
-    name?: string,
-    firstname?: string,
-    occupation?: string,
-    service?: string,
-    society?: string
+    name?: string;
+    firstname?: string;
+    occupation?: string;
+    service?: string;
+    society?: string;
   } = {
-    "name": "",
-    "firstname": "",
-    "occupation": "",
-    "service": "",
-    "society": ""
-  }
+    name: "",
+    firstname: "",
+    occupation: "",
+    service: "",
+    society: ""
+  };
   constructor(
     public navCtrl: NavController,
     public userData: UserData,
@@ -28,27 +28,28 @@ export class ProfilePage {
   ) {
     this.userData.getProfile().then(
       ProfileResult => {
-        console.log(ProfileResult)
+        console.log(ProfileResult);
         if (ProfileResult === null) {
-          this.navController.push(ProfileMeta, { profile: this.profile })
-        } else { this.profile = ProfileResult }
+          this.navController.push(ProfileMeta, { profile: this.profile });
+        } else {
+          this.profile = ProfileResult;
+        }
       },
       err => console.error(err)
-    )
+    );
   }
 
   /**
    * [ionViewDidLoad description]
    */
   ionViewDidLoad() {
-    console.log("Hello ProfilePage Page")
+    console.log("Hello ProfilePage Page");
   }
 
   /**
    * [editProfile description]
    */
   editProfile() {
-    this.navController.push(ProfileMeta, { profile: this.profile })
+    this.navController.push(ProfileMeta, { profile: this.profile });
   }
-
 }

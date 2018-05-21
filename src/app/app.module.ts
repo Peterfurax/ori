@@ -27,53 +27,63 @@ import { File } from "@ionic-native/file";
 import { SpinnerDialog } from "@ionic-native/spinner-dialog";
 import { BackgroundMode } from "@ionic-native/background-mode";
 import { Toast } from "@ionic-native/toast";
-import { VideoPlayer } from '@ionic-native/video-player';
+import { VideoPlayer } from "@ionic-native/video-player";
+import { SQLite } from "@ionic-native/sqlite";
+import { MediaCapture } from "@ionic-native/media-capture";
+import { Camera } from "@ionic-native/camera";
+import { VideoEditor } from "@ionic-native/video-editor";
+import { FileTransfer } from "@ionic-native/file-transfer";
 // import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 @NgModule({
-    declarations: [
-        MyApp,
-        About,
-        VideoListPage,
-        VideoMeta,
-        LoginPage,
-        ProfilePage,
-        ProfileMeta
-    ],
-    imports: [
-        BrowserModule,
-        IonicModule.forRoot(MyApp),
-        IonicStorageModule.forRoot()
-    ],
-    bootstrap: [IonicApp],
-    entryComponents: [
-        MyApp,
-        About,
-        VideoListPage,
-        VideoMeta,
-        LoginPage,
-        ProfilePage,
-        ProfileMeta
-    ],
-    providers: [
-        SqlLiteData,
-        VideoService,
-        AppService,
-        ParseService,
-        NotificationService,
-        FileService,
-        TransfertService,
-        LogService,
-        UserData,
-        SplashScreen,
-        StatusBar,
-        Vibration,
-        LocalNotifications,
-        AppVersion,
-        File,
-        SpinnerDialog,
-        BackgroundMode,
-        Toast,
-        VideoPlayer
-    ],
+  declarations: [
+    MyApp,
+    About,
+    VideoListPage,
+    VideoMeta,
+    LoginPage,
+    ProfilePage,
+    ProfileMeta
+  ],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
+  ],
+  bootstrap: [IonicApp],
+  entryComponents: [
+    MyApp,
+    About,
+    VideoListPage,
+    VideoMeta,
+    LoginPage,
+    ProfilePage,
+    ProfileMeta
+  ],
+  providers: [
+    SqlLiteData,
+    VideoService,
+    AppService,
+    ParseService,
+    NotificationService,
+    FileService,
+    TransfertService,
+    LogService,
+    UserData,
+    SplashScreen,
+    StatusBar,
+    Vibration,
+    LocalNotifications,
+    AppVersion,
+    File,
+    SpinnerDialog,
+    BackgroundMode,
+    Toast,
+    VideoPlayer,
+    SQLite,
+    MediaCapture,
+    Camera,
+    VideoEditor,
+    FileTransfer
+  ]
 })
-export class AppModule { }
+export class AppModule {}

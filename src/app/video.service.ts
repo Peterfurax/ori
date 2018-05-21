@@ -1,194 +1,216 @@
-declare const cordova
-import { Injectable } from "@angular/core"
-import { ParseService } from "./parse.service"
-import { NotificationService } from "./notification.service"
+// declare const cordova;
+import { Injectable } from "@angular/core";
+import { ParseService } from "./parse.service";
+import { NotificationService } from "./notification.service";
 import {
-    MediaCapture,
-    Camera,
-    VideoEditor
-} from "ionic-native"
-import { VideoPlayer } from '@ionic-native/video-player';
+  MediaCapture,
+  MediaFile,
+  CaptureError,
+  CaptureImageOptions
+} from "@ionic-native/media-capture";
+import { Camera, CameraOptions } from "@ionic-native/camera";
+import { VideoEditor } from "@ionic-native/video-editor";
+import { VideoPlayer } from "@ionic-native/video-player";
 @Injectable()
 
 /**
  *  class VideoService
  */
 export class VideoService {
-    constructor(
-        private videoPlayer: VideoPlayer,
-        private parseService: ParseService,
-        private notificationService: NotificationService
-    ) { }
+  constructor(
+    private mediaCapture: MediaCapture,
+    private videoPlayer: VideoPlayer,
+    private parseService: ParseService,
+    private notificationService: NotificationService,
+    private camera: Camera,
+    private videoEditor: VideoEditor
+  ) {}
 
-    private videoAllInfo: {
-        dateImport?: number,
-        datePrise?: string,
-        dateSend?: string,
-        resultSend: string,
-        uri?: string,
-        uriThumb?: string,
-        infoVideo?: {
-            bitrate?: number,
-            duration?: number,
-            height?: number,
-            orientation?: string,
-            size?: number,
-            width?: number
-        }
-    } = {
-        dateImport: 0,
-        datePrise: "",
-        dateSend: "",
-        resultSend: "",
-        uri: "",
-        uriThumb: "",
-        infoVideo: {
-            bitrate: 0,
-            duration: 0,
-            height: 0,
-            orientation: "",
-            size: 0,
-            width: 0
-        }
+  private videoAllInfo: {
+    dateImport?: number;
+    datePrise?: string;
+    dateSend?: string;
+    resultSend: string;
+    uri?: string;
+    uriThumb?: string;
+    infoVideo?: {
+      bitrate?: number;
+      duration?: number;
+      height?: number;
+      orientation?: string;
+      size?: number;
+      width?: number;
+    };
+  } = {
+    dateImport: 0,
+    datePrise: "",
+    dateSend: "",
+    resultSend: "",
+    uri: "",
+    uriThumb: "",
+    infoVideo: {
+      bitrate: 0,
+      duration: 0,
+      height: 0,
+      orientation: "",
+      size: 0,
+      width: 0
     }
+  };
 
-    /**
-     * [playVideo description]
-     * @desc
-     * @param {[type]} uri [description]
-     */
-    playVideo(uri) {
-        console.log(uri)
-        this.videoPlayer.play("file:/" + uri)
-            .then(() => console.log('video completed'))
-            .catch(err => console.log(err));
-        // FIXME seem dont work
-        // NOT COOL MUST FIX URI :/
-        uri = "file:/" + uri
-        console.log(uri)
+  /**
+   * [playVideo description]
+   * @desc
+   * @param {[type]} uri [description]
+   */
+  playVideo(uri) {
+    console.log(uri);
+    this.videoPlayer
+      .play("file://" + uri)
+      .then(() => console.log("video completed"))
+      .catch(err => console.log(err));
+    // FIXME seem dont work
+    // NOT COOL MUST FIX URI :/
+    uri = "file:/" + uri;
+    console.log(uri);
 
-        console.log(this.videoPlayer)
-        // this.videoPlayer.play(uri)
-        //     .then(() => console.log("video completed"))
-        //     .catch(err => console.log(err))
-    }
+    console.log(this.videoPlayer);
+    // this.videoPlayer.play(uri)
+    //     .then(() => console.log("video completed"))
+    //     .catch(err => console.log(err))
+  }
 
-    /**
-     * [CAPTURE VIDEO FROM CAMERA DEVICE]
-     * @name captureVideo()
-     * @function Load native camera device { MediaCapture } from "ionic-native"
-     * @type Promise
-     * @param null
-     * @return :
-     * [
-     *   fullPath: "file:/storage/emulated/0/DCIM/Camera/VID_20161119_075425.mp4",
-     *   lastModified: null,
-     *   lastModifiedDate:1479538465000,
-     *   localURL: "cdvfile://localhost/sdcard/DCIM/Camera/VID_20161119_075425.mp4",
-     *   name: "VID_20161119_075425.mp4",
-     *   size:561702,
-     *   start:0,
-     *   type: "video/mp4"
-     * ]
-     */
-    captureVideo() {
-        MediaCapture.captureVideo()
-            .then(data => this.stockCaptureVideo(data))
-            .catch(err => console.error(err))
-    }
+  /**
+   * [CAPTURE VIDEO FROM CAMERA DEVICE]
+   * @name captureVideo()
+   * @function Load native camera device { MediaCapture } from "ionic-native"
+   * @type Promise
+   * @param null
+   * @return :
+   * [
+   *   fullPath: "file:/storage/emulated/0/DCIM/Camera/VID_20161119_075425.mp4",
+   *   lastModified: null,
+   *   lastModifiedDate:1479538465000,
+   *   localURL: "cdvfile://localhost/sdcard/DCIM/Camera/VID_20161119_075425.mp4",
+   *   name: "VID_20161119_075425.mp4",
+   *   size:561702,
+   *   start:0,
+   *   type: "video/mp4"
+   * ]
+   */
+  captureVideo() {
+    this.mediaCapture
+      .captureVideo()
+      .then((data: MediaFile[]) => {
+        console.log("je suis captureVideo");
+        console.log(data);
+        this.stockCaptureVideo(data);
+      })
+      .catch((err: CaptureError) => console.error(err));
+  }
 
-    /**
-     * [captureImage description]
-     * @method captureImage
-     * @return {[type]}     [description]
-     */
-    captureImage() {
-        MediaCapture.captureImage()
-            .then(data => console.log(data))
-            .catch(err => console.error(err))
-    }
+  /**
+   * [captureImage description]
+   * @method captureImage
+   * @return {[type]}     [description]
+   */
+  captureImage() {
+    this.mediaCapture
+      .captureImage()
+      .then(data => console.log(data))
+      .catch(err => console.error(err));
+  }
 
-    /**
-     * [stockCaptureVideo description]
-     * @method stockCaptureVideo
-     * @param  {[type]}          uri [file:/storage/emulated/0/DCIM/Camera/VID_20161119_075425.mp4]
-     * @return {Promise<any>}        [description]
-     */
-    stockCaptureVideo(uri: any): Promise<any> {
-        return new Promise((resolve, reject) => {
-            Promise.all([this.getVideoMeta(uri), this.getVideoThumb(uri), this.parseService.convertUriToDate(uri)])
-                .then(data => {
-                    this.videoAllInfo.infoVideo = data[0]
-                    this.videoAllInfo.uriThumb = data[1]
-                    this.videoAllInfo.datePrise = data[2]
-                    this.videoAllInfo.dateImport = Date.now()
-                    this.videoAllInfo.uri = uri
-                    resolve(this.videoAllInfo)
-                })
-                .catch(err => reject(err))
+  /**
+   * [stockCaptureVideo description]
+   * @method stockCaptureVideo
+   * @param  {[type]}          uri [file:/storage/emulated/0/DCIM/Camera/VID_20161119_075425.mp4]
+   * @return {Promise<any>}        [description]
+   */
+  stockCaptureVideo(uri: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      Promise.all([
+        this.getVideoMeta(uri),
+        this.getVideoThumb(uri),
+        this.parseService.convertUriToDate(uri)
+      ])
+        .then(data => {
+          this.videoAllInfo.infoVideo = data[0];
+          this.videoAllInfo.uriThumb = data[1];
+          this.videoAllInfo.datePrise = data[2];
+          this.videoAllInfo.dateImport = Date.now();
+          this.videoAllInfo.uri = uri;
+          resolve(this.videoAllInfo);
         })
-    }
+        .catch(err => reject(err));
+    });
+  }
 
-    /**
-     * [getVideoUri description]
-     * @method getVideoUri
-     * @return {Promise<any>} [description]
-     */
-    getVideoUri(): Promise<any> {
-        return new Promise((resolve, reject) => {
-            Camera.getPicture({
-                quality: 50,
-                destinationType: Camera.DestinationType.FILE_URI,
-                sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-                mediaType: 1
-            })
-                .then(data => resolve(data))
-                .catch(err => reject(err))
+  /**
+   * [getVideoUri description]
+   * @method getVideoUri
+   * @return {Promise<any>} [description]
+   */
+  getVideoUri(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.camera
+        .getPicture({
+          quality: 50,
+          destinationType: this.camera.DestinationType.FILE_URI,
+          sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+          mediaType: 1
         })
-    }
+        .then(data => resolve(data))
+        .catch(err => reject(err));
+    });
+  }
 
-    /**
-     * [getVideoMeta description]
-     * @desc
-     * @param  {string}  uri [storage/emulated/0/DCIM/Camera/VID_20161119_075425.mp4]
-     * @return {Promise}     [description]
-     */
-    getVideoMeta(uri: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            uri = "file:/" + uri; // NOT COOL MUST FIX URI :/
-            VideoEditor.getVideoInfo({ fileUri: uri })
-                .then(data => {
-                    if (data.orientation === "portrait") {
-                        this.notificationService.toastIt("Attention : Format portrait détecté")
-                        reject("portrait")
-                    }
-                    resolve(data)
-                })
-                .catch(err => reject(err))
+  /**
+   * [getVideoMeta description]
+   * @desc
+   * @param  {string}  uri [storage/emulated/0/DCIM/Camera/VID_20161119_075425.mp4]
+   * @return {Promise}     [description]
+   */
+  getVideoMeta(uri: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      uri = "file:/" + uri; // NOT COOL MUST FIX URI :/
+      this.videoEditor
+        .getVideoInfo({ fileUri: uri })
+        .then(data => {
+          if (data.orientation === "portrait") {
+            this.notificationService.toastIt(
+              "Attention : Format portrait détecté"
+            );
+            reject("portrait");
+          }
+          resolve(data);
         })
-    }
+        .catch(err => reject(err));
+    });
+  }
 
-    /**
-     * [getVideoThumb description]
-     * @desc
-     * @param  {string}  uri [storage/emulated/0/DCIM/Camera/VID_20161119_075425.mp4]
-     * @return {Promise}     [/storage/emulated/0/Android/data/com.ionicframework.tuber560001/files/files/videos/output-name.jpg]
-     */
-    date: any;
-    getVideoThumb(uri: string): Promise<any> {
-        this.date = Date.now()
-        return new Promise((resolve, reject) => {
-            uri = "file:/" + uri // NOT COOL MUST FIX URI :/
-            VideoEditor.createThumbnail({
-                fileUri: uri, // the path to the video on the device
-                outputFileName: this.date, // the file name for the JPEG image
-                atTime: 10, // optional, location in the video to create the thumbnail (in seconds)
-                width: 191, // optional, width of the thumbnail
-                height: 340, // optional, height of the thumbnail
-                quality: 75 // optional, quality of the thumbnail (between 1 and 100)
-            })
-                .then(data => resolve(data))
-                .catch(err => reject(err))
+  /**
+   * [getVideoThumb description]
+   * @desc
+   * @param  {string}  uri [storage/emulated/0/DCIM/Camera/VID_20161119_075425.mp4]
+   * @return {Promise}     [/storage/emulated/0/Android/data/com.ionicframework.tuber560001/files/files/videos/output-name.jpg]
+   */
+  date: any;
+  getVideoThumb(uri: string): Promise<any> {
+    this.date = Date.now();
+    return new Promise((resolve, reject) => {
+      uri = "file:/" + uri; // NOT COOL MUST FIX URI :/
+      this.videoEditor
+        .createThumbnail({
+          fileUri: uri, // the path to the video on the device
+          outputFileName: this.date, // the file name for the JPEG image
+          atTime: 10, // optional, location in the video to create the thumbnail (in seconds)
+          width: 191, // optional, width of the thumbnail
+          height: 340, // optional, height of the thumbnail
+          quality: 75 // optional, quality of the thumbnail (between 1 and 100)
         })
-    }
+        .then(data => resolve(data))
+        .catch(err => reject(err));
+    });
+  }
 }

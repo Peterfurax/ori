@@ -1,4 +1,3 @@
-
 <!-- logged out menu -->
 <ion-menu id="loggedOutMenu" [content]="content">
 
@@ -11,7 +10,7 @@
   <ion-content class="outer-content">
 
     <ion-list>
-<!--       <ion-list-header>
+      <!--       <ion-list-header>
         NavigateOutMenu
       </ion-list-header> -->
       <button ion-item menuClose *ngFor="let p of appPages" (click)="openPage(p)">
@@ -21,7 +20,7 @@
     </ion-list>
 
     <ion-list>
-<!--       <ion-list-header>
+      <!--       <ion-list-header>
         AccountOutMenu
       </ion-list-header> -->
       <button ion-item menuClose *ngFor="let p of loggedOutPages" (click)="openPage(p)">
@@ -45,7 +44,7 @@
   <ion-content class="outer-content">
 
     <ion-list>
-<!--       <ion-list-header>
+      <!--       <ion-list-header>
         NavigateInMenu
       </ion-list-header> -->
       <button ion-item menuClose *ngFor="let p of appPages" (click)="openPage(p)">
@@ -55,7 +54,7 @@
     </ion-list>
 
     <ion-list>
-<!--       <ion-list-header>
+      <!--       <ion-list-header>
         AccountInMenu
       </ion-list-header> -->
       <button ion-item menuClose *ngFor="let p of loggedInPages" (click)="openPage(p)">

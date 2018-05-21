@@ -79,7 +79,7 @@ export class VideoListPage {
      * @return {[type]} [description]
      */
     add() {
-        this.people = []
+        // this.people = []
         this.serviceVideo.getVideoUri()
             .then(uri => {
                 this.serviceVideo.stockCaptureVideo(uri)
