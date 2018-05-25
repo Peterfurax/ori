@@ -1,13 +1,15 @@
 import { Injectable } from "@angular/core";
 @Injectable()
+
+
+
 export class LogService {
   constructor() {}
-
   /**
-   * [test the typeof and always return a string]
+   * test the typeof and always return a string
    * @method stringifyLog
-   * @param  {any}        message [any]
-   * @return {string}             [always a string]
+   * @param  {any}        message any
+   * @return {string}             always a string
    */
   stringifyLog(message: any) {
     // if null
@@ -19,12 +21,12 @@ export class LogService {
   }
 
   /**
-   * [log err main function]
+   * log err main function
    * @method log
-   * @param  {any}    message [any]
-   * @return {string}         [message stringify]
+   * @param  {any}    message any
+   * @return {string}         message stringify
    */
-  log(message: any) {
+  log(message: any, ) {
     console.log(this.stringifyLog(message));
   }
 }

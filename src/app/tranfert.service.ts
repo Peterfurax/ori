@@ -12,9 +12,6 @@ import * as moment from "moment";
 import "moment/src/locale/fr";
 @Injectable()
 
-/**
- *  class VideoService
- */
 export class TransfertService {
   constructor(
     public fileService: FileService,
@@ -24,7 +21,6 @@ export class TransfertService {
   ) {}
 
   exportNameMaker() {
-    console.log(moment().format("YYYYMMDDHHmmss"));
     return moment().format("YYYYMMDDHHmmss");
   }
 
@@ -142,7 +138,7 @@ export class TransfertService {
       fileTransfer
         .upload(
           uri,
-          "http://10.70.71.37:80",
+          "http://192.168.0.16:8000",
           this.optionFileTransferMaker(exportName, type)
         )
         .then(data => resolve(data))

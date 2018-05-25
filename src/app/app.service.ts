@@ -38,20 +38,19 @@ export class AppService {
     this.appPackageName = this.appVersion.getPackageName();
     this.appVersionNumber = this.appVersion.getVersionNumber();
     Promise.all([this.appName, this.appPackageName, this.appVersionNumber])
-      .then(data => {
-        this.appAllInfo.Names = data[0];
-        this.appAllInfo.PackageName = data[1];
-        this.appAllInfo.VersionNumber = data[2];
+      .then((result:string[]) => {
+        this.appAllInfo.Names = result[0];
+        this.appAllInfo.PackageName = result[1];
+        this.appAllInfo.VersionNumber = result[2];
       })
       .catch(err => console.error(err));
   }
 
   /**
-   * [notificationMaker description]
    * @method notificationMaker
-   * @return {[type]}          [description]
+   * @desc natif notification and vibrate
+   * @type PromiseAll
    */
-
   notificationMaker() {
     Promise.all([this.notification(), this.vibrate([500, 100, 500])])
       .then(() => {})
@@ -59,10 +58,9 @@ export class AppService {
   }
 
   /**
-   * [vibrate description]
    * @method vibrate
-   * @param  {any}    param [description]
-   * @return {[type]}       [description]
+   * @desc natif notification and vibrate
+   * @type PromiseAll
    */
   vibrate(param: any) {
     this.vibration.vibrate(param);
@@ -71,7 +69,6 @@ export class AppService {
   /**
    * [notification description]
    * @method notification
-   * @return {[type]}     [description]
    */
   notification() {
     this.localNotifications.schedule({

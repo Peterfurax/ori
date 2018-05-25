@@ -68,7 +68,7 @@ export class MyApp {
     private platform: Platform,
     private events: Events,
     private menu: MenuController,
-    private sqlite: SQLite,
+    private sqlite: SQLite
   ) {
     this.initializeApp();
     this.userData
@@ -90,49 +90,54 @@ export class MyApp {
     this.platform
       .ready()
       .then(() => {
-        this.statusBar.styleDefault()
-        this.statusBar.styleBlackTranslucent()
-        // this.statusBar.hide();
-        // let db = new SQLite()
+        this.splashScreen.hide();
+        this.statusBar.styleDefault();
+        this.statusBar.styleBlackTranslucent();
+        this.statusBar.hide();
         const sqlRow = [
-            "uri TEXT",
-            "uriThumb TEXT",
-            "bitrate INT",
-            "duration TEXT",
-            "height TEXT",
-            "orientation TEXT",
-            "size TEXT",
-            "width TEXT",
-            "guestname TEXT",
-            "guestfirstname TEXT",
-            "guestoccupation TEXT",
-            "guestplace TEXT",
-            "guestS1 TEXT",
-            "guesttext TEXT",
-            "journalistname TEXT",
-            "journalistfirstname TEXT",
-            "journalistoccupation TEXT",
-            "journalistsociety TEXT",
-            "journalistservice TEXT",
-            "distributionembargo_date TEXT",
-            "distributionsave_rush TEXT",
-            "distributionArr TEXT",
-            "dateImport INT",
-            "datePrise INT",
-            "dateSend INT",
-            "resultSend INT"
-        ]
-        this.sqlite.create({ name: "data.db", location: "default" })
-            .then((db: SQLiteObject) => {
-                db.executeSql("CREATE TABLE IF NOT EXISTS people (id INTEGER PRIMARY KEY AUTOINCREMENT," + sqlRow.toString() + ")", {})
-                    .then(data => console.log("TABLE CREATED: ", data))
-                    .catch(err => console.error("Unable to execute sql", err))
-            })
-            .catch(err => console.error("Unable to open database", err))
+          "uri TEXT",
+          "uriThumb TEXT",
+          "bitrate INT",
+          "duration TEXT",
+          "height TEXT",
+          "orientation TEXT",
+          "size TEXT",
+          "width TEXT",
+          "guestname TEXT",
+          "guestfirstname TEXT",
+          "guestoccupation TEXT",
+          "guestplace TEXT",
+          "guestS1 TEXT",
+          "guesttext TEXT",
+          "journalistname TEXT",
+          "journalistfirstname TEXT",
+          "journalistoccupation TEXT",
+          "journalistsociety TEXT",
+          "journalistservice TEXT",
+          "distributionembargo_date TEXT",
+          "distributionsave_rush TEXT",
+          "distributionArr TEXT",
+          "dateImport INT",
+          "datePrise INT",
+          "dateSend INT",
+          "resultSend INT"
+        ];
+        this.sqlite
+          .create({ name: "data.db", location: "default" })
+          .then((db: SQLiteObject) => {
+            db
+              .executeSql(
+                "CREATE TABLE IF NOT EXISTS people (id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                  sqlRow.toString() +
+                  ")",
+                {}
+              )
+              .then(data => console.log("TABLE CREATED: ", data))
+              .catch(err => console.error("Unable to execute sql", err));
+          })
+          .catch(err => console.error("Unable to open database", err));
       })
       .catch(err => console.error("Platform Init error", err));
-    this.splashScreen.hide();
-    
   }
 
   /**

@@ -27,14 +27,9 @@ export class SqlLiteData {
       })
       .then((db: SQLiteObject) => {
         this.database = db;
-        this.refresh()
-        // db
-        //   .executeSql("create table people(name VARCHAR(32))", {})
-        //   .then(() => console.log("Executed SQL"))
-        //   .catch(e => console.log(e));
+        this.refresh();
       })
-      .catch(e => console.log(e));
-      
+      .catch(err => console.error(err));
   }
   /**
    * [update description]
@@ -101,39 +96,40 @@ export class SqlLiteData {
           if (data.rows.length > 0) {
             for (let i = 0; i < data.rows.length; i++) {
               let destarray = [];
-              if (data.rows.item(i).distributionArr !== null) {
-                destarray = data.rows.item(i).distributionArr.split(",");
+              let val = data.rows.item(i);
+              if (val.distributionArr !== null) {
+                destarray = val.distributionArr.split(",");
               }
               this.people.push({
-                uri: data.rows.item(i).uri,
-                uriThumb: data.rows.item(i).uriThumb,
-                bitrate: data.rows.item(i).bitrate,
-                duration: data.rows.item(i).duration,
-                height: data.rows.item(i).height,
-                orientation: data.rows.item(i).orientation,
-                size: data.rows.item(i).size,
-                width: data.rows.item(i).width,
-                guestname: data.rows.item(i).guestname,
-                guestfirstname: data.rows.item(i).guestfirstname,
-                guestoccupation: data.rows.item(i).guestoccupation,
-                guestplace: data.rows.item(i).guestplace,
-                guestS1: data.rows.item(i).guestS1,
-                guesttext: data.rows.item(i).guesttext,
-                journalistname: data.rows.item(i).journalistname,
-                journalistfirstname: data.rows.item(i).journalistfirstname,
-                journalistoccupation: data.rows.item(i).journalistoccupation,
-                journalistsociety: data.rows.item(i).journalistsociety,
-                journalistservice: data.rows.item(i).journalistservice,
-                distributionembargo_date: data.rows.item(i).distributionembargo_date,
-                distributionsave_rush: data.rows.item(i).distributionsave_rush,
+                uri: val.uri,
+                uriThumb: val.uriThumb,
+                bitrate: val.bitrate,
+                duration: val.duration,
+                height: val.height,
+                orientation: val.orientation,
+                size: val.size,
+                width: val.width,
+                guestname: val.guestname,
+                guestfirstname: val.guestfirstname,
+                guestoccupation: val.guestoccupation,
+                guestplace: val.guestplace,
+                guestS1: val.guestS1,
+                guesttext: val.guesttext,
+                journalistname: val.journalistname,
+                journalistfirstname: val.journalistfirstname,
+                journalistoccupation: val.journalistoccupation,
+                journalistsociety: val.journalistsociety,
+                journalistservice: val.journalistservice,
+                distributionembargo_date: val.distributionembargo_date,
+                distributionsave_rush: val.distributionsave_rush,
                 distributionArr: destarray,
-                dateImport: data.rows.item(i).dateImport,
-                datePrise: data.rows.item(i).datePrise,
-                dateSend: data.rows.item(i).dateSend,
-                resultSend: data.rows.item(i).resultSend
+                dateImport: val.dateImport,
+                datePrise: val.datePrise,
+                dateSend: val.dateSend,
+                resultSend: val.resultSend
               });
             }
-            resolve();
+            resolve("ok Refresh Database");
           }
         })
         .catch(err => {
@@ -216,10 +212,9 @@ export class SqlLiteData {
               console.log("INSERTED: ", result);
               resolve(data.uri);
             })
-            // .catch(err => reject("ERROR requestSql: " + err.toString()));
             .catch(err => reject(err));
         })
-        .catch(err => reject("ERROR getProfile: " + err.toString()));
+        .catch(err => reject("ERROR getProfile: " + err));
     });
   }
 

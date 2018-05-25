@@ -64,20 +64,10 @@ export class VideoService {
    * @param {[type]} uri [description]
    */
   playVideo(uri) {
-    console.log(uri);
     this.videoPlayer
       .play("file://" + uri)
       .then(() => console.log("video completed"))
       .catch(err => console.log(err));
-    // FIXME seem dont work
-    // NOT COOL MUST FIX URI :/
-    uri = "file:/" + uri;
-    console.log(uri);
-
-    console.log(this.videoPlayer);
-    // this.videoPlayer.play(uri)
-    //     .then(() => console.log("video completed"))
-    //     .catch(err => console.log(err))
   }
 
   /**

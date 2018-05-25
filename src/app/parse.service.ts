@@ -13,8 +13,6 @@ export class ParseService {
    * @return {Promise}     [description]
    */
   uriToDate(uriParse: string): Promise<any> {
-    console.log("uriParse To Parse",uriParse)
-    console.log(uriParse)
     return new Promise((resolve, reject) => {
       let date = moment(uriParse, "YYYYMMDD_HHmmss").toISOString();
       if (!moment(date).isValid()) {
@@ -75,8 +73,6 @@ export class ParseService {
    * @return {Promise<any>}       [description]
    */
   convertUriToDate(uri: string): Promise<any> {
-    console.log("uri")
-    console.log(uri)
     return new Promise((resolve, reject) => {
       this.parseUriDate(this.parseUri(uri))
         .then(data => resolve(data))
