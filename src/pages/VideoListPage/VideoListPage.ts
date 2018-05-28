@@ -20,6 +20,7 @@ import { VideoMeta } from "../VideoMeta/VideoMeta";
 export class VideoListPage {
   people: Array<Object>;
   show: boolean = false;
+  showSearch: boolean = false;
   constructor(
     private navController: NavController,
     private platform: Platform,
@@ -31,6 +32,10 @@ export class VideoListPage {
     private storageSql: SqlLiteData
   ) {
     console.log(this);
+  }
+
+  isvalideToExport(item) {
+    console.log(item);
   }
 
   /**
@@ -64,7 +69,7 @@ export class VideoListPage {
    * playVideo description
    * @method playVideo
    * @param  {[type]}  uri
-   * @return {[type]}     
+   * @return {[type]}
    */
   playVideo(uri) {
     this.serviceVideo.playVideo(uri);
@@ -74,7 +79,7 @@ export class VideoListPage {
   /**
    * upload description
    * @method upload
-   * @param  {[type]} item   
+   * @param  {[type]} item
    */
   upload(item) {
     this.transfertService
@@ -110,7 +115,7 @@ export class VideoListPage {
    * openNavDetailsPage description
    * @method openNavDetailsPage
    * @param  {[type]}           person
-   * @return {[type]}                 
+   * @return {[type]}
    */
   openNavDetailsPage(person) {
     this.navController.push(VideoMeta, { person: person });
@@ -123,5 +128,14 @@ export class VideoListPage {
    */
   clicked() {
     this.show = !this.show;
+  }
+
+    /**
+   * showSearch description
+   * @method showSearch
+   * @return {[type]}
+   */
+  showSearchB() {
+    this.showSearch = !this.showSearch;
   }
 }

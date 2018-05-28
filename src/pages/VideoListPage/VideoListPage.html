@@ -3,11 +3,11 @@
         <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>Vos Videos</ion-title>
+        <ion-title>Videos</ion-title>
         <ion-buttons end>
-            <!--             <button ion-button icon-only (click)="add()">
+            <button ion-button icon-only (click)="showSearchB()">
                 <ion-icon name="search"></ion-icon>
-            </button> -->
+            </button>
             <button ion-button icon-only *ngIf="show" (click)="clicked()">
                 <ion-icon name="contract"></ion-icon>
             </button>
@@ -22,14 +22,16 @@
 
 </ion-header>
 <ion-content>
-    <!-- <ion-searchbar animated='true ' placeholder='Recherche' autocomplete='on'  ></ion-searchbar> -->
+    <ion-searchbar *ngIf="showSearch" animated="true" placeholder="Recherche" autocomplete="on" [(ngModel)]="searchTextInMeta"></ion-searchbar>
+    <ion-searchbar *ngIf="showSearch" animated="true" placeholder="Recherche" autocomplete="on" [(ngModel)]="isSend"></ion-searchbar>
     <div class="cards-bg card-background-page">
-        <ion-card class="adv-map" *ngFor="let person of storageSql.people">
+        <ion-card class="adv-map" *ngFor="let person of storageSql.people | filterMeta : searchTextInMeta | filterSend : isSend">
+            <!-- <div>{{person | json}}</div> -->
             <div style="position: relative">
                 <img src="{{person.uriThumb}}" (click)="playVideo(person.uri)">
-                <div class="card-title"> {{person.guestfirstname}} {{person.guestname}}</div>
-                <div class="card-subtitle">{{person.guestoccupation}}</div>
-                <div class="card-duration">Durée: {{person.duration}} sec Qualité: {{person.height}}p</div>
+                <div class="card-title"> {{person?.guestfirstname}} {{person?.guestname}}</div>
+                <div class="card-subtitle">{{person?.guestoccupation}}</div>
+                <div class="card-duration">Durée: {{person?.duration}} sec Qualité: {{person?.height}}p</div>
                 <ion-fab right middle>
                     <button ion-fab mini color="light">
                         <ion-icon name="md-share"></ion-icon>
@@ -39,7 +41,7 @@
                             <ion-icon name="create"></ion-icon>
                         </button>
                     </ion-fab-list>
-                    <ion-fab-list side="bottom">
+                    <ion-fab-list side="bottom" *ngIf="person.guestfirstname && person.guesttext">
                         <button ion-fab mini color="secondary" (click)="upload(person)">
                             <ion-icon name="cloud-upload"></ion-icon>
                         </button>
@@ -51,25 +53,26 @@
                     </ion-fab-list>
                 </ion-fab>
             </div>
-            <ion-item *ngIf="person.progress > 0"><progress max="100" value="{{person.progress}}"></progress>{{person.progress}}%</ion-item>
+            <ion-item *ngIf="person.progress > 0">
+                <progress max="100" value="{{person.progress}}"></progress>{{person?.progress}}%</ion-item>
             <ion-item *ngIf="show">
-                <ion-icon  item-left name='calendar'></ion-icon>
-                <p>Prise : {{person.datePrise | date:'fullDate'}}</p>
-                <p>Import : {{person.dateImport | date:'fullDate'}}</p>
-                <p>Export : {{person.dateSend | date:'fullDate'}}</p>
+                <ion-icon item-left name='calendar'></ion-icon>
+                <p>Prise : {{person?.datePrise | date:'fullDate'}}</p>
+                <p>Import : {{person?.dateImport | date:'fullDate'}}</p>
+                <p>Export : {{person?.dateSend | date:'fullDate'}}</p>
             </ion-item>
             <ion-item *ngIf="show">
                 <ion-icon item-left name='person'></ion-icon>
-                <p>{{person.guestfirstname}} {{person.guestname}}</p>
-                <p>{{person.guestoccupation}}</p>
+                <p>{{person?.guestfirstname}} {{person?.guestname}}</p>
+                <p>{{person?.guestoccupation}}</p>
             </ion-item>
             <ion-item *ngIf="show">
                 <ion-icon item-left name='paper'></ion-icon>
-                <p>{{person.guesttext}}</p>
+                <p>{{person?.guesttext}}</p>
             </ion-item>
             <ion-item *ngIf="show">
                 <ion-icon large item-left name='pin'></ion-icon>
-                <p>{{person.guestplace}}</p>
+                <p>{{person?.guestplace}}</p>
             </ion-item>
             <ion-item *ngIf="show">
                 <ion-icon large item-left color="secondary" name='cloud-upload'></ion-icon>
@@ -77,8 +80,8 @@
                 <ion-icon *ngFor="let dest of person.distributionArr" item-right color="secondary" name='logo-{{dest}}'></ion-icon>
             </ion-item>
             <ion-item actions *ngIf="show">
-                <span item-left secondary>{{person.duration}} sec</span>
-                <span item-left subtle>{{person.height}}p</span>
+                <span item-left secondary>{{person?.duration}} sec</span>
+                <span item-left subtle>{{person?.height}}p</span>
                 <button ion-button color="primary" clear item-right icon-left>
                     <ion-icon name='navigate'></ion-icon>
                     ready to send
@@ -87,14 +90,16 @@
         </ion-card>
     </div>
 </ion-content>
-<!--     <ion-navbar >
-        <ion-buttons end>
-            <button ion-button icon-only (click)="add()">
-                <ion-icon name="add-circle"></ion-icon>
-            </button>
-        </ion-buttons>
-    </ion-navbar> -->
-<!-- <ion-footer *ngIf="showUploadBar">
+<ion-navbar>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="add()">
+            <ion-icon name="add-circle"></ion-icon>
+        </button>
+    </ion-buttons>
+</ion-navbar> -->
+<ion-footer *ngIf="showUploadBar">
     <ion-title>{{TransfertService.progress}}</ion-title>
-    <ion-item *ngIf="showUploadBar"><progress max="100" value="{{TransfertService.progress}}">{{TransfertService.progress}}%</progress></ion-item>
-</ion-footer> -->
+    <ion-item *ngIf="showUploadBar">
+        <progress max="100" value="{{TransfertService.progress}}">{{TransfertService.progress}}%</progress>
+    </ion-item>
+</ion-footer>

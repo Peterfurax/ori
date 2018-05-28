@@ -2,31 +2,19 @@
 import { Injectable } from "@angular/core";
 import { ParseService } from "./parse.service";
 import { NotificationService } from "./notification.service";
-import {
-  MediaCapture,
-  MediaFile,
-  CaptureError,
-  CaptureImageOptions
-} from "@ionic-native/media-capture";
 import { Camera, CameraOptions } from "@ionic-native/camera";
 import { VideoEditor } from "@ionic-native/video-editor";
-import { VideoPlayer } from "@ionic-native/video-player";
+
+import { VideoPlay } from "./native/videoPlayer";
+
+import {MediaExtract} from './native/mediaCapture'
 @Injectable()
 
 /**
  *  class VideoService
  */
 export class VideoService {
-  constructor(
-    private mediaCapture: MediaCapture,
-    private videoPlayer: VideoPlayer,
-    private parseService: ParseService,
-    private notificationService: NotificationService,
-    private camera: Camera,
-    private videoEditor: VideoEditor
-  ) {}
-
-  private videoAllInfo: {
+  videoAllInfo: {
     dateImport?: number;
     datePrise?: string;
     dateSend?: string;
@@ -57,17 +45,22 @@ export class VideoService {
       width: 0
     }
   };
+  constructor(
+    private mediaExtract: MediaExtract,
+    private videoPlay: VideoPlay,
+    private parseService: ParseService,
+    private notificationService: NotificationService,
+    private camera: Camera,
+    private videoEditor: VideoEditor
+  ) {}
 
   /**
    * [playVideo description]
    * @desc
    * @param {[type]} uri [description]
    */
-  playVideo(uri) {
-    this.videoPlayer
-      .play("file://" + uri)
-      .then(() => console.log("video completed"))
-      .catch(err => console.log(err));
+  playVideo(uri):void {
+    this.videoPlay.play(uri);
   }
 
   /**
@@ -88,15 +81,15 @@ export class VideoService {
    *   type: "video/mp4"
    * ]
    */
-  captureVideo() {
-    this.mediaCapture
+  captureVideo():void {
+    this.mediaExtract
       .captureVideo()
-      .then((data: MediaFile[]) => {
+      .then((data: string[]) => {
         console.log("je suis captureVideo");
         console.log(data);
         this.stockCaptureVideo(data);
       })
-      .catch((err: CaptureError) => console.error(err));
+      .catch((err) => console.error(err));
   }
 
   /**
@@ -104,8 +97,8 @@ export class VideoService {
    * @method captureImage
    * @return {[type]}     [description]
    */
-  captureImage() {
-    this.mediaCapture
+  captureImage():void {
+    this.mediaExtract
       .captureImage()
       .then(data => console.log(data))
       .catch(err => console.error(err));
@@ -124,7 +117,7 @@ export class VideoService {
         this.getVideoThumb(uri),
         this.parseService.convertUriToDate(uri)
       ])
-        .then(data => {
+        .then((data:any) => {
           this.videoAllInfo.infoVideo = data[0];
           this.videoAllInfo.uriThumb = data[1];
           this.videoAllInfo.datePrise = data[2];

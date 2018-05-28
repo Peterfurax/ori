@@ -33,6 +33,17 @@ import { MediaCapture } from "@ionic-native/media-capture";
 import { Camera } from "@ionic-native/camera";
 import { VideoEditor } from "@ionic-native/video-editor";
 import { FileTransfer } from "@ionic-native/file-transfer";
+import { Spinner } from "./native/spinnerDialog";
+import { Background } from "./native/backgroudMode";
+import { LocalNotif } from "./native/localNofication";
+import { Toasted } from "./native/toast";
+import { Vibrate } from "./native/vibration";
+import { VideoPlay } from "./native/videoPlayer";
+import { MediaExtract } from "./native/mediaCapture";
+
+import { DateService } from "./date.service";
+import { FilterPipeMeta, FilterPipeSend } from "./filter.pipe";
+
 // import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 @NgModule({
   declarations: [
@@ -42,7 +53,9 @@ import { FileTransfer } from "@ionic-native/file-transfer";
     VideoMeta,
     LoginPage,
     ProfilePage,
-    ProfileMeta
+    ProfileMeta,
+    FilterPipeMeta,
+    FilterPipeSend
   ],
   imports: [
     BrowserModule,
@@ -60,6 +73,12 @@ import { FileTransfer } from "@ionic-native/file-transfer";
     ProfileMeta
   ],
   providers: [
+    DateService,
+    Spinner,
+    Background,
+    LocalNotif,
+    Toasted,
+    Vibrate,
     SqlLiteData,
     VideoService,
     AppService,
@@ -83,7 +102,9 @@ import { FileTransfer } from "@ionic-native/file-transfer";
     MediaCapture,
     Camera,
     VideoEditor,
-    FileTransfer
+    FileTransfer,
+    VideoPlay,
+    MediaExtract
   ]
 })
 export class AppModule {}

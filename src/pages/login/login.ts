@@ -10,27 +10,15 @@ import { VideoListPage } from "../VideoListPage/VideoListPage";
   templateUrl: "login.html"
 })
 export class LoginPage {
-  logoState: any = "in";
-  cloudState: any = "in";
-  loginState: any = "in";
-  formState: any = "in";
-  submitted = false;
-  login: { username?: string; password?: string } = {};
-  // profile: {
-  //   name?: string;
-  //   firstname?: string;
-  //   occupation?: string;
-  //   service?: string;
-  //   compagnie?: string;
-  // } = {
-  //   name: "",
-  //   firstname: "",
-  //   occupation: "",
-  //   service: "",
-  //   compagnie: ""
-  // };
+  private password: string = undefined;
+  private logoState: any = "in";
+  private cloudState: any = "in";
+  private loginState: any = "in";
+  private formState: any = "in";
+  private submitted = false;
+  private login: { username?: string; password?: string } = {};
 
-  constructor(public navCtrl: NavController, public userData: UserData) {}
+  constructor(private navCtrl: NavController, private userData: UserData) {}
 
   /**
    *  onLogin(form)
@@ -39,15 +27,13 @@ export class LoginPage {
    */
   onLogin(form) {
     this.submitted = true;
-    if (form.valid) {
-      this.userData.login(this.login.username);
+    if (form.valid && form.value.password === this.password ? true : false) {
+      this.userData.login();
       this.userData
         .getProfile()
         .then(result => {
-          if (result === null) {
-            this.navCtrl.push(ProfilePage);
-            this.navCtrl.setRoot(VideoListPage);
-          } else this.navCtrl.setRoot(VideoListPage);
+          if (!result) this.navCtrl.push(ProfilePage);
+          this.navCtrl.setRoot(VideoListPage);
         })
         .catch(err => console.error(err));
     }

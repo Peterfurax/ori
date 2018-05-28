@@ -4,6 +4,7 @@ import { VideoService } from "../../app/video.service";
 import { NavController } from "ionic-angular";
 import { UserData } from "../../providers/user-data";
 import { SqlLiteData } from "../../providers/sqlLite";
+import { NotificationService } from "../../app/notification.service";
 
 @Component({
   selector: "page-About",
@@ -11,11 +12,12 @@ import { SqlLiteData } from "../../providers/sqlLite";
 })
 export class About {
   constructor(
-    public navCtrl: NavController,
-    public serviceVideo: VideoService,
-    public serviceApp: AppService,
-    public userData: UserData,
-    public storageSql: SqlLiteData
+    private notificationService: NotificationService,
+    private navCtrl: NavController,
+    private serviceVideo: VideoService,
+    private serviceApp: AppService,
+    private userData: UserData,
+    private storageSql: SqlLiteData
   ) {
     this.serviceApp.appVersionAll();
   }
@@ -33,7 +35,7 @@ export class About {
   }
 
   pro() {
-    this.serviceApp.notificationMaker();
+    this.notificationService.notificationMaker("test", true, true);
   }
 
   VideoUri() {

@@ -1,32 +1,29 @@
 import { Injectable } from "@angular/core";
-import * as moment from "moment";
-import "moment/src/locale/fr";
+import { DateService } from "./date.service";
 @Injectable()
 export class ParseService {
-  constructor() {
-    moment.locale("fr");
-  }
+  constructor(private dateService: DateService) {}
+
   /**
-   *
-   * @desc
-   * @param {string} uriParse [description]
-   * @return {Promise}     [description]
+   * @desc uri To Date
+   * @param {string} uriParse
+   * @return {Promise}
+   * @memberof ParseService
    */
   uriToDate(uriParse: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let date = moment(uriParse, "YYYYMMDD_HHmmss").toISOString();
-      if (!moment(date).isValid()) {
-        reject("error parsing uriToDate");
-      }
-      resolve(date);
+      let date = this.dateService.YYYYMMDD_HHmmss(uriParse);
+      this.dateService.valide(date)
+        ? resolve(date)
+        : reject("error parsing uriToDate");
     });
   }
 
   /**
-   * [parseUriDate description]
-   * @desc
-   * @param {string} dateExtract [description]
-   * @return {Promise}     [description]
+   * @desc parse Uri Date
+   * @param {string} dateExtract
+   * @return {Promise}
+   * @memberof ParseService
    */
   parseUriDate(dateExtract: string): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -37,40 +34,42 @@ export class ParseService {
   }
 
   /**
-   * [uriExtractFile description]
+   * @desc uri Extract File
    * @method uriExtractFile
-   * @param  {string}   uri [description]
-   * @return {string}       [description]
+   * @param  {string}   uri
+   * @return {string}
+   * @memberof ParseService
    */
   uriExtractFile(uri: string) {
     return /[^/]*$/g.exec(uri)[0];
   }
 
   /**
-   * [uriExtractFileWithoutExt description]
+   * @desc uri Extract File Without Ext
    * @method uriExtractFileWithoutExt
-   * @param  {Object}                 arr [description]
-   * @return {string}                     [description]
+   * @param  {Object}   arr
+   * @return {string}
+   * @memberof ParseService
    */
   uriExtractFileWithoutExt(uriExtractFile: string) {
     return /[^.]*/g.exec(uriExtractFile)[0];
   }
 
   /**
-   * [parseUri description]
+   * @desc parse Uri
    * @method parseUri
-   * @param  {string} uri [description]
-   * @return {string}     [description]
+   * @param  {string} uri
+   * @return {string}
    */
   parseUri(uri: string) {
     return this.uriExtractFileWithoutExt(this.uriExtractFile(uri));
   }
 
   /**
-   * [convertUriToDate description]
+   * @desc convert Uri To Date
    * @method convertUriToDate
-   * @param  {string}         uri [description]
-   * @return {Promise<any>}       [description]
+   * @param  {string}         uri
+   * @return {Promise<any>}
    */
   convertUriToDate(uri: string): Promise<any> {
     return new Promise((resolve, reject) => {

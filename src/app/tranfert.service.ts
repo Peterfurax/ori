@@ -8,31 +8,26 @@ import {
   FileTransferObject
 } from "@ionic-native/file-transfer";
 import { SqlLiteData } from "../providers/sqlLite";
-import * as moment from "moment";
-import "moment/src/locale/fr";
+import { DateService } from "./date.service";
 @Injectable()
-
 export class TransfertService {
   constructor(
-    public fileService: FileService,
-    public notificationService: NotificationService,
-    public sqlLiteData: SqlLiteData,
+    private dateService: DateService,
+    private fileService: FileService,
+    private notificationService: NotificationService,
+    private sqlLiteData: SqlLiteData,
     private transfer: FileTransfer
   ) {}
 
-  exportNameMaker() {
-    return moment().format("YYYYMMDDHHmmss");
-  }
-
-  UploadApply(item, fnc, value) {
+  UploadApply(item, promiseReturnFnc, value) {
     item.resultSend = JSON.stringify(value);
     Promise.all([
       this.sqlLiteData.update(item),
       this.notificationService.uploadEndService(value),
-      fnc()
+      promiseReturnFnc()
     ])
-      .then(v => console.log(v))
-      .catch(v => console.error(v));
+      .then(log => console.log(log))
+      .catch(err => console.error(err));
   }
 
   /**
@@ -74,7 +69,7 @@ export class TransfertService {
       this.fileService
         .WriteJsonMeta(metaForZenon)
         .then(jsonUri => {
-          let exportName = this.exportNameMaker();
+          let exportName = this.dateService.exportNameDate();
           item.dateSend = Date.now();
           Promise.all([
             this.uploadFile(exportName, jsonUri, "json", item),

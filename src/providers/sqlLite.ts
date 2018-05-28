@@ -83,6 +83,10 @@ export class SqlLiteData {
     });
   }
 
+  testNull(val: any) {
+    return (val === "null") ? "" : val;
+  }
+
   /**
    * [refresh description]
    * @return {Promise} [description]
@@ -109,17 +113,17 @@ export class SqlLiteData {
                 orientation: val.orientation,
                 size: val.size,
                 width: val.width,
-                guestname: val.guestname,
-                guestfirstname: val.guestfirstname,
-                guestoccupation: val.guestoccupation,
-                guestplace: val.guestplace,
-                guestS1: val.guestS1,
-                guesttext: val.guesttext,
-                journalistname: val.journalistname,
-                journalistfirstname: val.journalistfirstname,
-                journalistoccupation: val.journalistoccupation,
-                journalistsociety: val.journalistsociety,
-                journalistservice: val.journalistservice,
+                guestname: this.testNull(val.guestname),
+                guestfirstname: this.testNull(val.guestfirstname),
+                guestoccupation: this.testNull(val.guestoccupation),
+                guestplace: this.testNull(val.guestplace),
+                guestS1: this.testNull(val.guestS1),
+                guesttext: this.testNull(val.guesttext),
+                journalistname: this.testNull(val.journalistname),
+                journalistfirstname: this.testNull(val.journalistfirstname),
+                journalistoccupation: this.testNull(val.journalistoccupation),
+                journalistsociety: this.testNull(val.journalistsociety),
+                journalistservice: this.testNull(val.journalistservice),
                 distributionembargo_date: val.distributionembargo_date,
                 distributionsave_rush: val.distributionsave_rush,
                 distributionArr: destarray,
@@ -221,7 +225,7 @@ export class SqlLiteData {
   /**
    * [recreate description]
    */
-  recreate() {
+  recreate():void {
     const sqlRow = [
       "uri TEXT",
       "uriThumb TEXT",
