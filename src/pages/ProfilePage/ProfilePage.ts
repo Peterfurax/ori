@@ -29,11 +29,14 @@ export class ProfilePage {
     this.userData.getProfile().then(
       ProfileResult => {
         console.log(ProfileResult);
-        if (ProfileResult === null) {
-          this.navController.push(ProfileMeta, { profile: this.profile });
-        } else {
-          this.profile = ProfileResult;
-        }
+        !ProfileResult
+          ? this.navController.push(ProfileMeta, { profile: this.profile })
+          : (this.profile = ProfileResult);
+        // if (ProfileResult === null) {
+        //   this.navController.push(ProfileMeta, { profile: this.profile });
+        // } else {
+        //   this.profile = ProfileResult;
+        // }
       },
       err => console.error(err)
     );

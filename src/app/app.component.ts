@@ -71,14 +71,14 @@ export class MyApp {
     private sqlite: SQLite
   ) {
     this.initializeApp();
+    this.listenToLoginEvents();
     this.userData
       .hasLoggedIn()
       .then(hasLoggedIn => {
         this.enableMenu(hasLoggedIn === true);
-        this.rootPage = LoginPage;
+        // this.rootPage = LoginPage;
       })
       .catch(err => console.error(err));
-    this.listenToLoginEvents();
   }
 
   /**
@@ -86,58 +86,68 @@ export class MyApp {
    * @method initializeApp
    * @return {[type]}      [description]
    */
-  initializeApp() {
+  initializeApp(): void {
     this.platform
       .ready()
       .then(() => {
-        this.splashScreen.hide();
-        this.statusBar.styleDefault();
-        this.statusBar.styleBlackTranslucent();
-        this.statusBar.hide();
-        const sqlRow = [
-          "uri TEXT",
-          "uriThumb TEXT",
-          "bitrate INT",
-          "duration TEXT",
-          "height TEXT",
-          "orientation TEXT",
-          "size TEXT",
-          "width TEXT",
-          "guestname TEXT",
-          "guestfirstname TEXT",
-          "guestoccupation TEXT",
-          "guestplace TEXT",
-          "guestS1 TEXT",
-          "guesttext TEXT",
-          "journalistname TEXT",
-          "journalistfirstname TEXT",
-          "journalistoccupation TEXT",
-          "journalistsociety TEXT",
-          "journalistservice TEXT",
-          "distributionembargo_date TEXT",
-          "distributionsave_rush TEXT",
-          "distributionArr TEXT",
-          "dateImport INT",
-          "datePrise INT",
-          "dateSend INT",
-          "resultSend INT"
-        ];
-        this.sqlite
-          .create({ name: "data.db", location: "default" })
-          .then((db: SQLiteObject) => {
-            db
-              .executeSql(
-                "CREATE TABLE IF NOT EXISTS people (id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                  sqlRow.toString() +
-                  ")",
-                {}
-              )
-              .then(data => console.log("TABLE CREATED: ", data))
-              .catch(err => console.error("Unable to execute sql", err));
+        Promise.all([
+          this.splashScreen.hide(),
+          this.statusBar.hide(),
+          this.databaseTest()
+        ])
+          .then((result: any[]) => {
+            console.log(result);
           })
-          .catch(err => console.error("Unable to open database", err));
+          .catch(err => {
+            console.error("Platform Init error", err);
+          });
       })
       .catch(err => console.error("Platform Init error", err));
+  }
+
+  databaseTest(): void {
+    const sqlRow = [
+      "uri TEXT",
+      "uriThumb TEXT",
+      "bitrate INT",
+      "duration TEXT",
+      "height TEXT",
+      "orientation TEXT",
+      "size TEXT",
+      "width TEXT",
+      "guestname TEXT",
+      "guestfirstname TEXT",
+      "guestoccupation TEXT",
+      "guestplace TEXT",
+      "guestS1 TEXT",
+      "guesttext TEXT",
+      "journalistname TEXT",
+      "journalistfirstname TEXT",
+      "journalistoccupation TEXT",
+      "journalistsociety TEXT",
+      "journalistservice TEXT",
+      "distributionembargo_date TEXT",
+      "distributionsave_rush TEXT",
+      "distributionArr TEXT",
+      "dateImport INT",
+      "datePrise INT",
+      "dateSend INT",
+      "resultSend INT"
+    ];
+    this.sqlite
+      .create({ name: "data.db", location: "default" })
+      .then((db: SQLiteObject) => {
+        db
+          .executeSql(
+            "CREATE TABLE IF NOT EXISTS people (id INTEGER PRIMARY KEY AUTOINCREMENT," +
+              sqlRow.toString() +
+              ")",
+            {}
+          )
+          .then(data => console.log("TABLE CREATED: ", data))
+          .catch(err => console.error("Unable to execute sql", err));
+      })
+      .catch(err => console.error("Unable to open database", err));
   }
 
   /**
@@ -146,7 +156,7 @@ export class MyApp {
    * @param  {PageObj} page [description]
    * @return {[type]}       [description]
    */
-  openPage(page: PageObj) {
+  openPage(page: PageObj): void {
     this.nav.setRoot(page.component);
     if (page.logsOut === true) {
       setTimeout(() => {
@@ -160,22 +170,10 @@ export class MyApp {
    * @method listenToLoginEvents
    * @return {[type]}            [description]
    */
-  listenToLoginEvents() {
-    this.events.subscribe(
-      "user:login",
-      () => this.enableMenu(true),
-      err => console.error(err)
-    );
-    this.events.subscribe(
-      "user:signup",
-      () => this.enableMenu(true),
-      err => console.error(err)
-    );
-    this.events.subscribe(
-      "user:logout",
-      () => this.enableMenu(false),
-      err => console.error(err)
-    );
+  listenToLoginEvents(): void {
+    this.events.subscribe("user:login", () => this.enableMenu(true));
+    // this.events.subscribe("user:signup", () => this.enableMenu(true));
+    this.events.subscribe("user:logout", () => this.enableMenu(false));
   }
 
   /**
@@ -184,7 +182,7 @@ export class MyApp {
    * @param  {[type]}   loggedIn [description]
    * @return {[type]}            [description]
    */
-  enableMenu(loggedIn) {
+  enableMenu(loggedIn): void {
     this.menu.enable(loggedIn, "loggedInMenu");
     this.menu.enable(!loggedIn, "loggedOutMenu");
   }

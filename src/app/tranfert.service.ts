@@ -9,6 +9,7 @@ import {
 } from "@ionic-native/file-transfer";
 import { SqlLiteData } from "../providers/sqlLite";
 import { DateService } from "./date.service";
+import {ServeurIp} from "./SERVER_IP"
 @Injectable()
 export class TransfertService {
   constructor(
@@ -16,11 +17,15 @@ export class TransfertService {
     private fileService: FileService,
     private notificationService: NotificationService,
     private sqlLiteData: SqlLiteData,
-    private transfer: FileTransfer
+    private transfer: FileTransfer,
+    private serveurIp: ServeurIp
   ) {}
 
   UploadApply(item, promiseReturnFnc, value) {
-    item.resultSend = JSON.stringify(value);
+    console.log(this.serveurIp.getIp(false))
+    // item.resultSend = JSON.stringify(value);
+    item.resultSend = value;
+    console.log(item)
     Promise.all([
       this.sqlLiteData.update(item),
       this.notificationService.uploadEndService(value),
@@ -35,7 +40,7 @@ export class TransfertService {
    * @type {any}
    */
   progress: any;
-  upload(item): Promise<any> {
+  async upload(item): Promise<any> {
     return new Promise((resolve, reject) => {
       this.notificationService.uploadInitService();
       let metaForZenon = {
@@ -68,8 +73,9 @@ export class TransfertService {
       };
       this.fileService
         .WriteJsonMeta(metaForZenon)
-        .then(jsonUri => {
+        .then( jsonUri => {
           let exportName = this.dateService.exportNameDate();
+          console.log(exportName)
           item.dateSend = Date.now();
           Promise.all([
             this.uploadFile(exportName, jsonUri, "json", item),
@@ -133,7 +139,7 @@ export class TransfertService {
       fileTransfer
         .upload(
           uri,
-          "http://192.168.0.16:8000",
+          this.serveurIp.getIp(false),
           this.optionFileTransferMaker(exportName, type)
         )
         .then(data => resolve(data))

@@ -7,7 +7,7 @@ import { VideoEditor } from "@ionic-native/video-editor";
 
 import { VideoPlay } from "./native/videoPlayer";
 
-import {MediaExtract} from './native/mediaCapture'
+import { MediaExtract } from "./native/mediaCapture";
 @Injectable()
 
 /**
@@ -59,7 +59,7 @@ export class VideoService {
    * @desc
    * @param {[type]} uri [description]
    */
-  playVideo(uri):void {
+  playVideo(uri): void {
     this.videoPlay.play(uri);
   }
 
@@ -81,15 +81,15 @@ export class VideoService {
    *   type: "video/mp4"
    * ]
    */
-  captureVideo():void {
+  captureVideo(): void {
     this.mediaExtract
       .captureVideo()
-      .then((data: string[]) => {
+      .then((data: string) => {
         console.log("je suis captureVideo");
         console.log(data);
         this.stockCaptureVideo(data);
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   }
 
   /**
@@ -97,7 +97,7 @@ export class VideoService {
    * @method captureImage
    * @return {[type]}     [description]
    */
-  captureImage():void {
+  captureImage(): void {
     this.mediaExtract
       .captureImage()
       .then(data => console.log(data))
@@ -110,23 +110,22 @@ export class VideoService {
    * @param  {[type]}          uri [file:/storage/emulated/0/DCIM/Camera/VID_20161119_075425.mp4]
    * @return {Promise<any>}        [description]
    */
-  stockCaptureVideo(uri: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      Promise.all([
+  async stockCaptureVideo(uri:string): Promise<any> {
+      return Promise.all([
         this.getVideoMeta(uri),
         this.getVideoThumb(uri),
         this.parseService.convertUriToDate(uri)
       ])
-        .then((data:any) => {
+        .then((data: [{bitrate: number, duration: number, height: number, orientation: string, size: number, width: number}, string, string]) => {
           this.videoAllInfo.infoVideo = data[0];
           this.videoAllInfo.uriThumb = data[1];
           this.videoAllInfo.datePrise = data[2];
           this.videoAllInfo.dateImport = Date.now();
           this.videoAllInfo.uri = uri;
-          resolve(this.videoAllInfo);
+          return this.videoAllInfo;
         })
-        .catch(err => reject(err));
-    });
+        .catch(err => { throw new Error(err)});
+
   }
 
   /**
@@ -134,18 +133,14 @@ export class VideoService {
    * @method getVideoUri
    * @return {Promise<any>} [description]
    */
-  getVideoUri(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.camera
+async getVideoUri(): Promise<any> {
+  return this.camera
         .getPicture({
-          quality: 50,
+          quality: 100,
           destinationType: this.camera.DestinationType.FILE_URI,
           sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
           mediaType: 1
         })
-        .then(data => resolve(data))
-        .catch(err => reject(err));
-    });
   }
 
   /**
@@ -154,22 +149,19 @@ export class VideoService {
    * @param  {string}  uri [storage/emulated/0/DCIM/Camera/VID_20161119_075425.mp4]
    * @return {Promise}     [description]
    */
-  getVideoMeta(uri: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      uri = "file:/" + uri; // NOT COOL MUST FIX URI :/
-      this.videoEditor
-        .getVideoInfo({ fileUri: uri })
+  async getVideoMeta(uri: string): Promise<any> {
+      return this.videoEditor
+        .getVideoInfo({ fileUri: "file:/" + uri })
         .then(data => {
           if (data.orientation === "portrait") {
             this.notificationService.toastIt(
               "Attention : Format portrait détecté"
             );
-            reject("portrait");
+            { throw new Error("mode portrait refusé")};
           }
-          resolve(data);
+          return data;
         })
-        .catch(err => reject(err));
-    });
+        .catch(err => { throw new Error(err)});
   }
 
   /**
@@ -178,22 +170,17 @@ export class VideoService {
    * @param  {string}  uri [storage/emulated/0/DCIM/Camera/VID_20161119_075425.mp4]
    * @return {Promise}     [/storage/emulated/0/Android/data/com.ionicframework.tuber560001/files/files/videos/output-name.jpg]
    */
-  date: any;
-  getVideoThumb(uri: string): Promise<any> {
-    this.date = Date.now();
-    return new Promise((resolve, reject) => {
-      uri = "file:/" + uri; // NOT COOL MUST FIX URI :/
-      this.videoEditor
+  // date: any;
+  async getVideoThumb(uri: string): Promise<any> {
+      return this.videoEditor
         .createThumbnail({
-          fileUri: uri, // the path to the video on the device
-          outputFileName: this.date, // the file name for the JPEG image
+          fileUri: "file:/" + uri, // the path to the video on the device
+          outputFileName:  Date.now().toString(), // the file name for the JPEG image
           atTime: 10, // optional, location in the video to create the thumbnail (in seconds)
           width: 191, // optional, width of the thumbnail
           height: 340, // optional, height of the thumbnail
-          quality: 75 // optional, quality of the thumbnail (between 1 and 100)
+          quality: 100 // optional, quality of the thumbnail (between 1 and 100)
         })
-        .then(data => resolve(data))
-        .catch(err => reject(err));
-    });
+
   }
 }

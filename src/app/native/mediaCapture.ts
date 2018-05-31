@@ -3,7 +3,7 @@ import {
   MediaCapture,
   MediaFile,
   CaptureError,
-  CaptureImageOptions
+  // CaptureImageOptions
 } from "@ionic-native/media-capture";
 
 @Injectable()

@@ -1,86 +1,90 @@
 <ion-header>
-    <ion-navbar>
-        <button ion-button menuToggle>
-            <ion-icon name="menu"></ion-icon>
-        </button>
-        <ion-title>Gestion Application</ion-title>
-    </ion-navbar>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Gestion Application</ion-title>
+  </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <!-- <ion-searchbar></ion-searchbar> -->
-    <!-- <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar> -->
-    <!--     <h3>Bienvenue sur this</h3><p>
+  <!-- <ion-searchbar></ion-searchbar> -->
+  <!-- <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar> -->
+  <!--     <h3>Bienvenue sur this</h3><p>
         allez on y va
     </p><button ion-button primary (click)="sessionStorageClear()">sessionStorageClear</button><button ion-button primary (click)="storageSqlClear()">storageSqlClear</button><button ion-button primary (click)="pro()">notification</button> -->
-    <ion-list no-border>
-        <ion-list-header>
-            Classes
-        </ion-list-header>
-        <ion-item>
-            <ion-toggle checked="false"></ion-toggle>
-            <ion-label>
-                Notification
-            </ion-label>
-            <ion-icon name='alert' item-left></ion-icon>
-        </ion-item>
-        <ion-item>
-            <ion-toggle checked="false"></ion-toggle>
-            <ion-label>
-                Vibration
-            </ion-label>
-            <ion-icon name='notifications' item-left></ion-icon>
-        </ion-item>
-        <ion-item>
-            <ion-label>
-                TEST DEV
-            </ion-label>
-            <button ion-button color="danger" item-right outline icon-right (click)="pro()">
-                notification
-                
-                <ion-icon color="danger" name='alert'></ion-icon>
-            </button>
-            <ion-icon color="danger" name='bug' item-left></ion-icon>
-        </ion-item>
-        <!--         <ion-item><ion-label>
+  <ion-list no-border>
+    <ion-list-header>
+      Classes
+    </ion-list-header>
+    <ion-item>
+      <ion-toggle checked="false"></ion-toggle>
+      <ion-label>
+        Notification
+      </ion-label>
+      <ion-icon name='alert' item-left></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-toggle checked="false"></ion-toggle>
+      <ion-label>
+        Vibration
+      </ion-label>
+      <ion-icon name='notifications' item-left></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        TEST DEV
+      </ion-label>
+      <button ion-button color="danger" item-right outline icon-right (click)="pro()">
+        notification
+        <ion-icon color="danger" name='alert'></ion-icon>
+      </button>
+      <button ion-button color="danger" item-right outline icon-right (click)="alertTest()">
+        Alerter
+        <ion-icon color="danger" name='alert'></ion-icon>
+      </button>
+
+      <ion-icon color="danger" name='bug' item-left></ion-icon>
+    </ion-item>
+    <!--         <ion-item><ion-label>
                 test
             </ion-label><button ion-button danger (click)="pro()">notification</button><ion-icon name='bug' item-left></ion-icon></ion-item> -->
-    </ion-list>
-    <ion-list>
-        <ion-list-header>
-            Stockage
-        </ion-list-header>
-        <ion-item>
-            <ion-label>
-                erase
-            </ion-label>
-            <button ion-button color="danger" item-right outline icon-right (click)="storageSqlClear()">
-                storageSqlClear
-                
-                <ion-icon color="danger" name='trash'></ion-icon>
-            </button>
-            <ion-icon color="danger" name='bug' item-left></ion-icon>
-        </ion-item>
-        <ion-item>
-            <ion-label>
-                erase
-            </ion-label>
-            <button ion-button color="danger" item-right outline icon-right (click)="sessionStorageClear()">
-                sessionStorageClear
-                
-                <ion-icon color="danger" name='trash'></ion-icon>
-            </button>
-            <ion-icon color="danger" name='bug' item-left></ion-icon>
-        </ion-item>
-        <ion-item>
-            <ion-label>
-                TEST
-            </ion-label>
-            <button ion-button color="danger" item-right outline icon-right (click)="ca()">
-                CAPTURE VIDEO
-                
-                <ion-icon color="danger" name='trash'></ion-icon>
-            </button>
-            <ion-icon color="danger" name='bug' item-left></ion-icon>
-        </ion-item>
-    </ion-list>
+  </ion-list>
+  <ion-list>
+    <ion-list-header>
+      Stockage
+    </ion-list-header>
+    <ion-item>
+      <ion-label>
+        erase
+      </ion-label>
+      <button ion-button color="danger" item-right outline icon-right (click)="storageSqlClear()">
+        storageSqlClear
+
+        <ion-icon color="danger" name='trash'></ion-icon>
+      </button>
+      <ion-icon color="danger" name='bug' item-left></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        erase
+      </ion-label>
+      <button ion-button color="danger" item-right outline icon-right (click)="sessionStorageClear()">
+        sessionStorageClear
+
+        <ion-icon color="danger" name='trash'></ion-icon>
+      </button>
+      <ion-icon color="danger" name='bug' item-left></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        TEST
+      </ion-label>
+      <button ion-button color="danger" item-right outline icon-right (click)="ca()">
+        CAPTURE VIDEO
+
+        <ion-icon color="danger" name='trash'></ion-icon>
+      </button>
+      <ion-icon color="danger" name='bug' item-left></ion-icon>
+    </ion-item>
+  </ion-list>
 </ion-content>

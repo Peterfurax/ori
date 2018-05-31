@@ -19,7 +19,7 @@ export class DateService {
    * @returns {string}
    * @memberof ParseService
    */
-  YYYYMMDD_HHmmss(uriParse: string) {
+  async YYYYMMDD_HHmmss(uriParse: string) {
     return moment(uriParse, "YYYYMMDD_HHmmss").toISOString();
   }
 
@@ -30,7 +30,7 @@ export class DateService {
    * @returns {boolean}
    * @memberof ParseService
    */
-  valide(date: string) {
+  async valide(date: string) {
     return moment(date).isValid() ? true : false;
   }
 

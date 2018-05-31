@@ -1,19 +1,18 @@
 import { Component } from "@angular/core";
 import { AppService } from "../../app/app.service";
 import { VideoService } from "../../app/video.service";
-import { NavController } from "ionic-angular";
 import { UserData } from "../../providers/user-data";
 import { SqlLiteData } from "../../providers/sqlLite";
 import { NotificationService } from "../../app/notification.service";
-
+import { Alert } from "../../app/alerter.service";
 @Component({
   selector: "page-About",
   templateUrl: "About.html"
 })
 export class About {
   constructor(
+    private alert: Alert,
     private notificationService: NotificationService,
-    private navCtrl: NavController,
     private serviceVideo: VideoService,
     private serviceApp: AppService,
     private userData: UserData,
@@ -22,23 +21,27 @@ export class About {
     this.serviceApp.appVersionAll();
   }
 
-  ca() {
+  ca(): void {
     this.serviceVideo.captureVideo();
   }
 
-  storageSqlClear() {
+  storageSqlClear(): void {
     this.storageSql.recreate();
   }
 
-  sessionStorageClear() {
+  sessionStorageClear(): void {
     this.userData.clearProfile();
   }
 
-  pro() {
+  pro(): void {
     this.notificationService.notificationMaker("test", true, true);
   }
 
-  VideoUri() {
+  VideoUri(): void {
     this.serviceVideo.getVideoUri();
+  }
+
+  alertTest(): void {
+    this.alert.presentConfirm();
   }
 }

@@ -48,7 +48,7 @@ export class NotificationService {
    * @return {[type]}                  [description]
    */
   notificationMaker(message: string, vibrate?: boolean, toast?: boolean) {
-    this.vibrate.vibrate()
+    this.vibrate.vibrate();
     Promise.all([
       this.localNotif.notifications(message),
       vibrate ? this.vibrate.vibrate() : () => {},

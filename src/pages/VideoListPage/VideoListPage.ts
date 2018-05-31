@@ -54,7 +54,7 @@ export class VideoListPage {
    * Open DetailsPage on import video => refresh db, take last, get, insert to form
    * @method openDetailOnImport
    */
-  openDetailOnImport() {
+  openDetailOnImport():void {
     this.storageSql
       .refresh()
       .then(() =>
@@ -71,7 +71,7 @@ export class VideoListPage {
    * @param  {[type]}  uri
    * @return {[type]}
    */
-  playVideo(uri) {
+  playVideo(uri:string):void {
     this.serviceVideo.playVideo(uri);
   }
 
@@ -92,13 +92,13 @@ export class VideoListPage {
    * add description
    * @method add
    */
-  add() {
+  add():void {
     this.serviceVideo
       .getVideoUri()
-      .then(uri => {
+      .then( async uri => {
         this.serviceVideo
           .stockCaptureVideo(uri)
-          .then(result =>
+          .then(async result =>
             this.storageSql
               .Insert(result)
               .then(result => this.openDetailOnImport())
@@ -117,7 +117,7 @@ export class VideoListPage {
    * @param  {[type]}           person
    * @return {[type]}
    */
-  openNavDetailsPage(person) {
+  openNavDetailsPage(person):void {
     this.navController.push(VideoMeta, { person: person });
   }
 
@@ -126,7 +126,7 @@ export class VideoListPage {
    * @method clicked
    * @return {[type]}
    */
-  clicked() {
+  clicked():void {
     this.show = !this.show;
   }
 
@@ -135,7 +135,7 @@ export class VideoListPage {
    * @method showSearch
    * @return {[type]}
    */
-  showSearchB() {
+  showSearchB():void {
     this.showSearch = !this.showSearch;
   }
 }

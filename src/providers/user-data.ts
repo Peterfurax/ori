@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-
 import { Events } from "ionic-angular";
 import { Storage } from "@ionic/storage";
 
@@ -32,12 +31,19 @@ export class UserData {
   // }
 
   login() {
-    Promise.all([
-      this.storage.set(this.HAS_LOGGED_IN, true)
-      // this.setUsername(username)
-    ])
-      .then(() => this.events.publish("user:login"))
-      .catch(err => console.error(err));
+    return new Promise((resolve, reject) => {
+      Promise.all([
+        this.storage.set(this.HAS_LOGGED_IN, true)
+        // this.setUsername(username)
+      ])
+        .then(() => {
+          this.events.publish("user:login");
+          resolve({storageSetLogin : true});
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
   // signup(username) {
@@ -51,7 +57,7 @@ export class UserData {
 
   logout() {
     Promise.all([
-      this.storage.remove(this.HAS_LOGGED_IN),
+      this.storage.remove(this.HAS_LOGGED_IN)
       // this.storage.remove("username")
     ])
       .then(() => this.events.publish("user:logout"))

@@ -10,13 +10,9 @@ export class ParseService {
    * @return {Promise}
    * @memberof ParseService
    */
-  uriToDate(uriParse: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let date = this.dateService.YYYYMMDD_HHmmss(uriParse);
-      this.dateService.valide(date)
-        ? resolve(date)
-        : reject("error parsing uriToDate");
-    });
+  async uriToDate(uriParse: string): Promise<string> {
+    let date = await this.dateService.YYYYMMDD_HHmmss(uriParse);
+    return this.dateService.valide(date) ? date : "error not a valide date";
   }
 
   /**
@@ -25,12 +21,8 @@ export class ParseService {
    * @return {Promise}
    * @memberof ParseService
    */
-  parseUriDate(dateExtract: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.uriToDate(dateExtract)
-        .then(data => resolve(data))
-        .catch(err => reject(err));
-    });
+  async parseUriDate(dateExtract: string): Promise<any> {
+    return await this.uriToDate(dateExtract)
   }
 
   /**
@@ -40,7 +32,7 @@ export class ParseService {
    * @return {string}
    * @memberof ParseService
    */
-  uriExtractFile(uri: string) {
+  async uriExtractFile(uri: string): Promise<string> {
     return /[^/]*$/g.exec(uri)[0];
   }
 
@@ -51,8 +43,8 @@ export class ParseService {
    * @return {string}
    * @memberof ParseService
    */
-  uriExtractFileWithoutExt(uriExtractFile: string) {
-    return /[^.]*/g.exec(uriExtractFile)[0];
+  async uriExtractFileWithoutExt(uriExtractFile: string): Promise<any> {
+    return /[^.]*/g.exec(await uriExtractFile)[0];
   }
 
   /**
@@ -61,8 +53,8 @@ export class ParseService {
    * @param  {string} uri
    * @return {string}
    */
-  parseUri(uri: string) {
-    return this.uriExtractFileWithoutExt(this.uriExtractFile(uri));
+  async parseUri(uri: string): Promise<any> {
+    return await this.uriExtractFileWithoutExt(await this.uriExtractFile(uri));
   }
 
   /**
@@ -71,11 +63,7 @@ export class ParseService {
    * @param  {string}         uri
    * @return {Promise<any>}
    */
-  convertUriToDate(uri: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.parseUriDate(this.parseUri(uri))
-        .then(data => resolve(data))
-        .catch(err => reject(err));
-    });
+  async convertUriToDate(uri): Promise<any> {
+    return await this.parseUriDate(await this.parseUri(uri));
   }
 }

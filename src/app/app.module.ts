@@ -3,6 +3,7 @@ import { IonicApp, IonicModule } from "ionic-angular";
 import { MyApp } from "./app.component";
 import { SqlLiteData } from "../providers/sqlLite";
 import { AppService } from "./app.service";
+import { Alert } from "./alerter.service";
 import { VideoService } from "./video.service";
 import { ParseService } from "./parse.service";
 import { NotificationService } from "./notification.service";
@@ -40,7 +41,7 @@ import { Toasted } from "./native/toast";
 import { Vibrate } from "./native/vibration";
 import { VideoPlay } from "./native/videoPlayer";
 import { MediaExtract } from "./native/mediaCapture";
-
+import {ServeurIp} from "./SERVER_IP"
 import { DateService } from "./date.service";
 import { FilterPipeMeta, FilterPipeSend } from "./filter.pipe";
 
@@ -73,6 +74,7 @@ import { FilterPipeMeta, FilterPipeSend } from "./filter.pipe";
     ProfileMeta
   ],
   providers: [
+    Alert,
     DateService,
     Spinner,
     Background,
@@ -104,7 +106,8 @@ import { FilterPipeMeta, FilterPipeSend } from "./filter.pipe";
     VideoEditor,
     FileTransfer,
     VideoPlay,
-    MediaExtract
+    MediaExtract,
+    ServeurIp
   ]
 })
 export class AppModule {}
