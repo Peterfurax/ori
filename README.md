@@ -13,7 +13,8 @@ Release     |     Version | Test
 KitKat      | 4.4 – 4.4.4 |  o
 Lollipop    | 5.0 – 5.1.1 |  o
 Marshmallow | 6.0 – 6.0.1 |  o
-Nougat      | 7.0 – 7.1.1 |  x
+Nougat      | 7.0 – 7.1.1 |  0
+Oreo        | 8.0 – 8.1.0 |  0
 
 **ios**
 
@@ -21,8 +22,7 @@ Nougat      | 7.0 – 7.1.1 |  x
 
 ## Instal mandatory
 
-- Node 6.x
-- Npm 3.x
-- Ionic 2.x
-- Cordova
-- Angular 2.x
+- Ionic 3.1.9
+- Cordova 7.0.0
+- Angular 5.2.10
+- typescript 2.6.2
