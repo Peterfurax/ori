@@ -27,7 +27,9 @@ export class SqlLiteData {
       })
       .then((db: SQLiteObject) => {
         this.database = db;
-        this.refresh();
+      })
+      .then(async () => {
+        await this.refresh();
       })
       .catch(err => console.error(err));
   }
@@ -49,7 +51,7 @@ export class SqlLiteData {
    * [update description]
    * @param {[type]} data [description]
    */
-  update(data) {
+  async update(data) {
     let destArr = data.distributionArr.toString();
     let request = "UPDATE people";
     request += " SET guestfirstname = '" + data.guestfirstname + "'";
@@ -66,97 +68,101 @@ export class SqlLiteData {
     this.database
       .executeSql(request, [])
       .then(data => console.log("UPDATED: ", data))
+      .then(async () => await this.refresh())
       .catch(err => console.error("ERROR UPDATED: ", err));
-    this.refresh();
   }
 
   /**
    * [getProfile description]
    * @return {Promise} [description]
    */
-  getProfile(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.userData
-        .getProfile()
-        .then(result => resolve(result))
-        .catch(err => reject(err));
-    });
+  async getProfile(): Promise<any> {
+    this.userData
+      .getProfile()
+      .then(result => {
+        return result;
+      })
+      .catch(err => {
+        throw new Error(err);
+      });
   }
 
-  testNull(val: any) {
-    return (val === "null") ? "" : val;
+  convertNullString(val: any) {
+    return val === "null" ? "" : val;
   }
 
   /**
    * [refresh description]
    * @return {Promise} [description]
    */
-  refresh(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.database
-        .executeSql("SELECT * FROM people", [])
-        .then(data => {
-          this.people = [];
-          if (data.rows.length > 0) {
-            for (let i = 0; i < data.rows.length; i++) {
-              let destarray = [];
-              let val = data.rows.item(i);
-              if (val.distributionArr !== null) {
-                destarray = val.distributionArr.split(",");
-              }
-              this.people.push({
-                uri: val.uri,
-                uriThumb: val.uriThumb,
-                bitrate: val.bitrate,
-                duration: val.duration,
-                height: val.height,
-                orientation: val.orientation,
-                size: val.size,
-                width: val.width,
-                guestname: this.testNull(val.guestname),
-                guestfirstname: this.testNull(val.guestfirstname),
-                guestoccupation: this.testNull(val.guestoccupation),
-                guestplace: this.testNull(val.guestplace),
-                guestS1: this.testNull(val.guestS1),
-                guesttext: this.testNull(val.guesttext),
-                journalistname: this.testNull(val.journalistname),
-                journalistfirstname: this.testNull(val.journalistfirstname),
-                journalistoccupation: this.testNull(val.journalistoccupation),
-                journalistsociety: this.testNull(val.journalistsociety),
-                journalistservice: this.testNull(val.journalistservice),
-                distributionembargo_date: val.distributionembargo_date,
-                distributionsave_rush: val.distributionsave_rush,
-                distributionArr: destarray,
-                dateImport: val.dateImport,
-                datePrise: val.datePrise,
-                dateSend: val.dateSend,
-                resultSend: val.resultSend
-              });
+  async refresh(): Promise<any> {
+    this.database
+      .executeSql("SELECT * FROM people", [])
+      .then(data => {
+        this.people = [];
+        if (data.rows.length > 0) {
+          for (let i = 0; i < data.rows.length; i++) {
+            let destarray = [];
+            let val = data.rows.item(i);
+            if (val.distributionArr !== null) {
+              destarray = val.distributionArr.split(",");
             }
-            resolve("ok Refresh Database");
+            this.people.push({
+              uri: val.uri,
+              uriThumb: val.uriThumb,
+              bitrate: val.bitrate,
+              duration: val.duration,
+              height: val.height,
+              orientation: val.orientation,
+              size: val.size,
+              width: val.width,
+              guestname: this.convertNullString(val.guestname),
+              guestfirstname: this.convertNullString(val.guestfirstname),
+              guestoccupation: this.convertNullString(val.guestoccupation),
+              guestplace: this.convertNullString(val.guestplace),
+              guestS1: this.convertNullString(val.guestS1),
+              guesttext: this.convertNullString(val.guesttext),
+              journalistname: this.convertNullString(val.journalistname),
+              journalistfirstname: this.convertNullString(
+                val.journalistfirstname
+              ),
+              journalistoccupation: this.convertNullString(
+                val.journalistoccupation
+              ),
+              journalistsociety: this.convertNullString(val.journalistsociety),
+              journalistservice: this.convertNullString(val.journalistservice),
+              distributionembargo_date: val.distributionembargo_date,
+              distributionsave_rush: val.distributionsave_rush,
+              distributionArr: destarray,
+              dateImport: val.dateImport,
+              datePrise: val.datePrise,
+              dateSend: val.dateSend,
+              resultSend: val.resultSend
+            });
           }
-        })
-        .catch(err => {
-          reject(err);
-          console.error("ERROR REFRESH: ", err);
-        });
-    });
+          return "ok Refresh Database";
+        }
+      })
+      .catch(err => {
+        console.error("ERROR REFRESH: ", err);
+        throw new Error(err);
+      });
   }
 
   /**
    * [delete description]
    * @param {[type]} uri [description]
    */
-  delete(uri) {
-    return new Promise((resolve, reject) => {
-      this.database
-        .executeSql("DELETE FROM people WHERE uri = '" + uri + "'", [])
-        .then(data => {
-          this.refresh();
-          resolve(data);
-        })
-        .catch(err => reject(err));
-    });
+  async delete(uri) {
+    this.database
+      .executeSql("DELETE FROM people WHERE uri = '" + uri + "'", [])
+      .then(async data => {
+        await this.refresh();
+        return data;
+      })
+      .catch(err => {
+        throw new Error(err);
+      });
   }
 
   /**
@@ -164,68 +170,70 @@ export class SqlLiteData {
    * @param  {[type]}  data [description]
    * @return {Promise}      [description]
    */
-  Insert(data): Promise<any> {
+  async Insert(data): Promise<any> {
     console.log("INSERT EN COURS");
-    return new Promise((resolve, reject) => {
-      this.getProfile()
-        .then(result => {
-          this.profile = result;
-          console.log("DATA TO INSERT", data);
-          console.log("DATABASE", this.database);
-          let requestSql = "INSERT INTO people (";
-          requestSql += "uri,";
-          requestSql += "uriThumb,";
-          requestSql += "bitrate,";
-          requestSql += "duration,";
-          requestSql += "height,";
-          requestSql += "orientation,";
-          requestSql += "size,";
-          requestSql += "width,";
-          requestSql += "journalistname,";
-          requestSql += "journalistfirstname,";
-          requestSql += "journalistsociety,";
-          requestSql += "journalistoccupation,";
-          requestSql += "journalistservice,";
-          requestSql += "datePrise,";
-          requestSql += "dateImport,";
-          requestSql += "dateSend,";
-          requestSql += "resultSend";
-          requestSql += ") ";
-          requestSql += "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-          this.database
-            .executeSql(requestSql, [
-              data.uri,
-              data.uriThumb,
-              data.infoVideo.bitrate,
-              data.infoVideo.duration,
-              data.infoVideo.height,
-              data.infoVideo.orientation,
-              data.infoVideo.size,
-              data.infoVideo.width,
-              this.profile.name,
-              this.profile.firstname,
-              this.profile.society,
-              this.profile.occupation,
-              this.profile.service,
-              data.datePrise,
-              data.dateImport,
-              data.dateSend,
-              data.resultSend
-            ])
-            .then(result => {
-              console.log("INSERTED: ", result);
-              resolve(data.uri);
-            })
-            .catch(err => reject(err));
-        })
-        .catch(err => reject("ERROR getProfile: " + err));
-    });
+    await this.getProfile()
+      .then(result => {
+        this.profile = result;
+        console.log("DATA TO INSERT", data);
+        console.log("DATABASE", this.database);
+        let requestSql = "INSERT INTO people (";
+        requestSql += "uri,";
+        requestSql += "uriThumb,";
+        requestSql += "bitrate,";
+        requestSql += "duration,";
+        requestSql += "height,";
+        requestSql += "orientation,";
+        requestSql += "size,";
+        requestSql += "width,";
+        requestSql += "journalistname,";
+        requestSql += "journalistfirstname,";
+        requestSql += "journalistsociety,";
+        requestSql += "journalistoccupation,";
+        requestSql += "journalistservice,";
+        requestSql += "datePrise,";
+        requestSql += "dateImport,";
+        requestSql += "dateSend,";
+        requestSql += "resultSend";
+        requestSql += ") ";
+        requestSql += "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        this.database
+          .executeSql(requestSql, [
+            data.uri,
+            data.uriThumb,
+            data.infoVideo.bitrate,
+            data.infoVideo.duration,
+            data.infoVideo.height,
+            data.infoVideo.orientation,
+            data.infoVideo.size,
+            data.infoVideo.width,
+            this.profile.name,
+            this.profile.firstname,
+            this.profile.society,
+            this.profile.occupation,
+            this.profile.service,
+            data.datePrise,
+            data.dateImport,
+            data.dateSend,
+            data.resultSend
+          ])
+          .then(result => {
+            console.log("INSERTED: ", result);
+            return data.uri;
+          })
+          .catch(err => {
+            throw new Error(err);
+          });
+      })
+      .catch(err => {
+        throw new Error(err);
+      });
   }
 
   /**
    * [recreate description]
    */
-  recreate():void {
+  recreate(): void {
     const sqlRow = [
       "uri TEXT",
       "uriThumb TEXT",

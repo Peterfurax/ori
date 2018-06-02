@@ -99,7 +99,7 @@ export class MyApp {
             console.log(result);
           })
           .catch(err => {
-            console.error("Platform Init error", err);
+            console.error("app Init error", err);
           });
       })
       .catch(err => console.error("Platform Init error", err));
