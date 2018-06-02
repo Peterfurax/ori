@@ -31,16 +31,6 @@ export class UserData {
   // }
 
   login() {
-    console.log(this.storage.ready());
-    this.storage.ready().then(() =>
-      this.storage
-        .length()
-        .then(val => {
-          console.log(this.storage.driver);
-        })
-        .then(() => this.storage.keys())
-        .then(() => this.storage.keys())
-    );
     return new Promise((resolve, reject) => {
       Promise.all([
         this.storage.set(this.HAS_LOGGED_IN, true)
@@ -48,7 +38,7 @@ export class UserData {
       ])
         .then(() => {
           this.events.publish("user:login");
-          resolve({ storageSetLogin: true });
+          resolve({storageSetLogin : true});
         })
         .catch(err => {
           reject(err);
