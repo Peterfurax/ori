@@ -9,14 +9,7 @@ import { VideoListPage } from "../pages/VideoListPage/VideoListPage";
 import { LoginPage } from "../pages/login/login";
 import { UserData } from "../providers/user-data";
 import { ProfilePage } from "../pages/ProfilePage/ProfilePage";
-
-export interface PageObj {
-  title?: string;
-  component?: any;
-  icon?: string;
-  logsOut?: boolean;
-  index?: number;
-}
+import { PageObj } from "../app/app.interface";
 
 @Component({
   templateUrl: "app.html"

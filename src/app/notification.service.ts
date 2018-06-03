@@ -20,7 +20,7 @@ export class NotificationService {
    * @method uploadInitService
    * @return {[type]}          [description]
    */
-  uploadInitService() {
+  uploadInitService(): void {
     Promise.all([this.spinner.show(), this.background.enable()])
       .then(() => console.log("uploadInitService ok"))
       .catch(err => console.error(err));
@@ -32,9 +32,9 @@ export class NotificationService {
    * @param  {string}         message [description]
    * @return {[type]}                 [description]
    */
-  uploadEndService(message: any) {
+  uploadEndService(message: any): void {
     Promise.all([
-      this.notificationMaker(JSON.stringify(message), true, true),
+      this.notificationMaker(JSON.stringify(message), true, true,false),
       this.spinner.hide()
     ])
       .then(() => console.log("uploadEndService ok"))
@@ -44,21 +44,23 @@ export class NotificationService {
   /**
    * [notificationMaker description]
    * @method notificationMaker
-   * @param  {[type]}          message [description]
-   * @return {[type]}                  [description]
+   * @param {string} message
+   * @param {boolean} [vibrate]
+   * @param {boolean} [toast]
+   * @memberof NotificationService
    */
-  notificationMaker(message: string, vibrate?: boolean, toast?: boolean) {
-    this.vibrate.vibrate();
+  notificationMaker(
+    message: string,
+    toast: boolean,
+    localNotif: boolean,
+    vibrate: boolean
+  ): void {
     Promise.all([
-      this.localNotif.notifications(message),
+      localNotif ? this.localNotif.notifications(message) : () => {},
       vibrate ? this.vibrate.vibrate() : () => {},
       toast ? this.toasted.toastIt(message) : () => {}
     ])
       .then(() => this.background.disable())
       .catch(() => this.background.disable());
-  }
-
-  toastIt(message: string) {
-    this.toasted.toastIt(message);
   }
 }

@@ -10,9 +10,11 @@ import {
 import { SqlLiteData } from "../providers/sqlLite";
 import { DateService } from "./date.service";
 import {ServeurIp} from "./SERVER_IP"
+import { LogService } from "./app.log";
 @Injectable()
 export class TransfertService {
   constructor(
+    private log: LogService,
     private dateService: DateService,
     private fileService: FileService,
     private notificationService: NotificationService,
@@ -22,17 +24,17 @@ export class TransfertService {
   ) {}
 
   UploadApply(item, promiseReturnFnc, value) {
-    console.log(this.serveurIp.getIp(false))
+    this.log.console(this.serveurIp.getIp(false))
     // item.resultSend = JSON.stringify(value);
     item.resultSend = value;
-    console.log(item)
+    this.log.console(item)
     Promise.all([
       this.sqlLiteData.update(item),
       this.notificationService.uploadEndService(value),
       promiseReturnFnc()
     ])
-      .then(log => console.log(log))
-      .catch(err => console.error(err));
+      .then(log => this.log.console(log))
+      .catch(err => this.log.console(err,true));
   }
 
   /**
@@ -75,7 +77,7 @@ export class TransfertService {
         .WriteJsonMeta(metaForZenon)
         .then( jsonUri => {
           let exportName = this.dateService.exportNameDate();
-          console.log(exportName)
+          this.log.console(exportName)
           item.dateSend = Date.now();
           Promise.all([
             this.uploadFile(exportName, jsonUri, "json", item),

@@ -1,18 +1,19 @@
-import { Component } from "@angular/core"
-import { NavController, NavParams } from "ionic-angular"
-import { SqlLiteData } from "../../providers/sqlLite"
+import { Component } from "@angular/core";
+import { NavController, NavParams } from "ionic-angular";
+import { SqlLiteData } from "../../providers/sqlLite";
 
 @Component({
-  templateUrl: "VideoMeta.html",
+  templateUrl: "VideoMeta.html"
 })
 export class VideoMeta {
-  person
+  video:object;
 
   constructor(
     public params: NavParams,
     public storageSql: SqlLiteData,
-    private navController: NavController) {
-    this.person = params.data.person
+    private navController: NavController
+  ) {
+    this.video = params.data.video;
   }
 
   /**
@@ -20,8 +21,8 @@ export class VideoMeta {
    * @method logForm
    * @return {[type]} [description]
    */
-  logForm() {
-    this.storageSql.update(this.person)
-    this.navController.pop()
+  logForm(): void {
+    this.storageSql.update(this.video);
+    this.navController.pop();
   }
 }

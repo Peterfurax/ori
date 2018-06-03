@@ -1,10 +1,8 @@
 import { Component } from "@angular/core";
-import { AppService } from "../../app/app.service";
 import { VideoService } from "../../app/video.service";
 import { TransfertService } from "../../app/tranfert.service";
-import { NavController, Platform } from "ionic-angular";
+import { NavController } from "ionic-angular";
 import { SqlLiteData } from "../../providers/sqlLite";
-import { UserData } from "../../providers/user-data";
 import { LogService } from "../../app/app.log";
 import { VideoMeta } from "../VideoMeta/VideoMeta";
 /**
@@ -23,19 +21,16 @@ export class VideoListPage {
   showSearch: boolean = false;
   constructor(
     private navController: NavController,
-    private platform: Platform,
     private serviceVideo: VideoService,
-    private serviceApp: AppService,
     private transfertService: TransfertService,
-    private logApp: LogService,
-    private storage: UserData,
+    private log: LogService,
     private storageSql: SqlLiteData
   ) {
-    console.log(this);
+    this.log.console(this);
   }
 
   isvalideToExport(item) {
-    console.log(item);
+    this.log.console(item);
   }
 
   /**
@@ -43,18 +38,18 @@ export class VideoListPage {
    * @method delete
    * @param  {string} uri:string uri item
    */
-  delete(uri: string) {
+  delete(uri: string): void {
     this.storageSql
       .delete(uri)
-      .then(result => this.logApp.log(result))
-      .catch(err => this.logApp.log(err));
+      .then(result => this.log.console(result))
+      .catch(err => this.log.console(err, true));
   }
 
   /**
    * Open DetailsPage on import video => refresh db, take last, get, insert to form
    * @method openDetailOnImport
    */
-  openDetailOnImport():void {
+  openDetailOnImport(): void {
     this.storageSql
       .refresh()
       .then(() =>
@@ -62,7 +57,7 @@ export class VideoListPage {
           this.storageSql.people[this.storageSql.people.length - 1]
         )
       )
-      .catch(err => this.logApp.log(err));
+      .catch(err => this.log.console(err, true));
   }
 
   /**
@@ -71,8 +66,14 @@ export class VideoListPage {
    * @param  {[type]}  uri
    * @return {[type]}
    */
-  playVideo(uri:string):void {
+  playVideo(uri: string): void {
     this.serviceVideo.playVideo(uri);
+  }
+
+  testDoublon(item): object {
+    return this.storageSql.people.find((element: { uri: string }) => {
+      return element.uri === item.uri;
+    });
   }
 
   // showUploadBar = false
@@ -81,44 +82,50 @@ export class VideoListPage {
    * @method upload
    * @param  {[type]} item
    */
-  upload(item) {
+  upload(item): void {
     this.transfertService
       .upload(item)
-      .then(result => this.logApp.log(result))
-      .catch(err => this.logApp.log(err));
+      .then(result => this.log.console(result))
+      .catch(err => this.log.console(err, true));
   }
 
   /**
    * add description
    * @method add
    */
-  add():void {
+  add(): void {
     this.serviceVideo
       .getVideoUri()
-      .then( async uri => {
+      .then(async (uri: string) => {
         this.serviceVideo
           .stockCaptureVideo(uri)
-          .then(async result =>
-            this.storageSql
-              .Insert(result)
-              .then(result => this.openDetailOnImport())
-              .catch(err => console.error("ERROR storageSql.Insert : ", err))
-          )
+          .then(async (result: object) => {
+            this.testDoublon(result) === undefined
+              ? this.storageSql
+                  .Insert(result)
+                  .then(() => this.openDetailOnImport())
+                  .catch(err =>
+                    this.log.console("storageSql.Insert : " + err, true)
+                  )
+              : this.log.console("after stockCaptureVideo : Doublon ", true);
+          })
           .catch(err =>
-            console.error("ERROR serviceVideo.stockCaptureVideo : ", err)
+            this.log.console("serviceVideo.stockCaptureVideo : " + err, true)
           );
       })
-      .catch(err => console.error("ERROR serviceVideo.getVideoUri : ", err));
+      .catch(err =>
+        this.log.console("serviceVideo.getVideoUri : " + err, true)
+      );
   }
 
   /**
    * openNavDetailsPage description
    * @method openNavDetailsPage
-   * @param  {[type]}           person
+   * @param  {[type]}           video
    * @return {[type]}
    */
-  openNavDetailsPage(person):void {
-    this.navController.push(VideoMeta, { person: person });
+  openNavDetailsPage(video): void {
+    this.navController.push(VideoMeta, { video: video });
   }
 
   /**
@@ -126,16 +133,16 @@ export class VideoListPage {
    * @method clicked
    * @return {[type]}
    */
-  clicked():void {
+  clicked(): void {
     this.show = !this.show;
   }
 
-    /**
+  /**
    * showSearch description
    * @method showSearch
    * @return {[type]}
    */
-  showSearchB():void {
+  showSearchB(): void {
     this.showSearch = !this.showSearch;
   }
 }

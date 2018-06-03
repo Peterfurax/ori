@@ -34,7 +34,7 @@ export class About {
   }
 
   pro(): void {
-    this.notificationService.notificationMaker("test", true, true);
+    this.notificationService.notificationMaker("test", true, true, true);
   }
 
   VideoUri(): void {

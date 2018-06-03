@@ -5,32 +5,11 @@ import { Storage } from "@ionic/storage";
 // TODO COMMENT ALL !! #comment
 @Injectable()
 export class UserData {
-  // _favorites = [];
   HAS_LOGGED_IN = "hasLoggedIn";
 
-  name?: string;
-  firstname?: string;
-  society?: string;
-  title?: string;
-  service?: string;
   constructor(public events: Events, public storage: Storage) {}
 
-  // hasFavorite(sessionName) {
-  //   return this._favorites.indexOf(sessionName) > -1;
-  // }
-
-  // addFavorite(sessionName) {
-  //   this._favorites.push(sessionName);
-  // }
-
-  // removeFavorite(sessionName) {
-  //   let index = this._favorites.indexOf(sessionName);
-  //   if (index > -1) {
-  //     this._favorites.splice(index, 1);
-  //   }
-  // }
-
-  login() {
+  login2() {
     return new Promise((resolve, reject) => {
       Promise.all([
         this.storage.set(this.HAS_LOGGED_IN, true)
@@ -38,7 +17,7 @@ export class UserData {
       ])
         .then(() => {
           this.events.publish("user:login");
-          resolve({storageSetLogin : true});
+          resolve({ storageSetLogin: true });
         })
         .catch(err => {
           reject(err);
@@ -46,36 +25,22 @@ export class UserData {
     });
   }
 
-  // signup(username) {
-  //   Promise.all([
-  //     this.storage.set(this.HAS_LOGGED_IN, true),
-  //     this.setUsername(username)
-  //   ])
-  //     .then(() => this.events.publish("user:signup"))
-  //     .catch(err => console.error(err));
-  // }
+  login():void {
+    this.storage
+      .set(this.HAS_LOGGED_IN, true)
+      .then(() => {
+        this.events.publish("user:login");
+      })
+      .catch(err => {
+        throw new Error(err);
+      });
+  }
 
-  logout() {
-    Promise.all([
+  logout():void {
       this.storage.remove(this.HAS_LOGGED_IN)
-      // this.storage.remove("username")
-    ])
       .then(() => this.events.publish("user:logout"))
       .catch(err => console.error(err));
   }
-
-  // setUsername(username) {
-  //   this.storage.set("username", username);
-  // }
-
-  // getUsername() {
-  //   return this.storage
-  //     .get("username")
-  //     .then(data => {
-  //       return data;
-  //     })
-  //     .catch(err => console.error(err));
-  // }
 
   hasLoggedIn() {
     return this.storage
@@ -85,15 +50,6 @@ export class UserData {
       })
       .catch(err => console.error(err));
   }
-
-  // getName() {
-  //   return this.storage
-  //     .get("name")
-  //     .then(data => {
-  //       return data;
-  //     })
-  //     .catch(err => console.error(err));
-  // }
 
   setProfile(profile) {
     this.storage.set("profile", profile);
@@ -111,14 +67,4 @@ export class UserData {
   clearProfile() {
     this.storage.clear();
   }
-
-  // return a promise
-  // hasProfile() {
-  //   return this.storage
-  //     .get("username")
-  //     .then(data => {
-  //       return data === true;
-  //     })
-  //     .catch(err => console.error(err));
-  // }
 }

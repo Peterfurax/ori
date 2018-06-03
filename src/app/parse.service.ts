@@ -10,7 +10,7 @@ export class ParseService {
    * @return {Promise}
    * @memberof ParseService
    */
-  async uriToDate(uriParse: string): Promise<string> {
+  async uriToDate(uriParse: string): Promise<any> {
     let date = await this.dateService.YYYYMMDD_HHmmss(uriParse);
     return this.dateService.valide(date) ? date : "error not a valide date";
   }
@@ -32,7 +32,7 @@ export class ParseService {
    * @return {string}
    * @memberof ParseService
    */
-  async uriExtractFile(uri: string): Promise<string> {
+  async uriExtractFile(uri: string): Promise<any> {
     return /[^/]*$/g.exec(uri)[0];
   }
 

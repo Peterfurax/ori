@@ -11,12 +11,8 @@ import { VideoListPage } from "../VideoListPage/VideoListPage";
 })
 export class LoginPage {
   private password: string = undefined;
-  // private logoState: any = "in";
-  // private cloudState: any = "in";
-  // private loginState: any = "in";
-  // private formState: any = "in";
-  private submitted = false;
-  private haveAProfile = true;
+  private submitted:boolean = false;
+  private haveAProfile:boolean = true;
   private login: {
     // username?: string;
     password?: string;

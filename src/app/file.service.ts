@@ -42,7 +42,7 @@ export class FileService {
    * @param  {string}          uriExtractFile [description]
    * @return {[type]}                         [description]
    */
-  checkFileJsonMeta(uriExtractFile: string) {
+  checkFileJsonMeta(uriExtractFile: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.file
         .checkFile(cordova.file.dataDirectory, uriExtractFile)
@@ -56,7 +56,7 @@ export class FileService {
     });
   }
 
-  checkFileTxt() {
+  checkFileTxt(): Promise<any> {
     return new Promise((resolve, reject) => {
       const txtPath = cordova.file.dataDirectory + "fin.txt";
       this.file
