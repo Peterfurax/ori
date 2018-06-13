@@ -41,8 +41,8 @@ export class VideoService {
    * @param {[type]} uri [description]
    * @memberof VideoService
    */
-  playVideo(uri): void {
-    this.videoPlay.play(uri);
+  async playVideo(uri:string): Promise<any> {
+    return await this.videoPlay.play(uri);
   }
 
   /**

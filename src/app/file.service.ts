@@ -77,8 +77,17 @@ export class FileService {
    * @param  {any}          item [description]
    * @return {Promise<any>}      [description]
    */
-  WriteJsonMeta(item: any): Promise<any> {
-    let uriExtractFileWithoutExt = this.parseService.parseUri(item.uri);
+  async WriteJsonMeta(item: any): Promise<any> {
+    let uriExtractFileWithoutExt = await this.parseService.parseUri(item.uri);
+    this.parseService
+      .parseUri(item.uri)
+      .then(val => {
+        console.log(val);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+    console.log(uriExtractFileWithoutExt);
     return new Promise((resolve, reject) => {
       this.checkFileJsonMeta(uriExtractFileWithoutExt + ".json")
         .then(value => {

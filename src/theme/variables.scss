@@ -23,12 +23,12 @@ $app-direction: ltr;
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
 // WHITE
-// $text-color:        #000000;
-// $background-color:  #FFFFFF;
+$text-color:        #000000;
+$background-color:  #FFFFFF;
 
 // DARK
-$text-color:        #FFFFFF;
-$background-color:  #000000;
+// $text-color:        #FFFFFF;
+// $background-color:  #000000;
 
 // Named Color Variables
 // --------------------------------------------------
@@ -76,10 +76,10 @@ $colors: (
 //
 
 // White Theme
-// @import "ionic.theme.default";
+@import "ionic.theme.default";
 
 // Black Theme
-@import "ionic.theme.dark";
+// @import "ionic.theme.dark";
 
 
 // Ionicons

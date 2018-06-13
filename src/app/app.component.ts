@@ -130,13 +130,12 @@ export class MyApp {
     this.sqlite
       .create({ name: "data.db", location: "default" })
       .then((db: SQLiteObject) => {
-        db
-          .executeSql(
-            "CREATE TABLE IF NOT EXISTS people (id INTEGER PRIMARY KEY AUTOINCREMENT," +
-              sqlRow.toString() +
-              ")",
-            {}
-          )
+        db.executeSql(
+          "CREATE TABLE IF NOT EXISTS people (id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            sqlRow.toString() +
+            ")",
+          {}
+        )
           .then(data => console.log("TABLE CREATED: ", data))
           .catch(err => console.error("Unable to execute sql", err));
       })

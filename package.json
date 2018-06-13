@@ -5,6 +5,7 @@
   "homepage": "http://lesechos.fr/",
   "private": true,
   "scripts": {
+    "live": "ionic cordova run android --device --livereload",
     "android": "ionic cordova run android --device",
     "ionic:build": "ionic-app-scripts build",
     "ionic:dev": "ionic-app-scripts build --dev",

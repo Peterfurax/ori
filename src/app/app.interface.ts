@@ -31,8 +31,10 @@ export interface FullInfo {
   distributionArr?: string[];
   dateImport?: number;
   datePrise?: string;
-  dateSend?: string;
-  resultSend?: string;
+  dateSend?: number;
+  resultSend?: any;
+  progress?:any;
+  upload?:boolean;
 }
 
 export interface AppAllInfo {
@@ -68,3 +70,9 @@ export interface Profile {
   service: string;
   society: string;
 }
+
+// export interface OptionFileTransfer {
+//   mimeType: string;
+//   timeout: number;
+//   fileName: string;
+// }

@@ -26,7 +26,7 @@ export class ProfileMeta {
   /**
    * [logForm description]
    */
-  logForm() {
+  logForm(): void {
     Promise.all([
       this.userData.setProfile(this.profile),
       this.navController.pop()

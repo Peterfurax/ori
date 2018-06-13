@@ -30,7 +30,7 @@ export class DateService {
    * @returns {boolean}
    * @memberof ParseService
    */
-  async valide(date: string) {
+  async isValid(date: string) {
     return moment(date).isValid() ? true : false;
   }
 

@@ -5,6 +5,8 @@ import { NavController } from "ionic-angular";
 import { SqlLiteData } from "../../providers/sqlLite";
 import { LogService } from "../../app/app.log";
 import { VideoMeta } from "../VideoMeta/VideoMeta";
+import { AlertController, AlertOptions } from "ionic-angular";
+import { FullInfo } from "../../app/app.interface";
 /**
  *
  * AFFICHE LISTE DES VIDEOS
@@ -16,10 +18,11 @@ import { VideoMeta } from "../VideoMeta/VideoMeta";
   templateUrl: "VideoListPage.html"
 })
 export class VideoListPage {
-  people: Array<Object>;
+  people: Array<object>;
   show: boolean = false;
   showSearch: boolean = false;
   constructor(
+    private alertCtrl: AlertController,
     private navController: NavController,
     private serviceVideo: VideoService,
     private transfertService: TransfertService,
@@ -39,6 +42,31 @@ export class VideoListPage {
    * @param  {string} uri:string uri item
    */
   delete(uri: string): void {
+    let option: AlertOptions = {
+      title: "Supprimer",
+      message: "Cette action est définitive",
+      buttons: [
+        {
+          text: "Annulation",
+          role: "cancel",
+          handler: (): void => {
+            console.log("Cancel clicked");
+          }
+        },
+        {
+          text: "Confirmation",
+          handler: (): void => {
+            this.confirmationDelete(uri);
+          }
+        }
+      ]
+    };
+
+    // let alert = this.alertCtrl.create(option);
+    this.alertCtrl.create(option).present();
+  }
+
+  confirmationDelete(uri: string) {
     this.storageSql
       .delete(uri)
       .then(result => this.log.console(result))
@@ -67,10 +95,13 @@ export class VideoListPage {
    * @return {[type]}
    */
   playVideo(uri: string): void {
-    this.serviceVideo.playVideo(uri);
+    this.serviceVideo
+      .playVideo(uri)
+      .then(() => {})
+      .catch(() => {});
   }
 
-  testDoublon(item): object {
+  testDoublon(item: FullInfo): object {
     return this.storageSql.people.find((element: { uri: string }) => {
       return element.uri === item.uri;
     });
@@ -82,7 +113,32 @@ export class VideoListPage {
    * @method upload
    * @param  {[type]} item
    */
-  upload(item): void {
+  upload(item: FullInfo): void {
+    // TODO verif si deja envoie
+
+    let option: AlertOptions = {
+      title: "Confirmation envoie",
+      message: "Voulez vous envoyez cette video",
+      buttons: [
+        {
+          text: "Annulation",
+          role: "cancel",
+          handler: (): void => {
+            console.log("Cancel clicked");
+          }
+        },
+        {
+          text: "Confirmation",
+          handler: (): void => {
+            this.confirmationEnvoie(item);
+          }
+        }
+      ]
+    };
+    this.alertCtrl.create(option).present();
+  }
+
+  confirmationEnvoie(item: FullInfo) {
     this.transfertService
       .upload(item)
       .then(result => this.log.console(result))
@@ -99,7 +155,7 @@ export class VideoListPage {
       .then(async (uri: string) => {
         this.serviceVideo
           .stockCaptureVideo(uri)
-          .then(async (result: object) => {
+          .then(async (result: FullInfo) => {
             this.testDoublon(result) === undefined
               ? this.storageSql
                   .Insert(result)

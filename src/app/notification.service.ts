@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Spinner } from "./native/spinnerDialog";
+// import { Spinner } from "./native/spinnerDialog";
 import { Background } from "./native/backgroudMode";
 import { LocalNotif } from "./native/localNofication";
 import { Toasted } from "./native/toast";
@@ -9,7 +9,7 @@ import { Vibrate } from "./native/vibration";
 export class NotificationService {
   constructor(
     private localNotif: LocalNotif,
-    private spinner: Spinner,
+    // private spinner: Spinner,
     private background: Background,
     private toasted: Toasted,
     private vibrate: Vibrate
@@ -21,10 +21,17 @@ export class NotificationService {
    * @return {[type]}          [description]
    */
   uploadInitService(): void {
-    Promise.all([this.spinner.show(), this.background.enable()])
-      .then(() => console.log("uploadInitService ok"))
-      .catch(err => console.error(err));
+    this.background.enable()
+    // Promise.all([this.background.enable()])
+    //   .then(() => console.log("uploadInitService ok"))
+    //   .catch(err => console.error(err));
   }
+
+  // uploadInitService1(): void {
+  //   Promise.all([this.spinner.show(), this.background.enable()])
+  //     .then(() => console.log("uploadInitService ok"))
+  //     .catch(err => console.error(err));
+  // }
 
   /**
    * [uploadEndService description]
@@ -33,12 +40,13 @@ export class NotificationService {
    * @return {[type]}                 [description]
    */
   uploadEndService(message: any): void {
-    Promise.all([
-      this.notificationMaker(JSON.stringify(message), true, true,false),
-      this.spinner.hide()
-    ])
-      .then(() => console.log("uploadEndService ok"))
-      .catch(err => console.error(err));
+    this.notificationMaker(JSON.stringify(message), true, true, false)
+    // Promise.all([
+    //   this.notificationMaker(JSON.stringify(message), true, true, false),
+    //   this.spinner.hide()
+    // ])
+    //   .then(() => console.log("uploadEndService ok"))
+    //   .catch(err => console.error(err));
   }
 
   /**

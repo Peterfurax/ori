@@ -24,7 +24,7 @@ export class ProfilePage {
   ) {
     this.userData
       .getProfile()
-      .then(ProfileResult => {
+      .then((ProfileResult: Profile) => {
         !ProfileResult
           ? this.navController.push(ProfileMeta, { profile: this.profile })
           : (this.profile = ProfileResult);

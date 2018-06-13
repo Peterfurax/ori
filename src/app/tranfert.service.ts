@@ -5,12 +5,14 @@ import { NotificationService } from "./notification.service";
 import {
   FileTransfer,
   FileUploadOptions,
-  FileTransferObject
+  FileTransferObject,
+  FileUploadResult
 } from "@ionic-native/file-transfer";
 import { SqlLiteData } from "../providers/sqlLite";
 import { DateService } from "./date.service";
-import {ServeurIp} from "./SERVER_IP"
+import { ServeurIp } from "./SERVER_IP";
 import { LogService } from "./app.log";
+import { FullInfo } from "./app.interface";
 @Injectable()
 export class TransfertService {
   constructor(
@@ -22,27 +24,27 @@ export class TransfertService {
     private transfer: FileTransfer,
     private serveurIp: ServeurIp
   ) {}
-
-  UploadApply(item, promiseReturnFnc, value) {
-    this.log.console(this.serveurIp.getIp(false))
+  progress: ProgressEvent;
+  UploadApply(item: FullInfo, promiseReturnFnc, value: FileUploadResult): void {
+    console.log("UploadApply value", value);
+    this.log.console(this.serveurIp.getIp(false));
     // item.resultSend = JSON.stringify(value);
     item.resultSend = value;
-    this.log.console(item)
+    this.log.console(item);
     Promise.all([
       this.sqlLiteData.update(item),
       this.notificationService.uploadEndService(value),
       promiseReturnFnc()
     ])
       .then(log => this.log.console(log))
-      .catch(err => this.log.console(err,true));
+      .catch(err => this.log.console(err, true));
   }
 
   /**
    * [progress description]
    * @type {any}
    */
-  progress: any;
-  async upload(item): Promise<any> {
+  upload(item: FullInfo): Promise<any> {
     return new Promise((resolve, reject) => {
       this.notificationService.uploadInitService();
       let metaForZenon = {
@@ -61,8 +63,8 @@ export class TransfertService {
             "journalist.firstname": item.journalistfirstname,
             "journalist.name": item.journalistname,
             "journalist.occupation": item.journalistoccupation,
-            "journalist.place": item.journalistplace,
-            "journalist.text": item.journalisttext,
+            // "journalist.place": item.journalistplace,
+            // "journalist.text": item.journalisttext,
             // "journalist.s1": item.journalists1,
             "guest.firstname": item.guestfirstname,
             "guest.name": item.guestname,
@@ -75,16 +77,23 @@ export class TransfertService {
       };
       this.fileService
         .WriteJsonMeta(metaForZenon)
-        .then( jsonUri => {
+        .then(jsonUri => {
           let exportName = this.dateService.exportNameDate();
-          this.log.console(exportName)
+          this.log.console(exportName);
           item.dateSend = Date.now();
           Promise.all([
             this.uploadFile(exportName, jsonUri, "json", item),
             this.uploadFile(exportName, item.uri, "mp4", item),
+            this.uploadFile(
+              exportName,
+              cordova.file.dataDirectory + "fin.txt",
+              "txt",
+              item
+            ),
             this.fileService.checkFileTxt()
           ])
-            .then(data =>
+            .then(data => {
+              console.log("ddd",data);
               this.uploadFile(
                 exportName,
                 cordova.file.dataDirectory + "fin.txt",
@@ -92,18 +101,17 @@ export class TransfertService {
                 item
               )
                 .then(result => this.UploadApply(item, resolve, result))
-                .catch(err => this.UploadApply(item, reject, err))
-            )
+                .catch(err => this.UploadApply(item, reject, err));
+            })
             .catch(err => this.UploadApply(item, reject, err));
         })
         .catch(err => this.UploadApply(item, reject, err));
     });
   }
 
-  optionFileTransferMaker(exportName, type) {
-    let optionFileTransfer = {
+  optionFileTransferMaker(exportName: string, type: string): FileUploadOptions {
+    let optionFileTransfer: FileUploadOptions = {
       mimeType: "text/plain",
-      timeout: 3000,
       fileName: exportName
     };
     switch (type) {
@@ -127,15 +135,16 @@ export class TransfertService {
     exportName: string,
     uri: string,
     type: string,
-    item
-  ): Promise<any> {
-    let perc = 0;
-    const fileTransfer: FileTransferObject = this.transfer.create();
+    item: FullInfo
+  ): Promise<FileUploadResult> {
     return new Promise((resolve, reject) => {
-      fileTransfer.onProgress(progress => {
+      item.upload = true;
+      let percentage = 0;
+      const fileTransfer: FileTransferObject = this.transfer.create();
+      fileTransfer.onProgress((progress: ProgressEvent) => {
         if (progress.lengthComputable) {
-          perc = Math.floor(progress.loaded / progress.total * 100);
-          item.progress = perc;
+          percentage = Math.floor((progress.loaded / progress.total) * 100);
+          item.progress = percentage;
         }
       });
       fileTransfer
@@ -144,8 +153,14 @@ export class TransfertService {
           this.serveurIp.getIp(false),
           this.optionFileTransferMaker(exportName, type)
         )
-        .then(data => resolve(data))
-        .catch(err => reject(err));
+        .then((data: FileUploadResult) => {
+          item.upload=false
+          resolve(data);
+        })
+        .catch(err => {
+          item.upload=false
+          reject(err);
+        });
     });
   }
 }

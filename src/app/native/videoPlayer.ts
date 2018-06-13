@@ -6,19 +6,23 @@ import { VideoPlayer } from "@ionic-native/video-player";
  * @class VideoPlay
  */
 export class VideoPlay {
-  constructor(private videoPlayer: VideoPlayer) {}
+  constructor(private videoPlayer: VideoPlayer) { }
 
   /**
    * @description play video by uri
    * @method play
    * @param {string} uri
    * @memberof VideoPlay
-   * @returns {void}
+   * @returns {Promise}
    */
-  play(uri: string): void {
-    this.videoPlayer
+  async play(uri: string): Promise<any> {
+    return this.videoPlayer
       .play("file://" + uri)
-      .then(() => console.log("video completed"))
-      .catch(err => console.log(err));
+      .then(() => {
+        return "video completed";
+      })
+      .catch(err => {
+        return err;
+      });
   }
 }
